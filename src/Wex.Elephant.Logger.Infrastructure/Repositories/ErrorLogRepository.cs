@@ -10,7 +10,7 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
 {
     public class ErrorLogRepository : LogsRepositoryBase<ErrorLog>, IErrorLogRepository
     {
-        public ErrorLogRepository() : base("ErrorLog")
+        public ErrorLogRepository() : base("Errors")
         {
         }
     }
