@@ -14,8 +14,8 @@ namespace Wex1.Elephant.Logger.Core.Entities
 
         public ObjectId Id { get; set; }
         public DateTime EventTimeStamp { get; set; }
-        public EventTypes EventType { get; set; }
-        public ComponentTypes Component { get; set; }
+        public string EventType { get; set; }
+        public string Component { get; set; }
         public string Description { get; set; }
     }
 }
