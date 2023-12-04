@@ -1,7 +1,6 @@
 import paho.mqtt.client as mqtt
 import keyboard
 import json
-import pyautogui
 
 address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
 port = 8883
@@ -38,33 +37,39 @@ try:
     while True:
         key_event = keyboard.read_event()
 
-        # Movement
-        if key_event.name == "w" and key_event.event_type == keyboard.KEY_DOWN:
-            movement = "w"
-            print("W key sent")
-        elif key_event.name == "a" and key_event.event_type == keyboard.KEY_DOWN:
-            movement = "a"
-            print("A key sent")
-        elif key_event.name == "s" and key_event.event_type == keyboard.KEY_DOWN:
-            movement = "s"
-            print("S key sent")
-        elif key_event.name == "d" and key_event.event_type == keyboard.KEY_DOWN:
-            movement = "d"
-            print("D key sent")
-        elif key_event.name == "up" and key_event.event_type == keyboard.KEY_DOWN:
-            movement = "up-arrow"
-            print("Up-Arrow key sent")
-        elif key_event.name == "left" and key_event.event_type == keyboard.KEY_DOWN:
-            movement = "left-arrow"
-            print("Left-Arrow key sent")
-        elif key_event.name == "down" and key_event.event_type == keyboard.KEY_DOWN:
-            movement = "down-arrow"
-            print("Down-Arrow key sent")
-        elif key_event.name == "right" and key_event.event_type == keyboard.KEY_DOWN:
-            movement = "right-arrow"
-            print("Right-Arrow key sent")
-        else:
-            movement = "none"
+        while True:
+            try:
+                if keyboard.is_pressed('w'):
+                    print('W key is pressed')
+                    movement = 'w'
+                    break
+                if keyboard.is_pressed('a'):
+                    print('A key is pressed')
+                    movement = 'a'
+                    break
+                if keyboard.is_pressed('s'):
+                    print('S key is pressed')
+                    movement = 's'
+                    break
+                if keyboard.is_pressed('d'):
+                    print('D key is pressed')
+                    movement = 'd'
+                    break
+                if keyboard.is_pressed('up'):
+                    print('Up Arrow key is pressed')
+                    movement = 'up'
+                    break
+                if keyboard.is_pressed('down'):
+                    print('Down Arrow key is pressed')
+                    movement = 'down'
+                    break
+                if keyboard.is_pressed('enter'):
+                    print('Enter key is pressed')
+                    lock = not lock
+                    movement = 'none'
+                    break
+            except:
+                break
 
         # Speed of movement
         shift_pressed = keyboard.is_pressed('shift')
@@ -77,16 +82,11 @@ try:
         else:
             speed = "normal"
 
-        # Lock/unlock spreader
-        if key_event.name == "enter" and key_event.event_type == keyboard.KEY_DOWN:
-            lock = not lock
-
         # Payload
         payload = {"movement": movement, "speed": speed, "lock": lock}
-
         payload_string = json.dumps(payload)
-
         client.publish(topic_1, payload_string, qos=0)
+        print(payload)
 
 except KeyboardInterrupt:
     print("Disconnecting: Keyboard Interrupt")
