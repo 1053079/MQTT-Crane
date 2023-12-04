@@ -1,5 +1,4 @@
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using Wex.Elephant.Logger.Infrastructure.Repositories;
 using Wex1.Elephant.Logger.Core.Entities;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;

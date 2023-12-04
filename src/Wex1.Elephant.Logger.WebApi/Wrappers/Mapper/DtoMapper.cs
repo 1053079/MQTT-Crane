@@ -17,7 +17,7 @@ namespace Wex1.Elephant.Logger.WebApi.Wrappers.Mapper
             };
         }
 
-        public static IEnumerable<ErrorLogResponseDto> MapToDto(this IEnumerable<ErrorLog> errorLogs) 
+        public static IEnumerable<ErrorLogResponseDto> MapToDto(this IEnumerable<ErrorLog> errorLogs)
         {
             return errorLogs.Select(el => el.MapToDto());
         }

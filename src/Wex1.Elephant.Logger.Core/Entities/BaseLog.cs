@@ -1,11 +1,5 @@
 ﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Wex1.Elephant.Logger.Core.Enums;
+
 
 namespace Wex1.Elephant.Logger.Core.Entities
 {
