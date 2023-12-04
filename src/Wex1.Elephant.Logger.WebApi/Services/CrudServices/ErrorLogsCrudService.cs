@@ -7,7 +7,7 @@ using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
 using Wex1.Elephant.Logger.WebApi.Helpers;
 using Wex1.Elephant.Logger.WebApi.Wrappers.Mapper;
 
-namespace Wex1.Elephant.Logger.WebApi.Services
+namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
 {
     public class ErrorLogsCrudService : IErrorLogCrudService
     {
@@ -32,7 +32,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services
             var pagedData = await _errorLogRepository.GetPagedData(errorLogs, validFilter.PageNumber, validFilter.PageSize);
             var totalRecords = errorLogs.Count();
 
-            if(totalRecords <= 0)
+            if (totalRecords <= 0)
             {
                 return new NotFoundObjectResult("No error logs were found.");
             }
@@ -60,8 +60,8 @@ namespace Wex1.Elephant.Logger.WebApi.Services
             throw new NotImplementedException();
         }
 
-       
 
-        
+
+
     }
 }
