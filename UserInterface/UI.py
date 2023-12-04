@@ -5,7 +5,9 @@ import os
 pygame.init() 
   
 # Creates the screen allows you to change the (Width, Height) in px.
-screen = pygame.display.set_mode((1200, 800)) 
+WIDTH = 1200
+HEIGHT = 800
+screen = pygame.display.set_mode((WIDTH, HEIGHT)) 
 
 # This is the title of the screen you see above the screen.
 pygame.display.set_caption("Elephant Crane") 
@@ -30,11 +32,15 @@ WASD = pygame.image.load('UserInterface/wasdKeys.png')
 arrow = pygame.image.load('UserInterface/arrowKey.png')
 
 # circle buttons
-circle = pygame.Surface((60,60), pygame.SRCALPHA)
-drawCircle = pygame.draw.circle(circle, white, (30,30), 30)
+circle = pygame.image.load('UserInterface/xButton.png')
+# circle = pygame.Surface((60,60), pygame.SRCALPHA)
+# drawCircle = pygame.draw.circle(circle, white, (30,30), 30)
+# xLines = pygame.draw.line(circle, black,(5,5),(55,55), 2)
+# xLines2 = pygame.draw.line(circle, black, (30 + 30, 30 - 30), (30 - 30, 30 + 30), 2)
 
-circle2 = pygame.Surface((60,60), pygame.SRCALPHA)
-drawCircle2 = pygame.draw.circle(circle2, white, (30,30), 30)
+circle2 = pygame.image.load('UserInterface/plusButton.png')
+# circle2 = pygame.Surface((60,60), pygame.SRCALPHA)
+# drawCircle2 = pygame.draw.circle(circle2, white, (30,30), 30)
 
 # the while loop..
 while not exit: 
@@ -56,7 +62,10 @@ while not exit:
     screen.blit(circle, (1025,500))
     screen.blit(circle2, (1025,575))
     
+    # if user presses quit the application closes.
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             exit = True
+
+    # updates the display
     pygame.display.flip() 
