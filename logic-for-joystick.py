@@ -38,16 +38,32 @@ try:
         key_event = keyboard.read_event()
 
         # Movement
-        if key_event.name == "w": movement = "w", print("W key sent")
-        elif key_event.name == "a": movement = "a", print("A key sent")
-        elif key_event.name == "s": movement = "s", print("S key sent")
-        elif key_event.name == "d": movement = "d", print("D key sent")
-        elif key_event.name == "up": movement = "up-arrow", print("Up-Arrow key sent")
-        elif key_event.name == "left": movement = "left-arrow", print("Left-Arrow key sent")
-        elif key_event.name == "down": movement = "down-arrow", print("Down-Arrow key sent")
-        elif key_event.name == "right": movement = "right-arrow", print("Right-Arrow key sent")
+        if key_event.name == "w" and key_event.event_type == keyboard.KEY_DOWN:
+            movement = "w"
+            print("W key sent")
+        elif key_event.name == "a" and key_event.event_type == keyboard.KEY_DOWN:
+            movement = "a"
+            print("A key sent")
+        elif key_event.name == "s" and key_event.event_type == keyboard.KEY_DOWN:
+            movement = "s"
+            print("S key sent")
+        elif key_event.name == "d" and key_event.event_type == keyboard.KEY_DOWN:
+            movement = "d"
+            print("D key sent")
+        elif key_event.name == "up" and key_event.event_type == keyboard.KEY_DOWN:
+            movement = "up-arrow"
+            print("Up-Arrow key sent")
+        elif key_event.name == "left" and key_event.event_type == keyboard.KEY_DOWN:
+            movement = "left-arrow"
+            print("Left-Arrow key sent")
+        elif key_event.name == "down" and key_event.event_type == keyboard.KEY_DOWN:
+            movement = "down-arrow"
+            print("Down-Arrow key sent")
+        elif key_event.name == "right" and key_event.event_type == keyboard.KEY_DOWN:
+            movement = "right-arrow"
+            print("Right-Arrow key sent")
         else:
-            movement = None
+            movement = "none"
 
         # Speed of movement
         if key_event.name == "left shift": speed = "fast"
