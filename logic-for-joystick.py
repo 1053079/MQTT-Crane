@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import keyboard
 import json
+import pyautogui
 
 address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
 port = 8883
@@ -66,12 +67,18 @@ try:
             movement = "none"
 
         # Speed of movement
-        if key_event.name == "left shift": speed = "fast"
-        elif key_event.name == "left ctrl": speed = "slow"
-        elif key_event.event_type == keyboard.KEY_UP and (key_event.name == "left shift" or key_event.name == "left ctrl"): speed = "normal"
+        shift_pressed = keyboard.is_pressed('shift')
+        ctrl_pressed = keyboard.is_pressed('ctrl')
+
+        if shift_pressed:
+            speed = "fast"
+        elif ctrl_pressed:
+            speed = "slow"
+        else:
+            speed = "normal"
 
         # Lock/unlock spreader
-        elif key_event.name == "enter" and key_event.event_type == keyboard.KEY_DOWN:
+        if key_event.name == "enter" and key_event.event_type == keyboard.KEY_DOWN:
             lock = not lock
 
         # Payload
