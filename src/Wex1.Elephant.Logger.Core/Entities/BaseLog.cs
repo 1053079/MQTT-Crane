@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +11,8 @@ namespace Wex1.Elephant.Logger.Core.Entities
 {
     public class BaseLog
     {
-        public string Id { get; set; }
+
+        public ObjectId Id { get; set; }
         public DateTime EventTimeStamp { get; set; }
         public EventTypes EventType { get; set; }
         public ComponentTypes Component { get; set; }

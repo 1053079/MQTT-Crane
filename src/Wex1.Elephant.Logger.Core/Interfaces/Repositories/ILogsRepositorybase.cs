@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Wex1.Elephant.Logger.Core.Interfaces.Repositories
         IMongoCollection<T> GetAll();
         Task<IEnumerable<T>> GetListAsync();
         Task<IEnumerable<T>> GetPagedData(IEnumerable<T> data, int pageNumber, int pageSize);
-        Task<T> GetByIdAsync(Guid id);
+        Task<T> GetByIdAsync(ObjectId id);
         Task AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(T entity);

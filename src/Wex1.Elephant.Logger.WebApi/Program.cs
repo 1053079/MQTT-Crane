@@ -1,4 +1,7 @@
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using Wex.Elephant.Logger.Infrastructure.Repositories;
+using Wex1.Elephant.Logger.Core.Entities;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 using Wex1.Elephant.Logger.Core.Interfaces.Services;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
@@ -14,6 +17,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+BsonClassMap.RegisterClassMap<BaseLog>(classMap =>
+{
+    classMap.AutoMap();
+    classMap.MapProperty(log => log.EventTimeStamp);
+    classMap.MapMember(log => log.EventTimeStamp).SetElementName("timestamp");
+    classMap.MapMember(log => log.EventType).SetElementName("type");
+    classMap.MapMember(log => log.Component).SetElementName("component");
+    classMap.MapMember(log => log.Description).SetElementName("description");
+});
 
 //Dependency injection
 //Other services

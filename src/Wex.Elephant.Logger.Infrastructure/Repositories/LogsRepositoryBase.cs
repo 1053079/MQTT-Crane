@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +32,10 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
         {
             return await _collection.Find(_ => true).ToListAsync();
         }
-        public async Task<T> GetByIdAsync(Guid id)
+        public async Task<T> GetByIdAsync(ObjectId id)
         {
             var filter = Builders<T>.Filter
-                .Eq(T => T.Id, $"{id}");
+                .Eq(T => T.Id, id);
 
             return await _collection.Find(filter).FirstOrDefaultAsync();
         }

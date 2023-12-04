@@ -9,7 +9,7 @@ namespace Wex1.Elephant.Logger.WebApi.Wrappers.Mapper
         {
             return new ErrorLogResponseDto
             {
-                Id = errorLog.Id,
+                Id = errorLog.Id.ToString(),
                 EventTimeStamp = errorLog.EventTimeStamp,
                 EventType = errorLog.EventType,
                 component = errorLog.Component,
