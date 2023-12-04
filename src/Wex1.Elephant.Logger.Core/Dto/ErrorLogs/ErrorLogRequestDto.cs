@@ -8,9 +8,9 @@ namespace Wex1.Elephant.Logger.Core.Dto.ErrorLogs
         [Required]
         public DateTime EventTimeStamp { get; set; }
         [Required]
-        public EventTypes EventType { get; set; }
+        public string EventType { get; set; }
         [Required]
-        public ComponentTypes component { get; set; }
+        public string component { get; set; }
         [Required]
         [MaxLength(255, ErrorMessage = "{0} can't be longer then 255 characters.")]
         public string Description { get; set; }
