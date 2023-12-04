@@ -1,0 +1,24 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Mock
+@inject SpeedLogService LogService
+
+<h3>Speed Logs</h3>
+@if (SpeedLogs != null)
+{
+    <LogList TModel="SpeedLog" Logs="SpeedLogs" />
+}
+else
+{
+    <p>No error logs found.</p>
+}
+
+@code {
+    private SpeedLog[] SpeedLogs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var logs = await LogService.GetAll();
+        SpeedLogs = logs.ToArray();
+    }
+}

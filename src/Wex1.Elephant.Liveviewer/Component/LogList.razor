@@ -1,0 +1,48 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@typeparam TModel where TModel : Baselog
+
+<h3>@Title</h3>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                @foreach (var property in typeof(TModel).GetProperties().Select(p => p.Name))
+                {
+                    @if (property != "Id")
+                    {
+                        <th>@property</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in Logs)
+            {
+                <tr>
+                    @foreach (var property in log.GetType().GetProperties())
+                    {
+                        @if (property.Name != "Id") 
+                        {
+                            <td>@property.GetValue(log)</td>
+                        }
+                        
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public TModel[] Logs { get; set; }
+
+    private string[] PropertyNames { get; }
+
+    [Parameter]
+    public RenderFragment? ListInfo { get; set; }
+}
+

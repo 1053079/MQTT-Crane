@@ -1,0 +1,24 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Mock
+@inject PositionLogService LogService
+
+<h3>Position Logs</h3>
+@if (PositionLogs != null)
+{
+    <LogList TModel="PositionLog" Logs="PositionLogs" />
+}
+else
+{
+    <p>No error logs found.</p>
+}
+
+@code {
+    private PositionLog[] PositionLogs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var logs = await LogService.GetAll();
+        PositionLogs = logs.ToArray();
+    }
+}
