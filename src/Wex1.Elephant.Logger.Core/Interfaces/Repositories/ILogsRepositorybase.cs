@@ -13,7 +13,7 @@ namespace Wex1.Elephant.Logger.Core.Interfaces.Repositories
         Task<IEnumerable<T>> GetListAsync();
         Task<IEnumerable<T>> GetPagedData(IEnumerable<T> data, int pageNumber, int pageSize);
         Task<T> GetByIdAsync(Guid id);
-        Task<bool> AddAsync(T entity);
+        Task AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(T entity);
     }
