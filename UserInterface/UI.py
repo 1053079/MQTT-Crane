@@ -26,13 +26,13 @@ view3 = pygame.Surface([500,300])
 # Controls
 
 # WASD arrows
-WASD = pygame.image.load('UserInterface/wasdKeys.png')
+WASD = pygame.image.load('buttons/UserInterface/wasdKeys.png')
 
 # Arrow in middle
-arrow = pygame.image.load('UserInterface/arrowKey.png')
+arrow = pygame.image.load('buttons/UserInterface/arrowKey.png')
 
 # circle buttons
-circle = pygame.image.load('UserInterface/xButton.png')
+circle = pygame.image.load('buttons/UserInterface/xButton.png')
 # circle = pygame.Surface((60,60), pygame.SRCALPHA)
 # drawCircle = pygame.draw.circle(circle, white, (30,30), 30)
 # xLines = pygame.draw.line(circle, black,(5,5),(55,55), 2)
