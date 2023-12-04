@@ -16,7 +16,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
         print(f"Connection failed with code {rc}")
 
 client.on_connect = on_connect
-client.connect(address, port)
+
 
 # TLS (required for connection)
 client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
@@ -32,19 +32,20 @@ lock = False
 
 # Main Loop
 try:
+    client.connect(address, port)
+    client.loop_start()
     while True:
         key_event = keyboard.read_event()
-        client.loop_start()
 
         # Movement
-        if key_event.name == "w": movement = "w"
-        elif key_event.name == "a": movement = "a"
-        elif key_event.name == "s": movement = "s"
-        elif key_event.name == "d": movement = "d"
-        elif key_event.name == "up": movement = "up-arrow"
-        elif key_event.name == "left": movement = "left-arrow"
-        elif key_event.name == "down": movement = "down-arrow"
-        elif key_event.name == "right": movement = "right-arrow"
+        if key_event.name == "w": movement = "w", print("W key sent")
+        elif key_event.name == "a": movement = "a", print("A key sent")
+        elif key_event.name == "s": movement = "s", print("S key sent")
+        elif key_event.name == "d": movement = "d", print("D key sent")
+        elif key_event.name == "up": movement = "up-arrow", print("Up-Arrow key sent")
+        elif key_event.name == "left": movement = "left-arrow", print("Left-Arrow key sent")
+        elif key_event.name == "down": movement = "down-arrow", print("Down-Arrow key sent")
+        elif key_event.name == "right": movement = "right-arrow", print("Right-Arrow key sent")
         else:
             movement = None
 
