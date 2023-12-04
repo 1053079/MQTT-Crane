@@ -14,19 +14,22 @@ white = (255,255,255),
 black = (0,0,0),
 blue = (0,0,255)
 
-# Rectangles.. or actually the views
-rectangle = pygame.Surface([100,200])
-rectangle2 = pygame.Surface([100,200])
-rectangle3 = pygame.Surface([100,200])
+# The screens.. parameters are [Width, Height]
+view = pygame.Surface([500,300])
+view2 = pygame.Surface([500,300])
+view3 = pygame.Surface([500,300])
 
 
 # the while loop..
 while not exit: 
+    # Fills the background with blue color
     screen.fill(blue)
-    screen.blit(rectangle,(200,200))
-    screen.blit(rectangle2,(400,400))
-    screen.blit(rectangle3,(600,600))
-    
+
+    # blits the views to the screen. the parameters are the x and y coordinates.
+    screen.blit(view, (50,100)) 
+    screen.blit(view2, (600,100))
+    screen.blit(view3, (50,450))
+
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             exit = True
