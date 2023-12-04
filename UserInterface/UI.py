@@ -1,5 +1,7 @@
 import pygame 
-  
+import os  
+
+# Initialize pygame
 pygame.init() 
   
 # Creates the screen allows you to change the (Width, Height) in px.
@@ -19,13 +21,13 @@ view = pygame.Surface([500,300])
 view2 = pygame.Surface([500,300])
 view3 = pygame.Surface([500,300])
 
-# controls
+# Controls
 
 # WASD arrows
 # Work in Progress...
 
 # Arrow in middle
-# Is this for adjusting the speed?
+arrow = pygame.image.load('UserInterface/arrowKey.png')
 
 # circle buttons
 circle = pygame.Surface((60,60), pygame.SRCALPHA)
@@ -44,10 +46,11 @@ while not exit:
     screen.blit(view2, (600,50))
     screen.blit(view3, (50,400))
     
+    screen.blit(arrow, (850, 500))
     # blits the circles to screen
     screen.blit(circle, (1000,500))
     screen.blit(circle2, (1000,575))
-
+    
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             exit = True
