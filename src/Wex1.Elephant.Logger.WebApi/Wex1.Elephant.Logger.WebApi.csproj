@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Wex.Elephant.Logger.Infrastructure\Wex.Elephant.Logger.Infrastructure.csproj" />
-    <ProjectReference Include="..\Wex1.Elephant.Logger.Core\Wex1.Elephant.Logger.Core.csproj" />
   </ItemGroup>
 
 </Project>

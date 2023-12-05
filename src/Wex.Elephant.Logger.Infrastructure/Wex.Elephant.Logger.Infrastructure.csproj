@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wex1.Elephant.Logger.Core\Wex1.Elephant.Logger.Core.csproj" />
+    <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.22.0" />
+    <ProjectReference Include="..\Wex1.Elephant.Logger.Core\Wex1.Elephant.Logger.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Wex1.Elephant.Liveviewer.Data;
 using Wex1.Elephant.Liveviewer.Services.Mock;
 
 var builder = WebApplication.CreateBuilder(args);
