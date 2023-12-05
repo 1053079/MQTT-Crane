@@ -1,11 +1,13 @@
 using MongoDB.Bson.Serialization;
 using Wex.Elephant.Logger.Infrastructure.Repositories;
 using Wex1.Elephant.Logger.Core.Entities;
+using Wex1.Elephant.Logger.Core.Interfaces.Mqtt;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 using Wex1.Elephant.Logger.Core.Interfaces.Services;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
 using Wex1.Elephant.Logger.WebApi.Services;
 using Wex1.Elephant.Logger.WebApi.Services.CrudServices;
+using Wex1.Elephant.Logger.WebApi.Services.Mqtt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,7 @@ builder.Services.AddSingleton<IUriService>(options =>
     var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
     return new UriService(uri);
 });
+builder.Services.AddSingleton<IMqttService, MqttService>();
 
 //Repositories
 builder.Services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
@@ -54,10 +57,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.Services.GetRequiredService<IMqttService>();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();

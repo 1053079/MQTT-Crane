@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Wex1.Elephant.Logger.Core.Dto.ErrorLogs;
 using Wex1.Elephant.Logger.Core.Filters;
+using Wex1.Elephant.Logger.Core.Interfaces.Mqtt;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 using Wex1.Elephant.Logger.Core.Interfaces.Services;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
@@ -13,6 +15,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
     {
         private readonly IErrorLogRepository _errorLogRepository;
         private readonly IUriService _uriService;
+
 
         public ErrorLogsCrudService(
             IErrorLogRepository errorLogRepository,
@@ -41,7 +44,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
 
             return new OkObjectResult(pagedResponse);
         }
-        public Task<IActionResult> GetById(Guid id)
+        public Task<IActionResult> GetById(ObjectId id)
         {
             throw new NotImplementedException();
         }
@@ -55,7 +58,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> Delete(Guid id)
+        public Task<IActionResult> Delete(ObjectId id)
         {
             throw new NotImplementedException();
         }

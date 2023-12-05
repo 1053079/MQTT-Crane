@@ -6,8 +6,8 @@
         public const string MqttUserName = "Admin";
         public const string MqttPassword = "hMu4P6L_LAMj8t3";
         public const string MqttClusterUrl = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud";
-        public const string MqttPort = "8883";
-        public const string MqttWebSocketPort = "8884";
+        public const int MqttPort = 8883;
+        public const int MqttWebSocketPort = 8884;
         //MongoDb Details
         public const string MongoDbUserName = "Admin";
         public const string MongoDbPassword = "Password";
