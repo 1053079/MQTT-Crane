@@ -59,7 +59,7 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
                 .ToList();
         }
 
-        public async Task<int> CountRecords()
+        public async Task<long> CountRecords()
         {
             return await _collection.CountAsync(_ => true);
         }
