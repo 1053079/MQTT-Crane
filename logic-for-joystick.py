@@ -5,7 +5,7 @@ import json
 address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
 port = 8883
 
-topic_1 = "keyboard/inputs"
+topic_1 = "inputs/joystick"
 
 client = mqtt.Client()
 
