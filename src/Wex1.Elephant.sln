@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Logger.Core", "Wex1.Elephant.Logger.Core\Wex1.Elephant.Logger.Core.csproj", "{1AE9E1B1-89BE-4CF5-9583-A48BBBCDFACF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wex1.Elephant.Liveviewer", "Wex1.Elephant.Liveviewer\Wex1.Elephant.Liveviewer.csproj", "{AA09F53C-1218-41E5-9126-10031E76F3E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Liveviewer", "Wex1.Elephant.Liveviewer\Wex1.Elephant.Liveviewer.csproj", "{AA09F53C-1218-41E5-9126-10031E76F3E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

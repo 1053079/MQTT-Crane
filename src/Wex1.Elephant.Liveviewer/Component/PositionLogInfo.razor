@@ -1,0 +1,55 @@
+﻿@page "/positionLogInfo/{Id}"
+@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Mock
+@inject PositionLogService LogService
+
+<h3>Position Log Information</h3>
+@if (PositionLog != null)
+{
+    <div class="card">
+        <div class="card-body">
+
+            <dl class="row">
+                <dt class="col-sm-3"><strong>Id:</strong></dt>
+                <dd class="col-sm-9">@PositionLog.Id</dd>
+
+                <dt class="col-sm-3"><strong>Timestamp:</strong></dt>
+                <dd class="col-sm-9">@PositionLog.Timestamp.ToString()</dd>
+
+                <dt class="col-sm-3"><strong>Type:</strong></dt>
+                <dd class="col-sm-9">@PositionLog.Type</dd>
+
+                <dt class="col-sm-3"><strong>Component:</strong></dt>
+                <dd class="col-sm-9">@PositionLog.Component</dd>
+
+                <dt class="col-sm-3"><strong>Description:</strong></dt>
+                <dd class="col-sm-9">@PositionLog.Description</dd>
+
+                <dt class="col-sm-3"><strong>Positions:</strong></dt>
+                <dd class="col-sm-9">@PositionLog.PositionX X, @PositionLog.PositionY Y, @PositionLog.PositionZ Z </dd>
+
+                
+            </dl>
+        </div>
+    </div>
+
+}
+else
+{
+    <p>PositionLog not found.</p>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private PositionLog PositionLog { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        PositionLog = await LogService.Get(Id);
+    }
+}

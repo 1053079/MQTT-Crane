@@ -1,0 +1,51 @@
+﻿@page "/errorLogInfo/{Id}"
+@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Mock
+@inject ErrorLogService LogService
+
+<h3>Error Log Information</h3>
+@if (ErrorLog != null)
+{
+    <div class="card">
+        <div class="card-body">
+
+            <dl class="row">
+                <dt class="col-sm-3"><strong>Id:</strong></dt>
+                <dd class="col-sm-9">@ErrorLog.Id</dd>
+
+                <dt class="col-sm-3"><strong>Timestamp:</strong></dt>
+                <dd class="col-sm-9">@ErrorLog.Timestamp.ToString()</dd>
+
+                <dt class="col-sm-3"><strong>Type:</strong></dt>
+                <dd class="col-sm-9">@ErrorLog.Type</dd>
+
+                <dt class="col-sm-3"><strong>Component:</strong></dt>
+                <dd class="col-sm-9">@ErrorLog.Component</dd>
+
+                <dt class="col-sm-3"><strong>Description:</strong></dt>
+                <dd class="col-sm-9">@ErrorLog.Description</dd>
+            </dl>
+        </div>
+    </div>
+}
+else
+{
+    <p>Error log not found.</p>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private ErrorLog ErrorLog { get; set; }
+
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        ErrorLog = await LogService.Get(Id);
+    }
+}
+
+
