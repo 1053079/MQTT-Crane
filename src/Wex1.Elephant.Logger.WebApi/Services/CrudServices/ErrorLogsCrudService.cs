@@ -27,13 +27,11 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
 
         public async Task<IActionResult> GetAllPaged(PaginationFilter filter, HttpRequest request)
         {
-            var errorLogs = await _errorLogRepository.GetListAsync();
-
             var route = request.Path.Value;
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-            var pagedData = await _errorLogRepository.GetPagedData(errorLogs, validFilter.PageNumber, validFilter.PageSize);
-            var totalRecords = errorLogs.Count();
+            var pagedData = await _errorLogRepository.GetPagedData(validFilter.PageNumber, validFilter.PageSize);
+            var totalRecords = await _errorLogRepository.CountRecords();
 
             if (totalRecords <= 0)
             {
