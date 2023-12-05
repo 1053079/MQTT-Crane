@@ -20,3 +20,16 @@ Xander.Van.Boom@Student.howest.be | Admin | hMu4P6L_LAMj8t3 | 2939d3617acc492aa3
  Description | Description | Description | Description
   | | | x, y, z | Speed
 
+# Logger
+## Api endpoints
+- **Api/Errors** -> returns a paged list of all error logs
+
+## MqttService
+### Description
+The MqttService has to subscribe to all the Logger/{LogType} Mqtt endpoints. one it receives a message it will filter what LogType it is and create a new log in the matching collection and upload this to the database.
+### Payload
+#### *Error log payload*
+**Property Names** | TimeStamp | EventType | Component | Description
+-------------- | --------- | --------- | --------- | ----------
+**Data Type** | DateTime | string | string | string
+
