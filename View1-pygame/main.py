@@ -21,6 +21,7 @@ grey = (169,169,169)
 purple = (128, 0, 128)
 purple_rect = pygame.Rect(340, 350, 20, 20)
 purple_speed = 1
+rope_height = 110
 
 clock = pygame.time.Clock()
 
@@ -32,6 +33,12 @@ while True:
             sys.exit()
 
     keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_w] and rope_height > 10:
+        rope_height -= 1
+    if keys[pygame.K_s] and rope_height < 180:
+        rope_height += 1
+
     if keys[pygame.K_a] and purple_rect.left > 330:
         purple_rect.x -= purple_speed
     if keys[pygame.K_d] and purple_rect.right < 530:
@@ -47,6 +54,7 @@ while True:
     pygame.draw.rect(screen, yellow, [330, 340, 200, 10])  # Bridge
     pygame.draw.rect(screen, purple, purple_rect)  # Crane_Cabin
     pygame.draw.rect(screen, grey, [0, 550, 800, 50])   # waterline
+    pygame.draw.line(screen, purple, (purple_rect.centerx, purple_rect.bottom),(purple_rect.centerx, purple_rect.bottom + rope_height), 5)
 
 
 # Update the display
