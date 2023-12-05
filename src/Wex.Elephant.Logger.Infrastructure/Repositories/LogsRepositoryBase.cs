@@ -50,14 +50,18 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<T>> GetPagedData(IEnumerable<T> data, int pageNumber, int pageSize)
+        public async Task<IEnumerable<T>> GetPagedData(int pageNumber, int pageSize)
         {
-            return data
+            return _collection
+                .Find(_ => true)
+                .Limit(pageSize)
                 .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .ToList();
         }
 
-
+        public async Task<int> CountRecords()
+        {
+            return await _collection.CountAsync(_ => true);
+        }
     }
 }
