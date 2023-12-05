@@ -3,7 +3,12 @@
 @using Wex1.Elephant.Liveviewer.Services
 @using Wex1.Elephant.Liveviewer.Services.Mock
 @inject SpeedLogService LogService
+@inject NavigationManager NavigationManager
 
+
+<div>
+    <a class="btn btn-secondary mb-3" @onclick="GoBack">Back</a>
+</div>
 <h3>Speed Log Information</h3>
 @if (SpeedLog != null)
 {
@@ -50,5 +55,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         SpeedLog = await LogService.Get(Id);
+    }
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/");
     }
 }
