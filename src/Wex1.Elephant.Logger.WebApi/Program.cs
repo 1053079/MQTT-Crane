@@ -21,11 +21,15 @@ builder.Services.AddSwaggerGen();
 BsonClassMap.RegisterClassMap<BaseLog>(classMap =>
 {
     classMap.AutoMap();
-    classMap.MapProperty(log => log.EventTimeStamp);
     classMap.MapMember(log => log.EventTimeStamp).SetElementName("timestamp");
     classMap.MapMember(log => log.EventType).SetElementName("type");
     classMap.MapMember(log => log.Component).SetElementName("component");
     classMap.MapMember(log => log.Description).SetElementName("description");
+});
+
+BsonClassMap.RegisterClassMap<SpeedLog>(classMap =>
+{
+    classMap.MapMember(log => log.Speed).SetElementName("speed");
 });
 
 //Dependency injection
@@ -42,9 +46,11 @@ builder.Services.AddSingleton<IMqttService, MqttService>();
 
 //Repositories
 builder.Services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
+builder.Services.AddTransient<ISpeedLogRepository, SpeedLogRepository>();
 
 //Crud Services
 builder.Services.AddTransient<IErrorLogCrudService, ErrorLogsCrudService>();
+builder.Services.AddTransient<ISpeedLogCrudService, SpeedLogsCrudService>();
 
 
 

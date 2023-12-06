@@ -1,21 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-using Wex1.Elephant.Liveviewer.Enums;
+﻿using Wex1.Elephant.Liveviewer.Enums;
 
 namespace Wex1.Elephant.Liveviewer.Model
 {
     public class Baselog
     {
-        
+
         public string Id { get; set; }
 
         public DateTime Timestamp { get; set; }
-        
+
         public Components Component { get; set; }
-        
+
         public EventType Type { get; set; }
-        
-        public string Description { get; set;  }
+
+        public string Description { get; set; }
 
 
     }

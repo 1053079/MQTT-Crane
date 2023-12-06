@@ -2,7 +2,6 @@
 using HiveMQtt.Client.Events;
 using HiveMQtt.Client.Options;
 using MongoDB.Bson;
-using MongoDB.Bson.IO;
 using System.Diagnostics;
 using System.Text.Json;
 using Wex.Elephant.Logger.Infrastructure.Repositories;
@@ -16,10 +15,11 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
     public class MqttService : IMqttService
     {
         private readonly IErrorLogRepository _errorLogRepository;
+        private readonly ISpeedLogRepository _speedLogRepository;
 
         protected HiveMQClient _mqttClient { private set; get; }
 
-        public MqttService(IErrorLogRepository errorLogRepository)
+        public MqttService(IErrorLogRepository errorLogRepository, ISpeedLogRepository speedLogRepository)
         {
 
             var options = new HiveMQClientOptions
@@ -35,6 +35,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             CreateMqttClient(options);
             errorLogRepository = new ErrorLogRepository();
             _errorLogRepository = errorLogRepository;
+            _speedLogRepository = speedLogRepository;
         }
 
         public async Task CreateMqttClient(HiveMQClientOptions options)
@@ -44,6 +45,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             _mqttClient.AfterConnect += AfterConnectHandler;
             _mqttClient.OnMessageReceived += Client_OnMessageReceived;
             await _mqttClient.SubscribeAsync("Logger/Errors");
+            await _mqttClient.SubscribeAsync("Logger/Speeds");
         }
         public void Client_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
@@ -54,7 +56,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             Debug.WriteLine("connected");
         }
 
-
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
             //Example of event payload
@@ -62,13 +63,16 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             switch (e.PublishMessage.Topic)
             {
                 case "Logger/Errors":
-                    HandleNewErrorLog(e.PublishMessage.Payload);
+                    await HandleNewErrorLog(e.PublishMessage.Payload);
+                    break;
+                case "Logger/Speeds":
+                    await HandleNewSpeedLog(e.PublishMessage.Payload);
                     break;
             }
-
         }
 
-        private async Task HandleNewErrorLog(byte[] payload)
+
+        private async Task HandleNewErrorLog(byte[]? payload)
         {
             var errorLogInfo = JsonSerializer.Deserialize<ErrorLog>(payload);
 
@@ -82,6 +86,22 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             };
 
             await _errorLogRepository.AddAsync(newErrorLog);
+        }
+        private async Task HandleNewSpeedLog(byte[]? payload)
+        {
+            var speedLogInfo = JsonSerializer.Deserialize<SpeedLog>(payload);
+
+            var newSpeedLog = new SpeedLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                EventTimeStamp = speedLogInfo.EventTimeStamp,
+                Component = speedLogInfo.Component,
+                Description = speedLogInfo.Description,
+                EventType = speedLogInfo.EventType,
+                Speed = speedLogInfo.Speed
+            };
+
+            await _speedLogRepository.AddAsync(newSpeedLog);
         }
     }
 }

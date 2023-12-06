@@ -5,10 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Logger.WebApi", "Wex1.Elephant.Logger.WebApi\Wex1.Elephant.Logger.WebApi.csproj", "{E6E0702D-EB82-419E-B19C-D06A9B91B990}"
 EndProject
-
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Liveviewer", "Wex1.Elephant.Liveviewer\Wex1.Elephant.Liveviewer.csproj", "{AA09F53C-1218-41E5-9126-10031E76F3E5}"
-
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wex.Elephant.Logger.Infrastructure", "Wex.Elephant.Logger.Infrastructure\Wex.Elephant.Logger.Infrastructure.csproj", "{BA86B6FE-C0FB-451D-893D-57CD9CBFA923}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex.Elephant.Logger.Infrastructure", "Wex.Elephant.Logger.Infrastructure\Wex.Elephant.Logger.Infrastructure.csproj", "{BA86B6FE-C0FB-451D-893D-57CD9CBFA923}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Liveviewer", "Wex1.Elephant.Liveviewer\Wex1.Elephant.Liveviewer.csproj", "{261C0ECB-21C5-417B-AAC9-FE06E885A586}"
 EndProject
