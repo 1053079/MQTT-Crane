@@ -2,7 +2,6 @@
 using HiveMQtt.Client.Events;
 using HiveMQtt.Client.Options;
 using MongoDB.Bson;
-using MongoDB.Bson.IO;
 using System.Diagnostics;
 using System.Text.Json;
 using Wex.Elephant.Logger.Infrastructure.Repositories;
@@ -57,7 +56,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             Debug.WriteLine("connected");
         }
 
-
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
             //Example of event payload
@@ -71,11 +69,10 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
                     await HandleNewSpeedLog(e.PublishMessage.Payload);
                     break;
             }
-
         }
-        
 
-        private async Task HandleNewErrorLog(byte[] payload)
+
+        private async Task HandleNewErrorLog(byte[]? payload)
         {
             var errorLogInfo = JsonSerializer.Deserialize<ErrorLog>(payload);
 

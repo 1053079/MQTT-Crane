@@ -2,7 +2,6 @@
 using MongoDB.Bson;
 using Wex1.Elephant.Logger.Core.Dto.ErrorLogs;
 using Wex1.Elephant.Logger.Core.Filters;
-using Wex1.Elephant.Logger.Core.Interfaces.Mqtt;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 using Wex1.Elephant.Logger.Core.Interfaces.Services;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;

@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using Wex1.Elephant.Logger.Core.Dto.ErrorLogs;
+﻿using Wex1.Elephant.Logger.Core.Dto.ErrorLogs;
 using Wex1.Elephant.Logger.Core.Dto.SpeedLogs;
 using Wex1.Elephant.Logger.Core.Entities;
 

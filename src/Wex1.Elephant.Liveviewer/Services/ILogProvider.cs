@@ -1,6 +1,4 @@
-﻿using Wex1.Elephant.Liveviewer.Model;
-
-namespace Wex1.Elephant.Liveviewer.Services
+﻿namespace Wex1.Elephant.Liveviewer.Services
 {
     public interface ILogProvider<T> where T : class
     {

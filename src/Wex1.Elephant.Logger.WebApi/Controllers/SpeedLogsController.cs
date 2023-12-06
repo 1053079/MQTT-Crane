@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
 

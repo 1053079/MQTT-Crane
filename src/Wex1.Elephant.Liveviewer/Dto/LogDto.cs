@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Wex1.Elephant.Liveviewer.Enums;
+﻿using Wex1.Elephant.Liveviewer.Enums;
 
 namespace Wex1.Elephant.Liveviewer.Dto
 {
