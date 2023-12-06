@@ -4,7 +4,6 @@ import time
 import json
 
 
-
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
         print("Connected to broker")
@@ -16,24 +15,25 @@ def on_message(client, userdata,message):
     print("Message received: " + str((message.payload.decode("utf-8"))))
     print("Topic is " + str(message.topic))
     
-    payload_data= json.loads(message.payload.decode('utf-8'))
+    # decodes the JSON and allows us to get the values of the movement, speed and lock.
+    payload_data = json.loads(message.payload.decode('utf-8'))
     movement = payload_data.get("movement")
+    speed = payload_data.get("speed")
+    lock = payload_data.get("lock")
 
     try:
-        if movement == "w":
+        if movement == "w" and speed == 'normal':
              print("You have pressed " + movement)
-        elif movement =="a":
+        elif movement == "a" and speed == 'normal':
              print("You have pressed " + movement)
-        elif movement== "s":
+        elif movement == "s" and speed == 'normal':
              print("You have pressed " + movement)
-        elif movement== "d":   
+        elif movement == "d" and speed == 'normal':   
              print("You have pressed " + movement)   
         else:
          print("There was an error trying to get " + movement)
     except:
         print("There was an error trying to get " + movement)
-
-
 
 connected= False
 messageReceived= False
@@ -55,7 +55,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 client.connect(broker, port)
 client.loop_start()
-client.subscribe("keyboard/inputs")
+client.subscribe("inputs/joystick")
 
 while connected!= True:
     time.sleep(0.2)

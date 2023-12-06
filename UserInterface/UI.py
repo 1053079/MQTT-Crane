@@ -1,6 +1,7 @@
 import pygame 
 import os  
 
+
 # Initialize pygame
 pygame.init() 
   
@@ -61,7 +62,6 @@ while not exit:
     # blits the circles to screen
     screen.blit(circle, (1025,500))
     screen.blit(circle2, (1025,575))
-    
     # if user presses quit the application closes.
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
