@@ -61,7 +61,7 @@ while not exit:
     screen.blit(arrow, (850, 510))
 
     # blits the circles to screen
-    screen.blit(circle, (1025,500))
+    screen.blit(circle, (1025,505))
     screen.blit(circle2, (1025,585))
     
     # if user presses quit the application closes.
