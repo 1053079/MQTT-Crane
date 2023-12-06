@@ -17,6 +17,8 @@ exit = False
 white = (255,255,255),
 black = (0,0,0),
 blue = (0,0,255)
+skyBlue = (0,255,255)
+blueDeFrance = (49,140,231)
 
 # The screens.. parameters are [Width, Height]
 view = pygame.Surface([500,300])
@@ -45,7 +47,7 @@ circle2 = pygame.image.load('UserInterface/buttons/plusButton.png')
 # the while loop..
 while not exit: 
     # Fills the background with blue color
-    screen.fill(blue)
+    screen.fill(blueDeFrance)
 
     # blits the views to the screen. the parameters are the x and y coordinates.
     screen.blit(view, (75,50)) 
@@ -56,11 +58,11 @@ while not exit:
     screen.blit(WASD, (650, 500))
 
     # BLits the arrow in the middle
-    screen.blit(arrow, (850, 500))
+    screen.blit(arrow, (850, 510))
 
     # blits the circles to screen
     screen.blit(circle, (1025,500))
-    screen.blit(circle2, (1025,575))
+    screen.blit(circle2, (1025,585))
     
     # if user presses quit the application closes.
     for event in pygame.event.get(): 
