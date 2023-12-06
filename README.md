@@ -23,13 +23,18 @@ Xander.Van.Boom@Student.howest.be | Admin | hMu4P6L_LAMj8t3 | 2939d3617acc492aa3
 # Logger
 ## Api endpoints
 - **Api/Errors** -> returns a paged list of all error logs
+- **Api/Speeds** -> returns a paged list of all speed logs
 
 ## MqttService
 ### Description
 The MqttService has to subscribe to all the Logger/{LogType} Mqtt endpoints. one it receives a message it will filter what LogType it is and create a new log in the matching collection and upload this to the database.
-### Payload
+### Payloads
 #### *Error log payload*
 **Property Names** | TimeStamp | EventType | Component | Description
--------------- | --------- | --------- | --------- | ----------
+------------------ | --------- | --------- | --------- | ----------
 **Data Type** | DateTime | string | string | string
+#### *Speed log payload*
+**Property Names** | TimeStamp | EventType | Component | Description | Speed
+------------------ | --------- | --------- | --------- | ----------- | ----
+**Data Type** | DateTime | string | string | string | double
 
