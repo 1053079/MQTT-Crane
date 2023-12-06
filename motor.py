@@ -21,15 +21,50 @@ def on_message(client, userdata,message):
     speed = payload_data.get("speed")
     lock = payload_data.get("lock")
 
-    try:
-        if movement == "w" and speed == 'normal':
-             print("You have pressed " + movement)
-        elif movement == "a" and speed == 'normal':
-             print("You have pressed " + movement)
-        elif movement == "s" and speed == 'normal':
-             print("You have pressed " + movement)
-        elif movement == "d" and speed == 'normal':   
-             print("You have pressed " + movement)   
+    try: ## normal speed
+        if speed == 'normal':
+         if movement == "w": 
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "a":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "s":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "d":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "up": 
+              print("You have pressed " + movement + " at " + speed + " speed") 
+         elif movement == "down":    
+              print("You have pressed " + movement + " at " + speed + " speed")   
+
+        ## for fast speed
+        elif speed == 'fast':
+         if movement == "w": 
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "a":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "s":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "d":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "up": 
+              print("You have pressed " + movement + " at " + speed + " speed") 
+         elif movement == "down":    
+              print("You have pressed " + movement + " at " + speed + " speed")  
+
+        ## for slow speed      
+        elif speed == 'slow':   
+         if movement == "w": 
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "a":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "s":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "d":
+              print("You have pressed " + movement + " at " + speed + " speed")
+         elif movement == "up": 
+              print("You have pressed " + movement + " at " + speed + " speed") 
+         elif movement == "down":    
+              print("You have pressed " + movement + " at " + speed + " speed")    
         else:
          print("There was an error trying to get " + movement)
     except:
