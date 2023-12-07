@@ -47,11 +47,12 @@ builder.Services.AddSingleton<IMqttService, MqttService>();
 //Repositories
 builder.Services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
 builder.Services.AddTransient<ISpeedLogRepository, SpeedLogRepository>();
+builder.Services.AddTransient<IActionLogRepository, ActionLogRepository>();
 
 //Crud Services
 builder.Services.AddTransient<IErrorLogCrudService, ErrorLogsCrudService>();
 builder.Services.AddTransient<ISpeedLogCrudService, SpeedLogsCrudService>();
-
+builder.Services.AddTransient<IActionLogCrudService, ActionLogsCrudService>();
 
 
 var app = builder.Build();
