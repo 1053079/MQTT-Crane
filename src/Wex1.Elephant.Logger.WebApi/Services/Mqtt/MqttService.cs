@@ -56,6 +56,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             await _mqttClient.SubscribeAsync("Logger/Errors");
             await _mqttClient.SubscribeAsync("Logger/Speeds");
             await _mqttClient.SubscribeAsync("Logger/Action");
+            await _mqttClient.SubscribeAsync("Logger/Positions");
         }
         public void Client_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
@@ -139,6 +140,9 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
 
         private async Task HandleNewPositionLog(byte[]? payload)
         {
+            //example postion log
+            //{"EventTimeStamp":"2023-12-07T15:32:12.6125011+01:00","EventType":"test","Component":"test","Description":"test","Position":[15,10,8]}
+            
             var positionLogInfo = JsonSerializer.Deserialize<PositionLog>(payload);
 
             var newPositionLog = new PositionLog
