@@ -21,9 +21,9 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
+      working-directory: ./src/Wex1.Elephant.sln
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-      working-directory: ../src/Wex1.Elephant.sln
     - name: Test
       run: dotnet test --no-build --verbosity normal
