@@ -2,8 +2,6 @@
 {
     public class PositionLog : BaseLog
     {
-        public double PositionX { get; set; }
-        public double PositionY { get; set; }
-        public double PositionZ { get; set; }
+        public List<double> Position { get; set; }
     }
 }
