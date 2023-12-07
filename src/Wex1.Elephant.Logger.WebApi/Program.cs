@@ -32,6 +32,11 @@ BsonClassMap.RegisterClassMap<SpeedLog>(classMap =>
     classMap.MapMember(log => log.Speed).SetElementName("speed");
 });
 
+BsonClassMap.RegisterClassMap<PositionLog>(classMap =>
+{
+    classMap.MapMember(log => log.Position).SetElementName("position");
+});
+
 //Dependency injection
 //Other services
 builder.Services.AddHttpContextAccessor();
@@ -54,7 +59,7 @@ builder.Services.AddTransient<IPositionLogRepository, PositionLogRepository>();
 builder.Services.AddTransient<IErrorLogCrudService, ErrorLogsCrudService>();
 builder.Services.AddTransient<ISpeedLogCrudService, SpeedLogsCrudService>();
 builder.Services.AddTransient<IActionLogCrudService, ActionLogsCrudService>();
-builder.Services.AddTransient<IPositionLogCrudService, PostionLogCrudService>();
+builder.Services.AddTransient<IPositionLogCrudService, PositionLogCrudService>();
 
 
 var app = builder.Build();
