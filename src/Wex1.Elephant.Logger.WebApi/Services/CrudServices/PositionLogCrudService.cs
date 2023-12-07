@@ -9,12 +9,12 @@ using Wex1.Elephant.Logger.WebApi.Helpers;
 
 namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
 {
-    public class PostionLogCrudService : IPositionLogCrudService
+    public class PositionLogCrudService : IPositionLogCrudService
     {
         private readonly IPositionLogRepository _positionLogRepository;
         private readonly IUriService _uriService;
 
-        public PostionLogCrudService(
+        public PositionLogCrudService(
             IPositionLogRepository positionLogRepository,
             IUriService uriService)
         {
