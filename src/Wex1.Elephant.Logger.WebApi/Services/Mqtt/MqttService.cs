@@ -16,10 +16,14 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
     {
         private readonly IErrorLogRepository _errorLogRepository;
         private readonly ISpeedLogRepository _speedLogRepository;
+        private readonly IActionLogRepository _actionLogRepository;
 
         protected HiveMQClient _mqttClient { private set; get; }
 
-        public MqttService(IErrorLogRepository errorLogRepository, ISpeedLogRepository speedLogRepository)
+        public MqttService(
+            IErrorLogRepository errorLogRepository, 
+            ISpeedLogRepository speedLogRepository,
+            IActionLogRepository actionLogRepository)
         {
 
             var options = new HiveMQClientOptions
@@ -36,6 +40,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             errorLogRepository = new ErrorLogRepository();
             _errorLogRepository = errorLogRepository;
             _speedLogRepository = speedLogRepository;
+            _actionLogRepository = actionLogRepository;
         }
 
         public async Task CreateMqttClient(HiveMQClientOptions options)
@@ -46,6 +51,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             _mqttClient.OnMessageReceived += Client_OnMessageReceived;
             await _mqttClient.SubscribeAsync("Logger/Errors");
             await _mqttClient.SubscribeAsync("Logger/Speeds");
+            await _mqttClient.SubscribeAsync("Logger/ACtion");
         }
         public void Client_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
@@ -68,9 +74,14 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
                 case "Logger/Speeds":
                     await HandleNewSpeedLog(e.PublishMessage.Payload);
                     break;
+                case "Logger/Action":
+                    await HandleNewActionLog(e.PublishMessage.Payload);
+                    break;
+
             }
         }
 
+        
 
         private async Task HandleNewErrorLog(byte[]? payload)
         {
@@ -102,6 +113,21 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             };
 
             await _speedLogRepository.AddAsync(newSpeedLog);
+        }
+        private async Task HandleNewActionLog(byte[]? payload)
+        {
+            var actionLogInfo = JsonSerializer.Deserialize<ActionLog>(payload);
+
+            var newActionLog = new ActionLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                EventTimeStamp = actionLogInfo.EventTimeStamp,
+                Component = actionLogInfo.Component,
+                Description = actionLogInfo.Description,
+                EventType = actionLogInfo.EventType
+            };
+
+            await _actionLogRepository.AddAsync(newActionLog);
         }
     }
 }
