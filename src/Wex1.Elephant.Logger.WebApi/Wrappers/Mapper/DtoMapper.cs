@@ -14,7 +14,7 @@ namespace Wex1.Elephant.Logger.WebApi.Wrappers.Mapper
                 Id = errorLog.Id.ToString(),
                 EventTimeStamp = errorLog.EventTimeStamp,
                 EventType = errorLog.EventType,
-                component = errorLog.Component,
+                Component = errorLog.Component,
                 Description = errorLog.Description
             };
         }
@@ -31,7 +31,7 @@ namespace Wex1.Elephant.Logger.WebApi.Wrappers.Mapper
                 Id = speedLog.Id.ToString(),
                 EventTimeStamp = speedLog.EventTimeStamp,
                 EventType = speedLog.EventType,
-                component = speedLog.Component,
+                Component = speedLog.Component,
                 Description = speedLog.Description,
                 Speed = speedLog.Speed
             };
