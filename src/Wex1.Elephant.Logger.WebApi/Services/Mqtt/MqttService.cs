@@ -51,7 +51,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             _mqttClient.OnMessageReceived += Client_OnMessageReceived;
             await _mqttClient.SubscribeAsync("Logger/Errors");
             await _mqttClient.SubscribeAsync("Logger/Speeds");
-            await _mqttClient.SubscribeAsync("Logger/ACtion");
+            await _mqttClient.SubscribeAsync("Logger/Action");
         }
         public void Client_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {

@@ -49,7 +49,7 @@ namespace Wex1.Elephant.Logger.WebApi.Wrappers.Mapper
                 Id = actionLog.Id.ToString(),
                 EventTimeStamp = actionLog.EventTimeStamp,
                 EventType = actionLog.EventType,
-                component = actionLog.Component,
+                Component = actionLog.Component,
                 Description = actionLog.Description
             };
         }
