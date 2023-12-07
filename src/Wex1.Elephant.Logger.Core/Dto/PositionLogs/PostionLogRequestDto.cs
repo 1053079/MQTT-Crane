@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Wex1.Elephant.Logger.Core.Dto.PositionLogs
 {
-    public class PostionLogRequestDto
+    public class PositionLogRequestDto
     {
         public string Id { get; set; }
         [Required]
