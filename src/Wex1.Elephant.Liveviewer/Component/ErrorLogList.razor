@@ -2,12 +2,12 @@
 @using Wex1.Elephant.Liveviewer.Services
 @using Wex1.Elephant.Liveviewer.Services.Mock
 @inject ErrorLogService LogService
+@inject ApiErrorProvider ApiErrorProvider
 
 <h3>Error Logs</h3>
 @if (ErrorLogs != null)
 {
     <LogList TModel="ErrorLog" Logs="ErrorLogs" />
-    
 }
 else
 {
@@ -20,7 +20,14 @@ else
     protected override async Task OnInitializedAsync()
     {
         var logs = await LogService.GetAll();
-        ErrorLogs = logs.ToArray();
+        //ErrorLogs = logs.ToArray();
+    }
+
+    private async Task FetchErrorLogs()
+    {
+        var errorLogs = await ApiErrorProvider.GetAll();
+        ErrorLogs = errorLogs
     }
 }
+
 
