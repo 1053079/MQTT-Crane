@@ -48,7 +48,11 @@ The MqttService has to subscribe to all the Logger/{LogType} Mqtt endpoints. one
 ------------------ | --------- | --------- | --------- | ----------- | --------
 **Data Type** | DateTime | string | string | string | List\<double>(X,Y,Z)
 ### Payload Examples
-- ErrorLog -> ```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Error","Component":"joystick","Description":"joystick downwards movement is broken"}```
-- SpeedLog -> ```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Speed","Component":"HoistMotor","Description":"Moving Up", "Speed":50}```
-- PositionLog ->```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Position","Component":"Spreader","Description":"Spreader moved downwards","Position":[15,10,8]}```
-- ActionLog -> ```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Action","Component":"joystick","Description":"Joystick send a forward movement"}```
+- ErrorLog ->
+```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Error","Component":"joystick","Description":"joystick downwards movement is broken"}```
+- SpeedLog ->
+```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Speed","Component":"HoistMotor","Description":"Moving Up", "Speed":50}```
+- PositionLog ->
+```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Position","Component":"Spreader","Description":"Spreader moved downwards","Position":[15,10,8]}```
+- ActionLog ->
+```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Action","Component":"joystick","Description":"Joystick send a forward movement"}```
