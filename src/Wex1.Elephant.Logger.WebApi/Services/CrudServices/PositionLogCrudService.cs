@@ -6,6 +6,7 @@ using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 using Wex1.Elephant.Logger.Core.Interfaces.Services;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
 using Wex1.Elephant.Logger.WebApi.Helpers;
+using Wex1.Elephant.Logger.WebApi.Wrappers.Mapper;
 
 namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
 {
@@ -35,7 +36,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
                 return new NotFoundObjectResult("No position logs were found.");
             }
             
-            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData, validFilter, totalRecords,_uriService, route);
+            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validFilter, totalRecords,_uriService, route);
             return new OkObjectResult(pagedResponse);
         }
 
