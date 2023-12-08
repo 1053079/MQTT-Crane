@@ -1,5 +1,6 @@
 ﻿using Wex1.Elephant.Logger.Core.Dto.Actionlogs;
 using Wex1.Elephant.Logger.Core.Dto.ErrorLogs;
+using Wex1.Elephant.Logger.Core.Dto.PositionLogs;
 using Wex1.Elephant.Logger.Core.Dto.SpeedLogs;
 using Wex1.Elephant.Logger.Core.Entities;
 
@@ -57,6 +58,26 @@ namespace Wex1.Elephant.Logger.WebApi.Wrappers.Mapper
         public static IEnumerable<ActionLogResponseDto> MapToDto(this IEnumerable<ActionLog> actionLogs)
         {
             return actionLogs.Select(al => al.MapToDto());
+        }
+
+        public static PositionLogResponseDto MapToDto(this PositionLog positionLog)
+        {
+            return new PositionLogResponseDto
+            {
+                Id = positionLog.Id.ToString(),
+                EventTimeStamp = positionLog.EventTimeStamp,
+                EventType = positionLog.EventType,
+                Component = positionLog.Component,
+                Description = positionLog.Description,
+                PositionX = positionLog.Position[0],
+                PositionY = positionLog.Position[1],
+                PositionZ = positionLog.Position[2]
+            };
+        }
+
+        public static IEnumerable<PositionLogResponseDto> MapToDto(this IEnumerable<PositionLog> positionLogs)
+        {
+            return positionLogs.Select(pl => pl.MapToDto());
         }
 
     }
