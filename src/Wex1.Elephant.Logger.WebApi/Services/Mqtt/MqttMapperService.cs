@@ -4,6 +4,7 @@ using HiveMQtt.Client.Options;
 using MongoDB.Bson;
 using System.Text.Json;
 using Wex1.Elephant.Logger.Core;
+using Wex1.Elephant.Logger.Core.Dto.MqttInputs;
 using Wex1.Elephant.Logger.Core.Entities;
 using Wex1.Elephant.Logger.Core.Interfaces.Mqtt;
 
@@ -42,16 +43,17 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             HandleMessageAsync(e);
         }
 
-        public Task HandleMessageAsync(OnMessageReceivedEventArgs e)
+        public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
             switch (e.PublishMessage.Topic)
             {
                 case "Inputs/#":
-                    HandleNewInputPayload(e);
+                    await HandleNewInputPayload(e);
+                    break;
             }
         }
 
-        private async void HandleNewInputPayload(OnMessageReceivedEventArgs e)
+        private async Task HandleNewInputPayload(OnMessageReceivedEventArgs e)
         {
             switch (e.PublishMessage.Topic)
             {
@@ -63,13 +65,17 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
 
         private async Task HandeNewJoystickInput(byte[]? payload)
         {
-            var joystickInput = await JsonSerializer.DeserializeAsync<>(payload);
+            var joystickInput = JsonSerializer.Deserialize<JoyStickDto>(payload);
 
             var newActionLog = new ActionLog
             {
                 Id = ObjectId.GenerateNewId(),
-                Component = payload.
-            }
+                Component = "Joystick",
+                EventType = "Action",
+                Description = $"The Joystick moved {joystickInput.Direction} at a {joystickInput.Speed} and the spreader lock is {joystickInput.IsLocked}"
+            };
+
+            await _mqttClient.PublishAsync("Logger/Actions",JsonSerializer.Serialize(newActionLog)).ConfigureAwait(false);
         }
     }
 }
