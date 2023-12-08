@@ -12,7 +12,7 @@ using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 
 namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
 {
-    public class MqttService : IMqttService
+    public class MqttLoggerService : IMqttLoggerService
     {
         private readonly IErrorLogRepository _errorLogRepository;
         private readonly ISpeedLogRepository _speedLogRepository;
@@ -20,7 +20,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
 
         protected HiveMQClient _mqttClient { private set; get; }
 
-        public MqttService(
+        public MqttLoggerService(
             IErrorLogRepository errorLogRepository, 
             ISpeedLogRepository speedLogRepository,
             IActionLogRepository actionLogRepository)
@@ -37,7 +37,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
 
 
             CreateMqttClient(options);
-            errorLogRepository = new ErrorLogRepository();
             _errorLogRepository = errorLogRepository;
             _speedLogRepository = speedLogRepository;
             _actionLogRepository = actionLogRepository;
