@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
-using Wex1.Elephant.Logger.Core.Dto.ErrorLogs;
+using Wex1.Elephant.Logger.Core.Dto.PositionLogs;
 using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 using Wex1.Elephant.Logger.Core.Interfaces.Services;
@@ -10,17 +10,16 @@ using Wex1.Elephant.Logger.WebApi.Wrappers.Mapper;
 
 namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
 {
-    public class ErrorLogsCrudService : IErrorLogCrudService
+    public class PositionLogCrudService : IPositionLogCrudService
     {
-        private readonly IErrorLogRepository _errorLogRepository;
+        private readonly IPositionLogRepository _positionLogRepository;
         private readonly IUriService _uriService;
 
-
-        public ErrorLogsCrudService(
-            IErrorLogRepository errorLogRepository,
+        public PositionLogCrudService(
+            IPositionLogRepository positionLogRepository,
             IUriService uriService)
         {
-            _errorLogRepository = errorLogRepository;
+            _positionLogRepository = positionLogRepository;
             _uriService = uriService;
         }
 
@@ -29,28 +28,29 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             var route = request.Path.Value;
             var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
 
-            var pagedData = await _errorLogRepository.GetPagedData(validFilter.PageNumber, validFilter.PageSize);
-            var totalRecords = await _errorLogRepository.CountRecords();
+            var pagedData = await _positionLogRepository.GetPagedData(validFilter.PageNumber, validFilter.PageSize);
+            var totalRecords = await _positionLogRepository.CountRecords();
 
-            if (totalRecords <= 0)
+            if (totalRecords < 0)
             {
-                return new NotFoundObjectResult("No error logs were found.");
+                return new NotFoundObjectResult("No position logs were found.");
             }
-
-            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validFilter, totalRecords, _uriService, route);
-
+            
+            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validFilter, totalRecords,_uriService, route);
             return new OkObjectResult(pagedResponse);
         }
+
         public Task<IActionResult> GetById(ObjectId id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> Add(ErrorLogRequestDto dto)
+        public Task<IActionResult> Add(PositionLogRequestDto dto)
         {
             throw new NotImplementedException();
         }
-        public Task<IActionResult> Update(ErrorLogRequestDto dto)
+
+        public Task<IActionResult> Update(PositionLogRequestDto dto)
         {
             throw new NotImplementedException();
         }
@@ -59,9 +59,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
         {
             throw new NotImplementedException();
         }
-
-
-
-
+        
     }
 }

@@ -6,7 +6,7 @@ namespace Wex1.Elephant.Liveviewer.Model
 {
     public class Baselog
     {
-        
+
         public string Id { get; set; }
 
         public DateTime Timestamp { get; set; }

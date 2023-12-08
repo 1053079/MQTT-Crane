@@ -1,6 +1,12 @@
-﻿namespace Wex1.Elephant.Logger.Core.Dto.ErrorLogs
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Wex1.Elephant.Logger.Core.Dto.Actionlogs
 {
-    public class ErrorLogResponseDto
+    public class ActionLogResponseDto
     {
         public string Id { get; set; }
         public DateTime EventTimeStamp { get; set; }

@@ -13,7 +13,5 @@ namespace Wex1.Elephant.Liveviewer.Dto
         
         public string Component { get; set; }
         public string Description { get; set; }
-
-        public string Type { get; set; }
     }
 }
