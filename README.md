@@ -42,4 +42,3 @@ The MqttService has to subscribe to all the Logger/{LogType} Mqtt endpoints. one
 **Property Names** | TimeStamp | EventType | Component | Description
 ------------------ | --------- | --------- | --------- | ----------
 **Data Type** | DateTime | string | string | string
-
