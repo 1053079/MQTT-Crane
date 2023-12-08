@@ -52,10 +52,10 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             await _mqttClient.ConnectAsync().ConfigureAwait(false);
             _mqttClient.AfterConnect += AfterConnectHandler;
             _mqttClient.OnMessageReceived += Client_OnMessageReceived;
-            await _mqttClient.SubscribeAsync("Logger/Errors");
-            await _mqttClient.SubscribeAsync("Logger/Speeds");
-            await _mqttClient.SubscribeAsync("Logger/Action");
-            await _mqttClient.SubscribeAsync("Logger/Positions");
+            await _mqttClient.SubscribeAsync("logger/errors");
+            await _mqttClient.SubscribeAsync("logger/speeds");
+            await _mqttClient.SubscribeAsync("logger/actions");
+            await _mqttClient.SubscribeAsync("logger/positions");
         }
         public void Client_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
@@ -70,16 +70,16 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
         {
             switch (e.PublishMessage.Topic)
             {
-                case "Logger/Errors":
+                case "logger/errors":
                     await HandleNewErrorLog(e.PublishMessage.Payload);
                     break;
-                case "Logger/Speeds":
+                case "logger/speeds":
                     await HandleNewSpeedLog(e.PublishMessage.Payload);
                     break;
-                case "Logger/Actions":
+                case "logger/actions":
                     await HandleNewActionLog(e.PublishMessage.Payload);
                     break;
-                case "Logger/Positions":
+                case "logger/positions":
                     await HandleNewPositionLog(e.PublishMessage.Payload);
                     break;
 
