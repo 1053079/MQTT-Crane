@@ -10,6 +10,8 @@ namespace Wex1.Elephant.Liveviewer.Dto
 
         
         public DateTime Timestamp { get; set; }
+
+        public string Type { get; set; }
         
         public string Component { get; set; }
         public string Description { get; set; }
