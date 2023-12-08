@@ -1,8 +1,8 @@
 ﻿@page "/speedLogInfo/{Id}"
 @using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject SpeedLogService LogService
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
 @inject NavigationManager NavigationManager
 
 
@@ -50,14 +50,17 @@ else
 
     private SpeedLog SpeedLog { get; set; }
 
+    [Inject]
+    private IApiSpeedLogProvider _speedLogProvider { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
-        SpeedLog = await LogService.Get(Id);
+        SpeedLog = await _speedLogProvider.Get(Id);
     }
     private void GoBack()
     {
         NavigationManager.NavigateTo("/");
     }
+   
 }

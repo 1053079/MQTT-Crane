@@ -1,7 +1,8 @@
 ﻿@using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject ActionLogService LogService
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
+
 
 <h3>Action Logs</h3>
 @if (ActionLogs != null)
@@ -16,9 +17,21 @@ else
 @code {
     private ActionLog[] ActionLogs;
 
+   
+    private int pageNumber;
+    private int pageSize;
+
+    [Inject]
+    private IApiActionLogProvider _actionLogProvider { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        var logs = await LogService.GetAll();
-        ActionLogs = logs.ToArray();
+        await FetchActionLogs();
+    }
+
+    private async Task FetchActionLogs()
+    {
+        var actionLogs = await _actionLogProvider.GetAll(pageNumber, pageSize);
+        ActionLogs = actionLogs.ToArray();
     }
 }

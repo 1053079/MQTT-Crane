@@ -1,7 +1,7 @@
 ﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject SpeedLogService LogService
+
 
 <h3>Speed Logs</h3>
 @if (SpeedLogs != null)
@@ -16,9 +16,21 @@ else
 @code {
     private SpeedLog[] SpeedLogs;
 
+
+    private int pageNumber;
+    private int pageSize;
+
+    [Inject]
+    private IApiSpeedLogProvider _speedLogProvider { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        var logs = await LogService.GetAll();
-        SpeedLogs = logs.ToArray();
+        await FetchSpeedLogs();
+    }
+
+    private async Task FetchSpeedLogs()
+    {
+        var speedLogs = await _speedLogProvider.GetAll(pageNumber, pageSize);
+        SpeedLogs = speedLogs.ToArray();
     }
 }

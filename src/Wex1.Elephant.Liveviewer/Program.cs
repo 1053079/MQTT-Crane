@@ -4,7 +4,7 @@ using Wex.Elephant.Logger.Infrastructure.Repositories;
 using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
-using Wex1.Elephant.Liveviewer.Services.Mock;
+
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
 using Wex1.Elephant.Logger.WebApi.Services.CrudServices;
@@ -14,14 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddScoped<ErrorLogService>();
-builder.Services.AddScoped<PositionLogService>();
-builder.Services.AddScoped<SpeedLogService>();
-builder.Services.AddScoped<ActionLogService>();
-builder.Services.AddScoped<ErrorLogsCrudService>();
-builder.Services.AddScoped(typeof(ILogProvider<>), typeof(ApiErrorProvider));
+
+
+builder.Services.AddTransient<HttpClient>();
 //builder.Services.AddScoped<ILogProvider<ErrorLog>, LogProvider<ErrorLog>>();
 //builder.Services.AddScoped<IErrorLogCrudService, ErrorLogsCrudService>();
+builder.Services.AddTransient<IApiErrorLogProvider,ApiErrorProvider>();
+builder.Services.AddTransient<IApiActionLogProvider, ApiActionProvider>();
+
 //builder.Services.AddScoped<ILogsRepositorybase<ErrorLog>, ErrorLogRepository>();
 
 var app = builder.Build();

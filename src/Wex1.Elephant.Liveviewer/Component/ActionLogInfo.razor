@@ -1,8 +1,10 @@
-﻿@page "/actionLogInfo/{Id}"
+﻿
 @using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject ActionLogService LogService
+
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
+
 @inject NavigationManager NavigationManager
 
 
@@ -49,11 +51,15 @@ else
 
     private ActionLog ActionLog { get; set; }
 
+    [Inject]
+    private IApiActionLogProvider _actionLogProvider { get; set; }
+
 
 
     protected override async Task OnInitializedAsync()
     {
-        ActionLog = await LogService.Get(Id);
+        var actionLog = await _actionLogProvider.Get(Id);
+        ActionLog = actionLog;
     }
     private void GoBack()
     {

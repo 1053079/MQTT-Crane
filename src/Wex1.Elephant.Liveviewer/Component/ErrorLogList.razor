@@ -1,8 +1,8 @@
 ﻿@using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject ErrorLogService LogService
-@inject ApiErrorProvider ApiErrorProvider
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
+
 
 <h3>Error Logs</h3>
 @if (ErrorLogs != null)
@@ -16,17 +16,21 @@ else
 
 @code {
     private ErrorLog[] ErrorLogs;
+    private int pageNumber;
+    private int pageSize;
+
+    [Inject]
+    private IApiErrorLogProvider _errorLogProvider { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var logs = await LogService.GetAll();
-        //ErrorLogs = logs.ToArray();
+        await FetchErrorLogs();
     }
 
     private async Task FetchErrorLogs()
     {
-        var errorLogs = await ApiErrorProvider.GetAll();
-        ErrorLogs = errorLogs
+        var errorLogs = await _errorLogProvider.GetAll(pageNumber, pageSize);
+        ErrorLogs = errorLogs.ToArray();
     }
 }
 

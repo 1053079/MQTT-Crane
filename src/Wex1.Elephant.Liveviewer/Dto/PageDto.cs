@@ -1,8 +1,8 @@
 ﻿namespace Wex1.Elephant.Liveviewer.Dto
 {
-    public class PageDto<T> where T : class
+    public class PageDto<T>
     {
-        public T Data { get; set; }
+        public IEnumerable<T> Data { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public Uri FirstPage { get; set; }

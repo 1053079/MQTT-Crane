@@ -1,8 +1,8 @@
-﻿@page "/errorLogInfo/{Id}"
+﻿
 @using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject ErrorLogService LogService
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
 @inject NavigationManager NavigationManager
 
 
@@ -47,11 +47,13 @@ else
 
     private ErrorLog ErrorLog { get; set; }
 
+    [Inject]
+    private IApiErrorLogProvider _errorLogProvider { get; set; }
     
 
     protected override async Task OnInitializedAsync()
     {
-        ErrorLog = await LogService.Get(Id);
+        ErrorLog = await _errorLogProvider.Get(Id);
     }
     private void GoBack()
     {

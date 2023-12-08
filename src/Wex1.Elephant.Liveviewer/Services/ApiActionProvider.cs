@@ -1,27 +1,24 @@
-﻿using MongoDB.Bson;
-using Wex1.Elephant.Liveviewer.Dto;
+﻿using Wex1.Elephant.Liveviewer.Dto;
 using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
-using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
-using Wex1.Elephant.Logger.WebApi.Services.CrudServices;
 
 namespace Wex1.Elephant.Liveviewer.Services
 {
-    public class ApiErrorProvider : IApiErrorLogProvider
+    public class ApiActionProvider : IApiActionLogProvider
     {
         private readonly HttpClient _httpClient;
 
-        public ApiErrorProvider(HttpClient httpClient)
+        public ApiActionProvider(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri(LiveviewerConstants.BaseUrl);
         }
 
-        public async Task<ErrorLog> Get(string id)
+        public async Task<ActionLog> Get(string id)
         {
-            var dto = await _httpClient.GetFromJsonAsync<ErrorDto>($"/ErrorLogs?Id={id}");
-            var errorlog = new ErrorLog
+            var dto = await _httpClient.GetFromJsonAsync<ActionDto>($"ActionLogs?Id={id}");
+            var actionlog = new ActionLog
             {
                 Id = dto.Id,
                 Component = dto.Component,
@@ -29,15 +26,13 @@ namespace Wex1.Elephant.Liveviewer.Services
                 Timestamp = dto.Timestamp,
                 Description = dto.Description
             };
-            return errorlog;
+            return actionlog;
         }
 
-        public async Task<IEnumerable<ErrorLog>> GetAll(int pageNumber, int pageSize)
+        public async Task<IEnumerable<ActionLog>> GetAll(int pageNumber, int pageSize)
         {
-
-            var dtos = await _httpClient.GetFromJsonAsync<PageDto<ErrorDto>>($"ErrorLogs?PageNumber={pageNumber}&PageSize={pageSize}");
-           
-            var errorlogs = dtos.Data.Select(el => new ErrorLog
+            var dtos = await _httpClient.GetFromJsonAsync<PageDto<ActionDto>>($"ActionLogs?PageNumber={pageNumber}&PageSize={pageSize}");
+            var actionlogs = dtos.Data.Select(el => new ActionLog
             {
                 Id = el.Id,
                 Description = el.Description,
@@ -46,7 +41,7 @@ namespace Wex1.Elephant.Liveviewer.Services
                 Type = el.Type
             });
 
-            return errorlogs;
+            return actionlogs;
         }
     }
 }

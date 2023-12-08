@@ -1,8 +1,8 @@
-﻿@page "/positionLogInfo/{Id}"
+﻿
 @using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject PositionLogService LogService
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
 @inject NavigationManager NavigationManager
 
 
@@ -51,11 +51,13 @@ else
 
     private PositionLog PositionLog { get; set; }
 
+    [Inject]
+    private IApiPositionLogProvider _positionLogProvider { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
-        PositionLog = await LogService.Get(Id);
+        PositionLog = await _positionLogProvider.Get(Id);
     }
     private void GoBack()
     {
