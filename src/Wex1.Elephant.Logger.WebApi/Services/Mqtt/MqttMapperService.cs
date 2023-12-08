@@ -33,10 +33,10 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             _mqttClient = new HiveMQClient(options);
             await _mqttClient.ConnectAsync().ConfigureAwait(false);
             _mqttClient.OnMessageReceived += Client_OnMessageReceived;
-            await _mqttClient.SubscribeAsync("Inputs/#");
-            await _mqttClient.SubscribeAsync("Outputs/#");
-            await _mqttClient.SubscribeAsync("Positions/#");
-            await _mqttClient.SubscribeAsync("Speeds/#");
+            await _mqttClient.SubscribeAsync("inputs/#");
+            await _mqttClient.SubscribeAsync("outputs/#");
+            await _mqttClient.SubscribeAsync("positions/#");
+            await _mqttClient.SubscribeAsync("speeds/#");
         }
         public void Client_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
@@ -47,7 +47,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
         {
             switch (e.PublishMessage.Topic)
             {
-                case "Inputs/#":
+                case var topic when topic.StartsWith("inputs/"):
                     await HandleNewInputPayload(e);
                     break;
             }
@@ -57,7 +57,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
         {
             switch (e.PublishMessage.Topic)
             {
-                case "Inputs/Joystick":
+                case "inputs/joystick":
                     await HandeNewJoystickInput(e.PublishMessage.Payload);
                     break;
             }
@@ -75,7 +75,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
                 Description = $"The Joystick moved {joystickInput.Direction} at a {joystickInput.Speed} and the spreader lock is {joystickInput.IsLocked}"
             };
 
-            await _mqttClient.PublishAsync("Logger/Actions",JsonSerializer.Serialize(newActionLog)).ConfigureAwait(false);
+            _mqttClient.PublishAsync("logger/actions",JsonSerializer.Serialize(newActionLog)).ConfigureAwait(false);
         }
     }
 }
