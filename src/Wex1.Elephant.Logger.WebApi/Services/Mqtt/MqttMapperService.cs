@@ -108,13 +108,12 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
         private async Task HandleNewJoystickInput(byte[]? payload)
         {
             var joystickInput = JsonSerializer.Deserialize<JoyStickDto>(payload);
-
             var newActionLog = new ActionLog
             {
                 Id = ObjectId.GenerateNewId(),
                 Component = "Joystick",
                 EventType = "Action",
-                Description = $"The Joystick moved {joystickInput.Direction} at a {joystickInput.Speed} and the spreader lock is {joystickInput.IsLocked}.",
+                Description = $"The Joystick moved {joystickInput.Direction} at a {joystickInput.Speed} and the spreader lock is {(joystickInput.IsLocked ? "Locked" : "Unlocked")}.",
                 EventTimeStamp = DateTime.UtcNow
                 
             };
