@@ -1,49 +1,45 @@
-![Image](https://i.imgur.com/qmpedG0.png)
-The image above is an example of publishing data to the MQTT broker.  
-It successfully connects and publishes data to the MQTT broker.
+# st-2324-1-d-wx1-t7-2324-wx1-elephant
+st-2324-1-d-wx1-t7-2324-wx1-elephant created by GitHub Classroom
 
-## Issues/User Stories
-- Create the logic for the joystick [8] | [Screenshot of issue](https://i.imgur.com/mGofE4w.png)
-- Update Joystick to use variable speed [3] | [Screenshot of issue](https://i.imgur.com/DJFMqq8.png)
+# LoginDetails
+## HiveMq
+Email | Username | Password | Cluster Url | Port | Websocket Port
+----- | -------- | --------- | ----------- | ---- | -------------
+Xander.Van.Boom@Student.howest.be | Admin | hMu4P6L_LAMj8t3 | 2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud | 8883 | 8884
+## Mongodb
+ Username | Password | ConnectionUrl | ProjectId
+ -------- | -------- | ------------ | ---------- 
+ Admin | Password | mongodb+srv://Admin:Password@wx1-elephants-mongodb.kizgodk.mongodb.net/?retryWrites=true&w=majority | 656d8b753ec677651f807584
+# Database Infrastructure
+## Collections
+ Errors | Actions | Positions | Speeds
+ ------ | ------- | --------- | ------ 
+ Id     | Id | Id | Id
+ Type   | Type | Type | Type
+ Timestamp | Timestamp | Timestamp | Timestamp
+ Description | Description | Description | Description
+  | | | x, y, z | Speed
 
+# Logger
+## Api endpoints
+- **Api/Errors** -> returns a paged list of all error logs
+- **Api/Speeds** -> returns a paged list of all speed logs
+- **Api/Actions** -> returns a paged list of all action logs
 
-## Requirements
+## MqttService
+### Description
+The MqttService has to subscribe to all the Logger/{LogType} Mqtt endpoints. one it receives a message it will filter what LogType it is and create a new log in the matching collection and upload this to the database.
+### Payloads
+#### *Error log payload*
+**Property Names** | TimeStamp | EventType | Component | Description
+------------------ | --------- | --------- | --------- | ----------
+**Data Type** | DateTime | string | string | string
+#### *Speed log payload*
+**Property Names** | TimeStamp | EventType | Component | Description | Speed
+------------------ | --------- | --------- | --------- | ----------- | ----
+**Data Type** | DateTime | string | string | string | double
+#### *Action log payload*
+**Property Names** | TimeStamp | EventType | Component | Description
+------------------ | --------- | --------- | --------- | ----------
+**Data Type** | DateTime | string | string | string
 
-These Python packages are required for running:
-
-    
-    pip install paho-mqtt
-    pip install keyboard
-    
-
-## Description
-
-The main purpose of this script is to capture Keyboard input and send them to the MQTT broker. Together with speed controls, spreader locks/unlocks, this is an important part of the project.
-
-## Crane movements and spreader lock/unlock
-
-- **W**
-- **A**
-- **S**
-- **D**
-- **Up Arrow**
-- **Down Arrow**
-- **Enter:** Toggle lock/unlock spreader
-
-## Speed control of the crane with shift/ctrl
-
-The speed of movement is determined by additional keys:
-
-- **Shift:** Fast speed
-- **Ctrl:** Slow speed
-
-## MQTT Publishing
-
-The script publishes MQTT messages with the following payload:
-
-```json
-{
-    "movement": "current_movement",
-    "speed": "current_speed",
-    "lock": true_or_false
-}

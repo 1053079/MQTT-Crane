@@ -1,0 +1,84 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+
+
+@typeparam TModel where TModel : Baselog
+
+
+<h3>@Title</h3>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                @foreach (var property in typeof(TModel).GetProperties().Select(p => p.Name))
+                {
+                    @if (property != "Id" && property != "Type")
+                    {
+                        <th>@property</th>
+                    }
+                }
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in Logs)
+            {
+                <tr>
+                    @foreach (var property in log.GetType().GetProperties())
+                    {
+                        @if (property.Name != "Id" && property.Name != "Type")
+                        {
+                            <td>@property.GetValue(log)</td>
+                        }
+                       
+                    }
+                    @if (log is ErrorLog)
+                    {
+                        <td>
+                            <a class="btn btn-primary" href="@($"errorLogInfo/{(log).Id}")">View Details</a>
+                        </td>
+                    }
+                    @if (log is SpeedLog)
+                    {
+                        <td>
+                            <a class="btn btn-primary" href="@($"speedLogInfo/{(log).Id}")">View Details</a>
+                        </td>
+                    }
+                    @if (log is ActionLog)
+                    {
+                        <td>
+                            <a class="btn btn-primary" href="@($"actionLogInfo/{(log).Id}")">View Details</a>
+                        </td>
+                    }
+                    @if (log is PositionLog)
+                    {
+                        <td>
+                            <a class="btn btn-primary" href="@($"positionLogInfo/{(log).Id}")">View Details</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public TModel[] Logs { get; set; }
+
+
+
+    private string[] PropertyNames { get; }
+
+    [Parameter]
+    public RenderFragment? ListInfo { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+  
+
+}
+

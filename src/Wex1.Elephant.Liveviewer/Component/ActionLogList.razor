@@ -1,0 +1,24 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Mock
+@inject ActionLogService LogService
+
+<h3>Action Logs</h3>
+@if (ActionLogs != null)
+{
+    <LogList TModel="ActionLog" Logs="ActionLogs" />
+}
+else
+{
+    <p>No action logs found.</p>
+}
+
+@code {
+    private ActionLog[] ActionLogs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var logs = await LogService.GetAll();
+        ActionLogs = logs.ToArray();
+    }
+}
