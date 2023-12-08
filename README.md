@@ -25,6 +25,7 @@ Xander.Van.Boom@Student.howest.be | Admin | hMu4P6L_LAMj8t3 | 2939d3617acc492aa3
 - **Api/Errors** -> returns a paged list of all error logs
 - **Api/Speeds** -> returns a paged list of all speed logs
 - **Api/Actions** -> returns a paged list of all action logs
+- **Api/Positions** -> returns a paged list of all position logs
 
 ## MqttService
 ### Description
@@ -42,4 +43,16 @@ The MqttService has to subscribe to all the Logger/{LogType} Mqtt endpoints. one
 **Property Names** | TimeStamp | EventType | Component | Description
 ------------------ | --------- | --------- | --------- | ----------
 **Data Type** | DateTime | string | string | string
-
+#### *Position log payload*
+**Property Names** | TimeStamp | EventType | Component | Description | Position
+------------------ | --------- | --------- | --------- | ----------- | --------
+**Data Type** | DateTime | string | string | string | List\<double>(X,Y,Z)
+### Payload Examples
+- ErrorLog ->
+```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Error","Component":"joystick","Description":"joystick downwards movement is broken"}```
+- SpeedLog ->
+```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Speed","Component":"HoistMotor","Description":"Moving Up", "Speed":50}```
+- PositionLog ->
+```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Position","Component":"Spreader","Description":"Spreader moved downwards","Position":[15,10,8]}```
+- ActionLog ->
+```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Action","Component":"joystick","Description":"Joystick send a forward movement"}```

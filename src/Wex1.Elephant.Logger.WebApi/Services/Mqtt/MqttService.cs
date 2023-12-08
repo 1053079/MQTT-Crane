@@ -2,6 +2,7 @@
 using HiveMQtt.Client.Events;
 using HiveMQtt.Client.Options;
 using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Diagnostics;
 using System.Text.Json;
 using Wex.Elephant.Logger.Infrastructure.Repositories;
@@ -17,13 +18,15 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
         private readonly IErrorLogRepository _errorLogRepository;
         private readonly ISpeedLogRepository _speedLogRepository;
         private readonly IActionLogRepository _actionLogRepository;
+        private readonly IPositionLogRepository _positionLogRepository;
 
         protected HiveMQClient _mqttClient { private set; get; }
 
         public MqttService(
             IErrorLogRepository errorLogRepository, 
             ISpeedLogRepository speedLogRepository,
-            IActionLogRepository actionLogRepository)
+            IActionLogRepository actionLogRepository,
+            IPositionLogRepository positionLogRepository)
         {
 
             var options = new HiveMQClientOptions
@@ -41,6 +44,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             _errorLogRepository = errorLogRepository;
             _speedLogRepository = speedLogRepository;
             _actionLogRepository = actionLogRepository;
+            _positionLogRepository = positionLogRepository;
         }
 
         public async Task CreateMqttClient(HiveMQClientOptions options)
@@ -52,6 +56,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             await _mqttClient.SubscribeAsync("Logger/Errors");
             await _mqttClient.SubscribeAsync("Logger/Speeds");
             await _mqttClient.SubscribeAsync("Logger/Action");
+            await _mqttClient.SubscribeAsync("Logger/Positions");
         }
         public void Client_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
@@ -64,8 +69,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
 
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
-            //Example of event payload
-            //{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"test","Component":"test","Description":"test"}
             switch (e.PublishMessage.Topic)
             {
                 case "Logger/Errors":
@@ -74,14 +77,17 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
                 case "Logger/Speeds":
                     await HandleNewSpeedLog(e.PublishMessage.Payload);
                     break;
-                case "Logger/Action":
+                case "Logger/Actions":
                     await HandleNewActionLog(e.PublishMessage.Payload);
+                    break;
+                case "Logger/Positions":
+                    await HandleNewPositionLog(e.PublishMessage.Payload);
                     break;
 
             }
         }
 
-        
+       
 
         private async Task HandleNewErrorLog(byte[]? payload)
         {
@@ -128,6 +134,23 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             };
 
             await _actionLogRepository.AddAsync(newActionLog);
+        }
+
+        private async Task HandleNewPositionLog(byte[]? payload)
+        {
+            var positionLogInfo = JsonSerializer.Deserialize<PositionLog>(payload);
+
+            var newPositionLog = new PositionLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                EventTimeStamp = positionLogInfo.EventTimeStamp,
+                Component = positionLogInfo.Component,
+                Description = positionLogInfo.Description,
+                EventType = positionLogInfo.EventType,
+                Position = positionLogInfo.Position
+            };
+
+            await _positionLogRepository.AddAsync(newPositionLog);
         }
     }
 }
