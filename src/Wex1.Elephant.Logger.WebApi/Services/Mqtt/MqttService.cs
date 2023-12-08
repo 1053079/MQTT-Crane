@@ -69,8 +69,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
 
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
-            //Example of event payload
-            //{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"test","Component":"test","Description":"test"}
             switch (e.PublishMessage.Topic)
             {
                 case "Logger/Errors":
@@ -140,9 +138,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
 
         private async Task HandleNewPositionLog(byte[]? payload)
         {
-            //example postion log
-            //{"EventTimeStamp":"2023-12-07T15:32:12.6125011+01:00","EventType":"test","Component":"test","Description":"test","Position":[15,10,8]}
-            
             var positionLogInfo = JsonSerializer.Deserialize<PositionLog>(payload);
 
             var newPositionLog = new PositionLog
