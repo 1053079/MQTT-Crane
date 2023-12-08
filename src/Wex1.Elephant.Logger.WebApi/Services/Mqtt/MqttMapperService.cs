@@ -81,7 +81,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             switch (e.PublishMessage.Topic)
             {
                 case "inputs/joystick":
-                    await HandeNewJoystickInput(e.PublishMessage.Payload);
+                    await HandleNewJoystickInput(e.PublishMessage.Payload);
                     break;
                 case "inputs/cabinEmergencyButton":
                     await HandleNewCabinEmergencyButton(e.PublishMessage.Payload);
