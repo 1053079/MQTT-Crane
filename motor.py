@@ -22,6 +22,7 @@ def on_message(client, userdata,message):
     lock = payload_data.get("lock")
 
     try: ## normal speed
+       if not lock:
         if speed == 'normal':
          if movement == "w": 
               print("You have pressed " + movement + " at " + speed + " speed")
@@ -34,7 +35,9 @@ def on_message(client, userdata,message):
          elif movement == "up": 
               print("You have pressed " + movement + " at " + speed + " speed") 
          elif movement == "down":    
-              print("You have pressed " + movement + " at " + speed + " speed")   
+              print("You have pressed " + movement + " at " + speed + " speed") 
+         else:
+             print("invalid key detected")      
 
         ## for fast speed
         elif speed == 'fast':
@@ -50,8 +53,11 @@ def on_message(client, userdata,message):
               print("You have pressed " + movement + " at " + speed + " speed") 
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed")  
+         else:
+             print("invalid key detected")  
 
         ## for slow speed      
+        
         elif speed == 'slow':   
          if movement == "w": 
               print("You have pressed " + movement + " at " + speed + " speed")
@@ -64,7 +70,9 @@ def on_message(client, userdata,message):
          elif movement == "up": 
               print("You have pressed " + movement + " at " + speed + " speed") 
          elif movement == "down":    
-              print("You have pressed " + movement + " at " + speed + " speed")    
+              print("You have pressed " + movement + " at " + speed + " speed")   
+         else:
+             print("invalid key detected")       
         else:
          print("There was an error trying to get " + movement)
     except:
