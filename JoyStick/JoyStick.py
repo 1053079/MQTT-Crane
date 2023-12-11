@@ -45,19 +45,19 @@ try:
             try:
                 if keyboard.is_pressed('w'):
                     print('W key is pressed')
-                    movement = 'w'
+                    movement = 'forward'
                     break
                 if keyboard.is_pressed('a'):
                     print('A key is pressed')
-                    movement = 'a'
+                    movement = 'backward'
                     break
                 if keyboard.is_pressed('s'):
                     print('S key is pressed')
-                    movement = 's'
+                    movement = 'left'
                     break
                 if keyboard.is_pressed('d'):
                     print('D key is pressed')
-                    movement = 'd'
+                    movement = 'right'
                     break
                 if keyboard.is_pressed('up'):
                     print('Up Arrow key is pressed')
