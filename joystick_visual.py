@@ -51,6 +51,7 @@ arrow_downstairs_rect = arrow_downstairs.get_rect(topleft=(SCREEN_WIDTH // 2 + 2
 
 locked_rect = locked.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 3))
 unlocked_rect = unlocked.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 2))
+
 siren_rect = siren.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height))
 emergency_rect = emergency.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 4))
 
@@ -78,24 +79,34 @@ while run:
     # Dit zorgt ervoor dat de afbeeldingen verschijnen als de toetsen worden ingedrukt
     if keys[pygame.K_w]:
         screen.blit(arrow_up, arrow_up_rect)
+
     if keys[pygame.K_s]:
         screen.blit(arrow_down, arrow_down_rect)
+
     if keys[pygame.K_a]:
         screen.blit(arrow_left, arrow_left_rect)
+
     if keys[pygame.K_d]:
         screen.blit(arrow_right, arrow_right_rect)
+
     if keys[pygame.K_UP]:
         screen.blit(arrow_upstairs, arrow_upstairs_rect)
+        
     if keys[pygame.K_DOWN]:
         screen.blit(arrow_downstairs, arrow_downstairs_rect)
+
     if keys[pygame.K_l]:
         screen.blit(locked, locked_rect)
+
     if keys[pygame.K_u]:
         screen.blit(unlocked, unlocked_rect)
+
     if keys[pygame.K_1]:
         screen.blit(siren, siren_rect)
+
     if keys[pygame.K_2]:
         screen.blit(emergency, emergency_rect)
+        
 
     pygame.display.flip()
 
