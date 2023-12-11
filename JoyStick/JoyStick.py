@@ -49,11 +49,11 @@ try:
                     break
                 if keyboard.is_pressed('a'):
                     print('A key is pressed')
-                    movement = 'backward'
+                    movement = 'left'
                     break
                 if keyboard.is_pressed('s'):
                     print('S key is pressed')
-                    movement = 'left'
+                    movement = 'backward'
                     break
                 if keyboard.is_pressed('d'):
                     print('D key is pressed')
