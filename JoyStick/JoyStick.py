@@ -43,6 +43,25 @@ try:
 
         while True:
             try:
+                # Combo keys
+                if keyboard.is_pressed('w') and keyboard.is_pressed('a'):
+                    print('W and A key is pressed')
+                    movement = 'forwardLeft'
+                    break
+                if keyboard.is_pressed('w') and keyboard.is_pressed('d'):
+                    print('W and D key is pressed')
+                    movement = 'forwardRight'
+                    break
+                if keyboard.is_pressed('s') and keyboard.is_pressed('a'):
+                    print('S and A key is pressed')
+                    movement = 'backwardLeft'
+                    break
+                if keyboard.is_pressed('s') and keyboard.is_pressed('d'):
+                    print('S and D key is pressed')
+                    movement = 'backwardRight'
+                    break
+                
+                # Individual keys
                 if keyboard.is_pressed('w'):
                     print('W key is pressed')
                     movement = 'forward'
