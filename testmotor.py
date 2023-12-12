@@ -21,7 +21,78 @@ def on_message(client, userdata,message):
     speed = payload_data.get("speed")
     lock = payload_data.get("lock")
 
+    try:  
+      if payload_data: 
+       if not lock: ## if lock is not on we will perform these actions
+        if speed == '2': ## normal speed
+         ## Forward and backward are for the Cabin movements
+         if movement == "forward":  
+              print("You have pressed " + movement + " at cabinspeed " + speed)
+         elif movement == "backward":
+              print("You have pressed " + movement + " at cabinspeed " + speed)
+         ## Left and right are for the Crane movements 
+         elif movement == "left":
+              print("You have pressed " + movement + " at cranespeed " + speed)
+         elif movement == "right":
+              print("You have pressed " + movement + " at cranespeed " + speed)
+          ## Up and down are for the Hoist movements
+         elif movement == "up":
+             print("You have pressed " + movement + " at hoistspeed " + speed)
+         elif movement == "down":    
+             print("You have pressed " + movement + " at hoistspeed " + speed)
+         else:
+             print("invalid key detected")      
 
+        ## for fast speed
+        elif speed == '3':
+        ## Forward and backward are for the Cabin movements
+         if movement == "forward":  
+             print("You have pressed " + movement + " at cabinspeed " + speed)
+         elif movement == "backward":
+             print("You have pressed " + movement + " at cabinspeed " + speed)
+
+         ## Left and right are for the Crane movements 
+         elif movement == "left":
+             print("You have pressed " + movement + " at cranespeed " + speed)
+         elif movement == "right":
+             print("You have pressed " + movement + " at cranespeed " + speed)
+             
+
+          ## Up and down are for the Hoist movements
+         elif movement == "up":
+              print("You have pressed " + movement + " at hoistspeed " + speed)
+         elif movement == "down":    
+              print("You have pressed " + movement + " at hoistspeed " + speed)
+         else:
+              print("invalid key detected")  
+
+        ## for slow speed      
+        elif speed == '1':   
+         ## Forward and backward are for the Cabin movements
+         if movement == "forward":  
+              print("You have pressed " + movement + " at cabinspeed" + speed)
+         elif movement == "backward":
+              print("You have pressed " + movement + " at cabinspeed" + speed)
+
+         ## Left and right are for the Crane movements 
+         elif movement == "left":
+             print("You have pressed " + movement + " at cranespeed " + speed)
+         elif movement == "right":
+             print("You have pressed " + movement + " at cranespeed " + speed)
+             
+          ## Up and down are for the Hoist movements
+         elif movement == "up":
+              print("You have pressed " + movement + " at hoistspeed " + speed) 
+         elif movement == "down":    
+              print("You have pressed " + movement + " at hoistspeed " + speed)
+         else:
+             print("invalid key detected")         
+        else:
+         print("There was an error trying to get " + movement)
+
+    except:
+     print("There was an error trying to get movement or lock is on")
+    
 connected= False
 messageReceived= False
 
@@ -43,8 +114,8 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.connect(broker, port)
-client.loop_start()
 client.subscribe("output/motorCabin")
+client.loop_start()
 
 while connected!= True:
     time.sleep(0.2)

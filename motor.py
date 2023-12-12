@@ -32,22 +32,24 @@ def on_message(client, userdata,message):
          ## Forward and backward are for the Cabin movements
          if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")
-            
+              speed = 2
          elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
-              
+              speed = 2
          ## Left and right are for the Crane movements 
          elif movement == "left":
               print("You have pressed " + movement + " at " + speed + " speed")
-            
+              speed = 2
          elif movement == "right":
               print("You have pressed " + movement + " at " + speed + " speed")
-             
+              speed = 2
           ## Up and down are for the Hoist movements
          elif movement == "up":
               print("You have pressed " + movement + " at " + speed + " speed") 
+              speed = 2
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
+              speed = 2
          else:
              print("invalid key detected")      
 
@@ -56,18 +58,26 @@ def on_message(client, userdata,message):
         ## Forward and backward are for the Cabin movements
          if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")
+              speed = 3
          elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
+              speed = 3
+
          ## Left and right are for the Crane movements 
          elif movement == "left":
               print("You have pressed " + movement + " at " + speed + " speed")
+              speed = 3
          elif movement == "right":
               print("You have pressed " + movement + " at " + speed + " speed")
+              speed = 3
+
           ## Up and down are for the Hoist movements
          elif movement == "up":
               print("You have pressed " + movement + " at " + speed + " speed") 
+              speed = 3
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
+              speed = 3
          else:
              print("invalid key detected")  
 
@@ -76,29 +86,36 @@ def on_message(client, userdata,message):
          ## Forward and backward are for the Cabin movements
          if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")
-              
+              speed = 1
          elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
+              speed = 1
+
          ## Left and right are for the Crane movements 
          elif movement == "left":
               print("You have pressed " + movement + " at " + speed + " speed")
+              speed = 1
          elif movement == "right":
               print("You have pressed " + movement + " at " + speed + " speed")
+              speed = 1
+
           ## Up and down are for the Hoist movements
          elif movement == "up":
               print("You have pressed " + movement + " at " + speed + " speed") 
+              speed = 1
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
+              speed = 1
          else:
              print("invalid key detected")         
         else:
          print("There was an error trying to get " + movement)
 
         # Payload
-        payload = {"movement": movement, "speed": speed, "lock": lock}
-        payload_string = json.dumps(payload)
+        payload_2 = {"movement": movement, "speed": speed, "lock": lock}
+        payload_string = json.dumps(payload_2)
         client.publish(topic_2, payload_string, qos=0)
-        print(payload) 
+        print(payload_2) 
     except:
      print("There was an error trying to get movement or lock is on")
     
