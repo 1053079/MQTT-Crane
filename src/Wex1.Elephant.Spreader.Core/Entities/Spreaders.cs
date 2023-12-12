@@ -13,6 +13,8 @@ namespace Wex1.Elephant.Spreader.Core.Entities
         public double PositionZ { get; set ;}
 
         public Sensor Sensor { get; set; }
+
+
         public bool Lock { get; set; }
 
         
