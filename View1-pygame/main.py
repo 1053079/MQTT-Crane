@@ -57,7 +57,7 @@ while True:
     if keys[pygame.K_d] and Cabin.right < 280:
         Cabin.x += cabin_speed
 
-    if keys[pygame.K_SPACE]:
+    if keys[pygame.K_RETURN]:
         if not container_picked_up:
             if Container_1.colliderect((Cabin.centerx, Cabin.bottom + rope_height, 1, 1)):
                 container_picked_up = True
@@ -90,7 +90,7 @@ while True:
     if container_picked_up:
         pygame.draw.rect(screen, blue, (Cabin.centerx - 20, Cabin.bottom + rope_height - 15, 40, 15))
 
-    # Update the display
+    # Update the displayddd
     pygame.display.flip()
 
     clock.tick(60)
