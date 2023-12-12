@@ -41,9 +41,14 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
 
             return new OkObjectResult(pagedResponse);
         }
-        public Task<IActionResult> GetById(ObjectId id)
+        public async Task<IActionResult> GetById(ObjectId id)
         {
-            throw new NotImplementedException();
+            var errorLog = await _errorLogRepository.GetByIdAsync(id);
+
+            if (errorLog is null)
+                return new NotFoundObjectResult($"ErrorLog with id: {id} couldn't be found!");
+
+            return new OkObjectResult(errorLog.MapToDto());
         }
 
         public Task<IActionResult> Add(ErrorLogRequestDto dto)
