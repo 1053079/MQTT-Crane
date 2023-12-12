@@ -10,7 +10,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Liveviewer", "Wex1.Elephant.Liveviewer\Wex1.Elephant.Liveviewer.csproj", "{261C0ECB-21C5-417B-AAC9-FE06E885A586}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Logger.Core", "Wex1.Elephant.Logger.Core\Wex1.Elephant.Logger.Core.csproj", "{520BF622-8962-463A-9272-F19E0139598D}"
-
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
