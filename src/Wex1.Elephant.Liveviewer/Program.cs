@@ -1,4 +1,5 @@
 using Wex1.Elephant.Liveviewer.Services.Mock;
+using Wex1.Elephant.Liveviewer.Services.Mqtt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddScoped<ErrorLogService>();
 builder.Services.AddScoped<PositionLogService>();
 builder.Services.AddScoped<SpeedLogService>();
 builder.Services.AddScoped<ActionLogService>();
+builder.Services.AddTransient<IMqttService, MqttService>();
 
 var app = builder.Build();
 
