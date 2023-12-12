@@ -1,4 +1,5 @@
-﻿using Wex1.Elephant.Liveviewer.Enums;
+﻿using System.Text.Json.Serialization;
+
 
 namespace Wex1.Elephant.Liveviewer.Dto
 {
@@ -6,9 +7,13 @@ namespace Wex1.Elephant.Liveviewer.Dto
     {
 
         public string Id { get; set; }
+
+        
         public DateTime Timestamp { get; set; }
-        public EventType Type { get; set; }
-        public Components Component { get; set; }
+
+        public string Type { get; set; }
+        
+        public string Component { get; set; }
         public string Description { get; set; }
     }
 }
