@@ -30,6 +30,7 @@ Bridge = pygame.Rect(80, 40, 200, 10)
 Container_1 = pygame.Rect(110, 185, 40, 15)
 Waterline = pygame.Rect(0, 250, 800, 50)
 original_container_1_position = Container_1.topleft
+picked_up_container_position = (0, 0)
 clock = pygame.time.Clock()
 
 # Main game loop
@@ -55,11 +56,17 @@ while True:
         if not container_picked_up:
             if Container_1.colliderect((Cabin.centerx, Cabin.bottom + rope_height, 1, 1)):
                 container_picked_up = True
-                picked_up_container_position = Container_1.topleft
+                picked_up_container_position = (
+                    Container_1.x - Cabin.x,
+                    Container_1.y - (Cabin.bottom + rope_height),
+                )
                 Container_1.topleft = (width, height)
         else:
             container_picked_up = False
-            Container_1.topleft = original_container_1_position
+            Container_1.topleft = (
+                Cabin.x + picked_up_container_position[0],
+                Cabin.bottom + rope_height + picked_up_container_position[1],
+            )
 
     screen.fill(black)
 
@@ -76,7 +83,11 @@ while True:
     pygame.draw.rect(screen, blue, Container_1)
 
     if container_picked_up:
-        pygame.draw.rect(screen, red, (Cabin.centerx - 20, Cabin.bottom + rope_height - 15, 40, 15))
+        pygame.draw.rect(
+            screen,
+            red,
+            (Cabin.x + picked_up_container_position[0], Cabin.bottom + rope_height + picked_up_container_position[1], 40, 15),
+        )
 
     # Update the displayddd
     pygame.display.flip()
