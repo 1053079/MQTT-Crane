@@ -14,7 +14,7 @@ blue = (0, 0, 255)
 yellow = (255, 192, 0)
 red = (255, 0, 0)
 orange = (255, 165, 0)
-grey = (169,169,169)
+grey = (169, 169, 169)
 purple = (128, 0, 128)
 
 # Set up Rects
@@ -32,10 +32,6 @@ Container_2 = pygame.Rect(135, 185, 40, 15)
 Waterline = pygame.Rect(0, 250, 800, 50)
 original_container_1_position = Container_1.topleft
 original_container_2_position = Container_2.topleft
-picked_up_container_position = (0, 0)
-
-
-
 clock = pygame.time.Clock()
 
 # Main game loop
@@ -82,13 +78,13 @@ while True:
     pygame.draw.rect(screen, yellow, Bridge)
     pygame.draw.rect(screen, purple, Cabin)
     pygame.draw.rect(screen, grey, Waterline)
-    pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height), 5) # Rope
+    pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height), 5)  # Rope
     pygame.draw.polygon(screen, orange, [(80, 200), (130, 250), (180, 200)])  # Boat triangle
     pygame.draw.rect(screen, blue, Container_1)
     pygame.draw.rect(screen, blue, Container_2)
 
     if container_picked_up:
-        pygame.draw.rect(screen, blue, (Cabin.centerx - 20, Cabin.bottom + rope_height - 15, 40, 15))
+        pygame.draw.rect(screen, red, (Cabin.centerx - 20, Cabin.bottom + rope_height - 15, 40, 15))
 
     # Update the displayddd
     pygame.display.flip()
