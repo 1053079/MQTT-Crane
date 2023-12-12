@@ -47,7 +47,8 @@ builder.Services.AddSingleton<IUriService>(options =>
     var uri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent());
     return new UriService(uri);
 });
-builder.Services.AddSingleton<IMqttService, MqttService>();
+builder.Services.AddSingleton<IMqttLoggerService, MqttLoggerService>();
+builder.Services.AddSingleton<IMqttMapperService, MqttMapperService>();
 
 //Repositories
 builder.Services.AddTransient<IErrorLogRepository, ErrorLogRepository>();
@@ -71,7 +72,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.Services.GetRequiredService<IMqttService>();
+app.Services.GetRequiredService<IMqttLoggerService>();
+app.Services.GetRequiredService<IMqttMapperService>();
 
 app.UseHttpsRedirection();
 
