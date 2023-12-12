@@ -1,12 +1,13 @@
 ﻿
 
-<h3>SessionLogsList</h3>
+<h3>SessionLogs</h3>
 
 @if (_logs.Any())
 {
-    <LogList TModel="Baselog"
-             Title="SessionLogs"
-             Logs="_logs.ToArray()" />
+    <LogList 
+        TModel="Baselog"
+        Logs="_logs.ToArray()"
+        ShowType=true/>
 }
 else
 {
