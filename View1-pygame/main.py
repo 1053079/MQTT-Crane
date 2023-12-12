@@ -85,11 +85,11 @@ while True:
     if container_picked_up:
         pygame.draw.rect(
             screen,
-            red,
+            blue,
             (Cabin.x + picked_up_container_position[0], Cabin.bottom + rope_height + picked_up_container_position[1], 40, 15),
         )
 
-    # Update the displayddd
+    # Update the display
     pygame.display.flip()
 
-    clock.tick(60)
+    clock.tick(30)
