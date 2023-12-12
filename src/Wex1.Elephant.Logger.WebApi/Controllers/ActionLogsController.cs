@@ -7,11 +7,11 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ActionLogController : ControllerBase
+    public class ActionLogsController : ControllerBase
     {
         private readonly IActionLogCrudService _actionLogCrudService;
 
-        public ActionLogController(IActionLogCrudService actionLogCrudService)
+        public ActionLogsController(IActionLogCrudService actionLogCrudService)
         {
             _actionLogCrudService = actionLogCrudService;
         }
