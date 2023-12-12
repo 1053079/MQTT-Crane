@@ -1,4 +1,4 @@
-﻿
+﻿@page "/speedLogInfo/{Id}"
 @using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
 @using Wex1.Elephant.Liveviewer.Services.Interfaces
@@ -9,7 +9,7 @@
 <div>
     <a class="btn btn-secondary mb-3" @onclick="GoBack">Back</a>
 </div>
-<h3>Position Log Information</h3>
+<h3>Speed Log Information</h3>
 
 @if (IsError)
 {
@@ -19,39 +19,38 @@
 }
 else
 {
-@if (PositionLog != null)
+@if (SpeedLog != null)
 {
     <div class="card">
         <div class="card-body">
 
             <dl class="row">
                 <dt class="col-sm-3"><strong>Id:</strong></dt>
-                <dd class="col-sm-9">@PositionLog.Id</dd>
+                <dd class="col-sm-9">@SpeedLog.Id</dd>
 
                 <dt class="col-sm-3"><strong>Timestamp:</strong></dt>
-                <dd class="col-sm-9">@PositionLog.Timestamp.ToString()</dd>
+                <dd class="col-sm-9">@SpeedLog.Timestamp.ToString()</dd>
 
                 <dt class="col-sm-3"><strong>Type:</strong></dt>
-                <dd class="col-sm-9">@PositionLog.Type</dd>
+                <dd class="col-sm-9">@SpeedLog.Type</dd>
 
                 <dt class="col-sm-3"><strong>Component:</strong></dt>
-                <dd class="col-sm-9">@PositionLog.Component</dd>
+                <dd class="col-sm-9">@SpeedLog.Component</dd>
 
                 <dt class="col-sm-3"><strong>Description:</strong></dt>
-                <dd class="col-sm-9">@PositionLog.Description</dd>
+                <dd class="col-sm-9">@SpeedLog.Description</dd>
 
-                <dt class="col-sm-3"><strong>Positions:</strong></dt>
-                <dd class="col-sm-9">@PositionLog.PositionX X, @PositionLog.PositionY Y, @PositionLog.PositionZ Z </dd>
+                <dt class="col-sm-3"><strong>Speed:</strong></dt>
+                <dd class="col-sm-9">@SpeedLog.Speed km/h </dd>
 
-                
+
             </dl>
         </div>
     </div>
-
 }
 else
 {
-    <p>PositionLog not found.</p>
+    <p>Speed log not found.</p>
 }
 }
 
@@ -59,10 +58,10 @@ else
     [Parameter]
     public string Id { get; set; }
 
-    private PositionLog PositionLog { get; set; }
+    private SpeedLog SpeedLog { get; set; }
 
     [Inject]
-    private IApiPositionLogProvider _positionLogProvider { get; set; }
+    private IApiSpeedLogProvider _speedLogProvider { get; set; }
 
     private string ErrorMessage;
     private bool IsError;
@@ -73,18 +72,19 @@ else
         try
         {
             IsError = false;
-            var positionLog = await _positionLogProvider.Get(Id);
-            PositionLog = positionLog;
+            var speedLog = await _speedLogProvider.Get(Id);
+            SpeedLog = speedLog;
         }
         catch (Exception ex)
         {
             IsError = true;
-            ErrorMessage = $"Positionlog could not be shown due to an error: \n {ex.Message}";
+            ErrorMessage = $"Speedlog could not be shown due to an error: \n {ex.Message}";
 
         }
     }
     private void GoBack()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/speedlogs");
     }
+   
 }
