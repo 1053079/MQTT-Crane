@@ -10,10 +10,10 @@ namespace Wex1.Elephant.Liveviewer.Services.Mqtt
         {
             var options = new HiveMQClientOptions
             {
-                UserName = Constants.MqttUserName,
-                Password = Constants.MqttPassword,
-                Port = Constants.MqttPort,
-                Host = Constants.MqttClusterUrl,
+                UserName = LiveviewerConstants.MqttUserName,
+                Password = LiveviewerConstants.MqttPassword,
+                Port = LiveviewerConstants.MqttPort,
+                Host = LiveviewerConstants.MqttClusterUrl,
                 UseTLS = true,
             };
 
