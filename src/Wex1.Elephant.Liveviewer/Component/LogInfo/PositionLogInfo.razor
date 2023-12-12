@@ -1,38 +1,40 @@
-﻿@page "/actionLogInfo/{Id}"
+﻿@page "/positionLogInfo/{Id}"
 @using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
 @using Wex1.Elephant.Liveviewer.Services.Mock
-@inject ActionLogService LogService
+@inject PositionLogService LogService
 @inject NavigationManager NavigationManager
-
-
-
 
 
 <div>
     <a class="btn btn-secondary mb-3" @onclick="GoBack">Back</a>
 </div>
-<h3>ActionLog Information</h3>
-@if (ActionLog != null)
+<h3>Position Log Information</h3>
+@if (PositionLog != null)
 {
     <div class="card">
         <div class="card-body">
-            
+
             <dl class="row">
                 <dt class="col-sm-3"><strong>Id:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Id</dd>
+                <dd class="col-sm-9">@PositionLog.Id</dd>
 
                 <dt class="col-sm-3"><strong>Timestamp:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Timestamp.ToString()</dd>
+                <dd class="col-sm-9">@PositionLog.Timestamp.ToString()</dd>
 
                 <dt class="col-sm-3"><strong>Type:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Type</dd>
+                <dd class="col-sm-9">@PositionLog.Type</dd>
 
                 <dt class="col-sm-3"><strong>Component:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Component</dd>
+                <dd class="col-sm-9">@PositionLog.Component</dd>
 
                 <dt class="col-sm-3"><strong>Description:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Description</dd>
+                <dd class="col-sm-9">@PositionLog.Description</dd>
+
+                <dt class="col-sm-3"><strong>Positions:</strong></dt>
+                <dd class="col-sm-9">@PositionLog.PositionX X, @PositionLog.PositionY Y, @PositionLog.PositionZ Z </dd>
+
+                
             </dl>
         </div>
     </div>
@@ -40,23 +42,23 @@
 }
 else
 {
-    <p>Action log not found.</p>
+    <p>PositionLog not found.</p>
 }
 
 @code {
     [Parameter]
     public string Id { get; set; }
 
-    private ActionLog ActionLog { get; set; }
+    private PositionLog PositionLog { get; set; }
 
 
 
     protected override async Task OnInitializedAsync()
     {
-        ActionLog = await LogService.Get(Id);
+        PositionLog = await LogService.Get(Id);
     }
     private void GoBack()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/positionlogs");
     }
 }
