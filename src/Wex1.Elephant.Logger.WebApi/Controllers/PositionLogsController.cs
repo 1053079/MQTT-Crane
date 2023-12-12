@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
 
@@ -17,7 +16,7 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> Get([FromQuery]PaginationFilter filter)
+        public Task<IActionResult> Get([FromQuery] PaginationFilter filter)
         {
             return _positionLogCrudService.GetAllPaged(filter, Request);
         }
