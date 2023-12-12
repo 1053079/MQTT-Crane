@@ -24,9 +24,9 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(ObjectId id)
+        public async Task<IActionResult> GetById(string id)
         {
-            return await _errorLogService.GetById(id);
+            return await _errorLogService.GetById(ObjectId.Parse(id));
         }
 
     }
