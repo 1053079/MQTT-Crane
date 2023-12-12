@@ -1,0 +1,17 @@
+﻿
+
+<h3>SessionLogsList</h3>
+
+@if (_logs.Any())
+{
+    <LogList TModel="Baselog"
+             Title="SessionLogs"
+             Logs="_logs.ToArray()" />
+}
+else
+{
+    <div class="alert alert-danger">
+        <p>There are currently no logs!</p>
+    </div>
+}
+
