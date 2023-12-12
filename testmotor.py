@@ -92,9 +92,9 @@ def on_message(client, userdata,message):
         payload = {"movement": movement, "speed": speed, "lock": lock}
         payload_string = json.dumps(payload)
         client.publish(topic_2, payload_string, qos=1)
-        print(payload) 
-    except:
-     print("There was an error trying to get movement or lock is on")
+        print("Payload is " + payload) 
+    except Exception as e:
+     print("There was an error " + e)
     
 
 connected= False
@@ -119,7 +119,7 @@ client.on_message = on_message
 
 client.connect(broker, port)
 client.loop_start()
-client.subscribe("inputs/joystick")
+client.subscribe("output/motorCabin")
 
 while connected!= True:
     time.sleep(0.2)
