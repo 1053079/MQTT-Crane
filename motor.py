@@ -21,18 +21,25 @@ def on_message(client, userdata,message):
     speed = payload_data.get("speed")
     lock = payload_data.get("lock")
 
-    try: ## normal speed
-       if not lock:
-        if speed == 'normal':
-         if movement == "w": 
+    # topics
+    topic_2 = "output/motorCabin"
+
+    try:  
+     if payload_data: 
+       if not lock: ## if lock is not on we will perform these actions
+        if speed == 'normal': ## normal speed
+         ## Forward and backward are for the Cabin movements
+         if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "a":
+         elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "s":
+         ## Left and right are for the Crane movements 
+         elif movement == "left":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "d":
+         elif movement == "right":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "up": 
+          ## Up and down are for the Hoist movements
+         elif movement == "up":
               print("You have pressed " + movement + " at " + speed + " speed") 
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
@@ -41,42 +48,55 @@ def on_message(client, userdata,message):
 
         ## for fast speed
         elif speed == 'fast':
-         if movement == "w": 
+       ## Forward and backward are for the Cabin movements
+         if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "a":
+         elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "s":
+         ## Left and right are for the Crane movements 
+         elif movement == "left":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "d":
+         elif movement == "right":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "up": 
+          ## Up and down are for the Hoist movements
+         elif movement == "up":
               print("You have pressed " + movement + " at " + speed + " speed") 
          elif movement == "down":    
-              print("You have pressed " + movement + " at " + speed + " speed")  
+              print("You have pressed " + movement + " at " + speed + " speed") 
          else:
              print("invalid key detected")  
 
         ## for slow speed      
         
         elif speed == 'slow':   
-         if movement == "w": 
+         ## Forward and backward are for the Cabin movements
+         if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "a":
+         elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "s":
+         ## Left and right are for the Crane movements 
+         elif movement == "left":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "d":
+         elif movement == "right":
               print("You have pressed " + movement + " at " + speed + " speed")
-         elif movement == "up": 
+          ## Up and down are for the Hoist movements
+         elif movement == "up":
               print("You have pressed " + movement + " at " + speed + " speed") 
          elif movement == "down":    
-              print("You have pressed " + movement + " at " + speed + " speed")   
+              print("You have pressed " + movement + " at " + speed + " speed") 
          else:
-             print("invalid key detected")       
+             print("invalid key detected")         
         else:
          print("There was an error trying to get " + movement)
-    except:
-        print("There was an error trying to get " + movement)
+
+        # Payload
+        payload = {"movement": movement, "speed": speed, "lock": lock}
+        payload_string = json.dumps(payload)
+        client.publish(topic_2, payload_string, qos=1)
+        print("Payload is " + payload) 
+    except Exception as e:
+     print("There was an error " + e)
+    
 
 connected= False
 messageReceived= False
@@ -91,11 +111,13 @@ client = mqtt.Client()
 
 # TLS (required for connection)
 client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
+
 # Username and password (required for connection)
 client.username_pw_set(username, password)
 
 client.on_connect = on_connect
 client.on_message = on_message
+
 client.connect(broker, port)
 client.loop_start()
 client.subscribe("inputs/joystick")
