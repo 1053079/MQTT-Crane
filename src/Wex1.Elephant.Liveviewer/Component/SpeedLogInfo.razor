@@ -10,6 +10,15 @@
     <a class="btn btn-secondary mb-3" @onclick="GoBack">Back</a>
 </div>
 <h3>Speed Log Information</h3>
+
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else
+{
 @if (SpeedLog != null)
 {
     <div class="card">
@@ -43,6 +52,7 @@ else
 {
     <p>Speed log not found.</p>
 }
+}
 
 @code {
     [Parameter]
@@ -53,10 +63,24 @@ else
     [Inject]
     private IApiSpeedLogProvider _speedLogProvider { get; set; }
 
+    private string ErrorMessage;
+    private bool IsError;
+
 
     protected override async Task OnInitializedAsync()
     {
-        SpeedLog = await _speedLogProvider.Get(Id);
+        try
+        {
+            IsError = false;
+            var speedLog = await _speedLogProvider.Get(Id);
+            SpeedLog = speedLog;
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+            ErrorMessage = $"Speedlog could not be shown due to an error: \n {ex.Message}";
+
+        }
     }
     private void GoBack()
     {

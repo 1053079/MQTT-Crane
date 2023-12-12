@@ -4,18 +4,28 @@
 
 
 <h3>Speed Logs</h3>
-@if (SpeedLogs != null)
+@if (IsError)
 {
-    <LogList TModel="SpeedLog" Logs="SpeedLogs" />
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
 }
 else
 {
-    <p>No speed logs found.</p>
+    @if (SpeedLogs != null)
+    {
+        <LogList TModel="SpeedLog" Logs="SpeedLogs" />
+    }
+    else
+    {
+        <p>No speed logs found.</p>
+    }
 }
 
 @code {
     private SpeedLog[] SpeedLogs;
-
+    private string ErrorMessage;
+    private bool IsError;
 
     private int pageNumber;
     private int pageSize;
@@ -30,7 +40,18 @@ else
 
     private async Task FetchSpeedLogs()
     {
-        var speedLogs = await _speedLogProvider.GetAll(pageNumber, pageSize);
-        SpeedLogs = speedLogs.ToArray();
+        try
+        {
+            IsError = false;
+            var speedLogs = await _speedLogProvider.GetAll(pageNumber, pageSize);
+            SpeedLogs = speedLogs.ToArray();
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+
+            ErrorMessage = $"Speedlogs could not be shown due to an error: \n {ex.Message}";
+
+        }
     }
 }

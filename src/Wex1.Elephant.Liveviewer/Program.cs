@@ -1,13 +1,5 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Wex.Elephant.Logger.Infrastructure.Repositories;
-using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
-
-using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
-using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
-using Wex1.Elephant.Logger.WebApi.Services.CrudServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

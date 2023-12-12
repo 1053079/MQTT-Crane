@@ -5,6 +5,13 @@
 
 
 <h3>Action Logs</h3>
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else{
 @if (ActionLogs != null)
 {
     <LogList TModel="ActionLog" Logs="ActionLogs" />
@@ -13,9 +20,13 @@ else
 {
     <p>No action logs found.</p>
 }
+}
 
 @code {
     private ActionLog[] ActionLogs;
+
+    private string ErrorMessage;
+    private bool IsError;
 
    
     private int pageNumber;
@@ -31,7 +42,18 @@ else
 
     private async Task FetchActionLogs()
     {
-        var actionLogs = await _actionLogProvider.GetAll(pageNumber, pageSize);
-        ActionLogs = actionLogs.ToArray();
+        try
+        {
+            IsError = false;
+            var actionLogs = await _actionLogProvider.GetAll(pageNumber, pageSize);
+            ActionLogs = actionLogs.ToArray();
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+            ErrorMessage = $"Actionlogs could not be shown due to an error: \n {ex.Message}";
+
+        }
+        
     }
 }

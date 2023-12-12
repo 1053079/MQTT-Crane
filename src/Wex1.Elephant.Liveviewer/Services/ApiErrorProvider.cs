@@ -1,10 +1,6 @@
-﻿using MongoDB.Bson;
-using Wex1.Elephant.Liveviewer.Dto;
+﻿using Wex1.Elephant.Liveviewer.Dto;
 using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
-using Wex1.Elephant.Logger.Core.Filters;
-using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
-using Wex1.Elephant.Logger.WebApi.Services.CrudServices;
 
 namespace Wex1.Elephant.Liveviewer.Services
 {
@@ -21,7 +17,7 @@ namespace Wex1.Elephant.Liveviewer.Services
         public async Task<ErrorLog> Get(string id)
         {
             var dto = await _httpClient.GetFromJsonAsync<ErrorDto>($"/ErrorLogs?Id={id}");
-            var errorlog = new ErrorLog
+            var errorLog = new ErrorLog
             {
                 Id = dto.Id,
                 Component = dto.Component,
@@ -29,7 +25,7 @@ namespace Wex1.Elephant.Liveviewer.Services
                 Timestamp = dto.Timestamp,
                 Description = dto.Description
             };
-            return errorlog;
+            return errorLog;
         }
 
         public async Task<IEnumerable<ErrorLog>> GetAll(int pageNumber, int pageSize)
@@ -37,7 +33,7 @@ namespace Wex1.Elephant.Liveviewer.Services
 
             var dtos = await _httpClient.GetFromJsonAsync<PageDto<ErrorDto>>($"ErrorLogs?PageNumber={pageNumber}&PageSize={pageSize}");
            
-            var errorlogs = dtos.Data.Select(el => new ErrorLog
+            var errorLogs = dtos.Data.Select(el => new ErrorLog
             {
                 Id = el.Id,
                 Description = el.Description,
@@ -46,7 +42,7 @@ namespace Wex1.Elephant.Liveviewer.Services
                 Type = el.Type
             });
 
-            return errorlogs;
+            return errorLogs;
         }
     }
 }

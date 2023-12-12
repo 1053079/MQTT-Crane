@@ -1,7 +1,6 @@
 ﻿using Wex1.Elephant.Liveviewer.Dto;
 using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
-using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 
 namespace Wex1.Elephant.Liveviewer.Services
 {
@@ -18,7 +17,7 @@ namespace Wex1.Elephant.Liveviewer.Services
         public async Task<ActionLog> Get(string id)
         {
             var dto = await _httpClient.GetFromJsonAsync<ActionDto>($"ActionLogs?Id={id}");
-            var actionlog = new ActionLog
+            var actionLog = new ActionLog
             {
                 Id = dto.Id,
                 Component = dto.Component,
@@ -26,22 +25,22 @@ namespace Wex1.Elephant.Liveviewer.Services
                 Timestamp = dto.Timestamp,
                 Description = dto.Description
             };
-            return actionlog;
+            return actionLog;
         }
 
         public async Task<IEnumerable<ActionLog>> GetAll(int pageNumber, int pageSize)
         {
             var dtos = await _httpClient.GetFromJsonAsync<PageDto<ActionDto>>($"ActionLogs?PageNumber={pageNumber}&PageSize={pageSize}");
-            var actionlogs = dtos.Data.Select(el => new ActionLog
+            var actionLogs = dtos.Data.Select(al => new ActionLog
             {
-                Id = el.Id,
-                Description = el.Description,
-                Component = el.Component,
-                Timestamp = el.Timestamp,
-                Type = el.Type
+                Id = al.Id,
+                Description = al.Description,
+                Component = al.Component,
+                Timestamp = al.Timestamp,
+                Type = al.Type
             });
 
-            return actionlogs;
+            return actionLogs;
         }
     }
 }

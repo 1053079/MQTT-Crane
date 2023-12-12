@@ -2,8 +2,6 @@
 using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
 
-using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
-
 namespace Wex1.Elephant.Liveviewer.Services
 {
     public class ApiSpeedProvider : IApiSpeedLogProvider
@@ -19,7 +17,7 @@ namespace Wex1.Elephant.Liveviewer.Services
         public async Task<SpeedLog> Get(string id)
         {
             var dto = await _httpClient.GetFromJsonAsync<SpeedDto>($"/SpeedLogs?Id={id}");
-            var speedlog = new SpeedLog
+            var speedLog = new SpeedLog
             {
                 Id = dto.Id,
                 Component = dto.Component,
@@ -28,7 +26,7 @@ namespace Wex1.Elephant.Liveviewer.Services
                 Description = dto.Description,
                 Speed = dto.Speed
             };
-            return speedlog;
+            return speedLog;
         }
 
         public async Task<IEnumerable<SpeedLog>> GetAll(int pageNumber, int pageSize)
@@ -36,7 +34,7 @@ namespace Wex1.Elephant.Liveviewer.Services
 
             var dtos = await _httpClient.GetFromJsonAsync<PageDto<SpeedDto>>($"SpeedLogs?PageNumber={pageNumber}&PageSize={pageSize}");
 
-            var speedlogs = dtos.Data.Select(sl => new SpeedLog
+            var speedLogs = dtos.Data.Select(sl => new SpeedLog
             {
                 Id = sl.Id,
                 Description = sl.Description,
@@ -45,7 +43,7 @@ namespace Wex1.Elephant.Liveviewer.Services
                 Type = sl.Type
             });
 
-            return speedlogs;
+            return speedLogs;
         }
     }
 }

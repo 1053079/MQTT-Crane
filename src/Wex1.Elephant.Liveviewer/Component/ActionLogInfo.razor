@@ -1,5 +1,4 @@
-﻿
-@using Wex1.Elephant.Liveviewer.Model
+﻿@using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
 
 @using Wex1.Elephant.Liveviewer.Services.Interfaces
@@ -15,34 +14,43 @@
     <a class="btn btn-secondary mb-3" @onclick="GoBack">Back</a>
 </div>
 <h3>ActionLog Information</h3>
-@if (ActionLog != null)
+
+@if (IsError)
 {
-    <div class="card">
-        <div class="card-body">
-            
-            <dl class="row">
-                <dt class="col-sm-3"><strong>Id:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Id</dd>
-
-                <dt class="col-sm-3"><strong>Timestamp:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Timestamp.ToString()</dd>
-
-                <dt class="col-sm-3"><strong>Type:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Type</dd>
-
-                <dt class="col-sm-3"><strong>Component:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Component</dd>
-
-                <dt class="col-sm-3"><strong>Description:</strong></dt>
-                <dd class="col-sm-9">@ActionLog.Description</dd>
-            </dl>
-        </div>
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
     </div>
-
 }
 else
 {
-    <p>Action log not found.</p>
+    @if (ActionLog != null)
+    {
+        <div class="card">
+            <div class="card-body">
+
+                <dl class="row">
+                    <dt class="col-sm-3"><strong>Id:</strong></dt>
+                    <dd class="col-sm-9">@ActionLog.Id</dd>
+
+                    <dt class="col-sm-3"><strong>Timestamp:</strong></dt>
+                    <dd class="col-sm-9">@ActionLog.Timestamp.ToString()</dd>
+
+                    <dt class="col-sm-3"><strong>Type:</strong></dt>
+                    <dd class="col-sm-9">@ActionLog.Type</dd>
+
+                    <dt class="col-sm-3"><strong>Component:</strong></dt>
+                    <dd class="col-sm-9">@ActionLog.Component</dd>
+
+                    <dt class="col-sm-3"><strong>Description:</strong></dt>
+                    <dd class="col-sm-9">@ActionLog.Description</dd>
+                </dl>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Action log not found.</p>
+    }
 }
 
 @code {
@@ -54,15 +62,29 @@ else
     [Inject]
     private IApiActionLogProvider _actionLogProvider { get; set; }
 
+    private string ErrorMessage;
+    private bool IsError;
+
 
 
     protected override async Task OnInitializedAsync()
     {
-        var actionLog = await _actionLogProvider.Get(Id);
-        ActionLog = actionLog;
+        try
+        {
+            IsError = false;
+            var actionLog = await _actionLogProvider.Get(Id);
+            ActionLog = actionLog;
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+            ErrorMessage = $"Actionlog could not be shown due to an error: \n {ex.Message}";
+
+        }
     }
     private void GoBack()
     {
         NavigationManager.NavigateTo("/");
     }
 }
+

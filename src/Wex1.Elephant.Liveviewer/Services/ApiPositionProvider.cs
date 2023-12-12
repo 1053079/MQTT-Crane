@@ -1,8 +1,5 @@
-﻿using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
-
-using Wex1.Elephant.Liveviewer.Dto;
+﻿using Wex1.Elephant.Liveviewer.Dto;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
-using Wex1.Elephant.Liveviewer.Model;
 using PositionLog = Wex1.Elephant.Liveviewer.Model.PositionLog;
 
 namespace Wex1.Elephant.Liveviewer.Services
@@ -20,7 +17,7 @@ namespace Wex1.Elephant.Liveviewer.Services
         public async Task<PositionLog> Get(string id)
         {
             var dto = await _httpClient.GetFromJsonAsync<PositionDto>($"/PositionLogs?Id={id}");
-            var positionlog = new PositionLog
+            var positionLog = new PositionLog
             {
                 Id = dto.Id,
                 Component = dto.Component,
@@ -31,7 +28,7 @@ namespace Wex1.Elephant.Liveviewer.Services
                 PositionY = dto.PositionY,
                 PositionZ = dto.PositionZ
             };
-            return positionlog;
+            return positionLog;
         }
 
         public async Task<IEnumerable<PositionLog>> GetAll(int pageNumber, int pageSize)
