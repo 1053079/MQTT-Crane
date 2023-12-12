@@ -34,6 +34,7 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
             if (newLog is not null)
             {
                 _logs.Add(newLog);
+                _logs.Sort((x, y) => y.Timestamp.CompareTo(x.Timestamp));
                 await InvokeAsync(StateHasChanged);
             }
         }
