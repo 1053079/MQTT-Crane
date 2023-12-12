@@ -27,11 +27,9 @@ Shore_leg1 = pygame.Rect(205, 145, 10, 110)
 Shore_leg2 = pygame.Rect(300, 145, 10, 110)
 Crane_Leg = pygame.Rect(240, 30, 10, 120)
 Bridge = pygame.Rect(80, 40, 200, 10)
-Container_1 = pygame.Rect(85, 185, 40, 15)
-Container_2 = pygame.Rect(135, 185, 40, 15)
+Container_1 = pygame.Rect(110, 185, 40, 15)
 Waterline = pygame.Rect(0, 250, 800, 50)
 original_container_1_position = Container_1.topleft
-original_container_2_position = Container_2.topleft
 clock = pygame.time.Clock()
 
 # Main game loop
@@ -59,14 +57,9 @@ while True:
                 container_picked_up = True
                 picked_up_container_position = Container_1.topleft
                 Container_1.topleft = (width, height)
-            elif Container_2.colliderect((Cabin.centerx, Cabin.bottom + rope_height, 1, 1)):
-                container_picked_up = True
-                picked_up_container_position = Container_2.topleft
-                Container_2.topleft = (width, height)
         else:
             container_picked_up = False
             Container_1.topleft = original_container_1_position
-            Container_2.topleft = original_container_2_position
 
     screen.fill(black)
 
@@ -81,7 +74,6 @@ while True:
     pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height), 5)  # Rope
     pygame.draw.polygon(screen, orange, [(80, 200), (130, 250), (180, 200)])  # Boat triangle
     pygame.draw.rect(screen, blue, Container_1)
-    pygame.draw.rect(screen, blue, Container_2)
 
     if container_picked_up:
         pygame.draw.rect(screen, red, (Cabin.centerx - 20, Cabin.bottom + rope_height - 15, 40, 15))
