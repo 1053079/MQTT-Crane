@@ -23,7 +23,8 @@ client.on_connect = on_connect
 
 
 # Pull Request comment 1: TLS (required for connection) - Dit was ook blijkbaar nodig voor de connectie, ook uren aan verspild. TLS zorgt voor een beveiligde connectie.
-client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
+# client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS) # Deze versie werkt niet voor Xander, dus we gebruiken de onderstaande versie.
+client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
 
 # Username and password (required for connection)
 client.username_pw_set("Admin", "hMu4P6L_LAMj8t3")
