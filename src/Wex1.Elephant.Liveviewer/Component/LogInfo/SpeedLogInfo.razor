@@ -1,8 +1,8 @@
 ﻿@page "/speedLogInfo/{Id}"
 @using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject SpeedLogService LogService
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
 @inject NavigationManager NavigationManager
 
 
@@ -10,6 +10,15 @@
     <a class="btn btn-secondary mb-3" @onclick="GoBack">Back</a>
 </div>
 <h3>Speed Log Information</h3>
+
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else
+{
 @if (SpeedLog != null)
 {
     <div class="card">
@@ -43,6 +52,7 @@ else
 {
     <p>Speed log not found.</p>
 }
+}
 
 @code {
     [Parameter]
@@ -50,14 +60,31 @@ else
 
     private SpeedLog SpeedLog { get; set; }
 
+    [Inject]
+    private IApiSpeedLogProvider _speedLogProvider { get; set; }
+
+    private string ErrorMessage;
+    private bool IsError;
 
 
     protected override async Task OnInitializedAsync()
     {
-        SpeedLog = await LogService.Get(Id);
+        try
+        {
+            IsError = false;
+            var speedLog = await _speedLogProvider.Get(Id);
+            SpeedLog = speedLog;
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+            ErrorMessage = $"Speedlog could not be shown due to an error: \n {ex.Message}";
+
+        }
     }
     private void GoBack()
     {
         NavigationManager.NavigateTo("/speedlogs");
     }
+   
 }
