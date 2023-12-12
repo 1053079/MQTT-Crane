@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using Wex1.Elephant.Liveviewer.Model;
+﻿using Wex1.Elephant.Liveviewer.Model;
 
 namespace Wex1.Elephant.Liveviewer.Services.Interfaces
 {
