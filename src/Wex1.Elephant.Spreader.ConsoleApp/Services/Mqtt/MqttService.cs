@@ -10,13 +10,14 @@ using System.Text.Json;
 using System.Diagnostics;
 using Wex1.Elephant.Spreader.Core.Entities;
 using System.Net.Sockets;
+using Amazon.Util.Internal;
 
 namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 {
     public class MqttService : IMqttService
     {
         public HiveMQClient _mqttClient { set; get; }
-        private Spreaders _spreader;
+        private Spreaders _spreader = new Spreaders();
         public MqttService()
         {
             var options = new HiveMQClientOptions
@@ -40,6 +41,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
             _mqttClient.AfterConnect += AfterConnectHandler;
             await _mqttClient.ConnectAsync().ConfigureAwait(false);
             await SubscribePositionSpreader();
+            await SubscribeJoystick();
 
 
 
@@ -55,7 +57,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         }
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
-            if (e.PublishMessage.Topic == "output/positionSpreader")
+            if (e.PublishMessage.Topic == "outputs/positionSpreader")
             {
                 var payload = e.PublishMessage.PayloadAsString;
                 Console.WriteLine(payload);
@@ -76,8 +78,32 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 }
 
             }
+            else if (e.PublishMessage.Topic == "outputs/actionSpreader")
+            {
+                var payload = e.PublishMessage.PayloadAsString;
+                Console.WriteLine(payload);
+            }
+            else if (e.PublishMessage.Topic == "inputs/joystick")
+                    {
+                
+                var payload = e.PublishMessage.PayloadAsString;
+                Console.WriteLine(payload);
+                var payloadData = JsonSerializer.Deserialize<Dictionary<string, object>>(payload);
 
-        }
+                if (payloadData.TryGetValue("lock", out var lockValue) && (bool)lockValue)
+                {
+                    
+                    if (_spreader.Sensor.DetectedContainer && (bool)lockValue)
+                    {
+                        await PublishLockStatus(true);
+                    }
+                    else
+                    {
+                        await PublishLockStatus(false);
+                    }
+                }
+            }
+             }
 
 
         public async Task SubscribeToTopic(string topic)
@@ -95,22 +121,42 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         {
 
 
-            await SubscribeToTopic("output/positionSpreader");
+            await SubscribeToTopic("outputs/positionSpreader");
 
 
         }
+        public async Task SubscribeJoystick()
+        {
 
-        public async Task PublishSensorStatus(bool detectedContainer)
+
+            await SubscribeToTopic("outputs/inputsJoystick");
+        }
+
+
+            public async Task PublishSensorStatus(bool detectedContainer)
         {
             if (detectedContainer)
             {
-                await _mqttClient.PublishAsync("output/sensorSpreader", $"Sensor has detected a container");
+                await _mqttClient.PublishAsync("outputs/sensorSpreader", $"Sensor has detected a container");
             }
             else
             {
-                await _mqttClient.PublishAsync("output/sensorSpreader", $"Sensor could not detect a container");
+                await _mqttClient.PublishAsync("outputs/sensorSpreader", $"Sensor could not detect a container");
             }
 
         }
-    }
+        public async Task PublishLockStatus(bool locked)
+        {
+            if (locked)
+            {
+                await _mqttClient.PublishAsync("outputs/actionSpreader", $"Lock is in use");
+            }
+            else
+            {
+                await _mqttClient.PublishAsync("outputs/actionSpreader", $"Lock is not in use");
+            }
+        }
+       
+
+        }
 }
