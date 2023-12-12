@@ -30,9 +30,14 @@ namespace Wex1.Elephant.Liveviewer.Component
         private async void _mqttClient_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
             var newLog = JsonSerializer.Deserialize<Baselog>(e.PublishMessage.Payload);
-
+            newLog.Timestamp = DateTime.UtcNow;
             if(newLog is not null)
+            {
                 _logs.Add(newLog);
+                await InvokeAsync(StateHasChanged);
+            }
         }
+
+        
     }
 }
