@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Wex1.Elephant.Liveviewer.Model;
+using Wex1.Elephant.Liveviewer.Services.Interfaces.Mqtt;
 using Wex1.Elephant.Liveviewer.Services.Mqtt;
 
 namespace Wex1.Elephant.Liveviewer.Component

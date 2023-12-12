@@ -1,6 +1,7 @@
 ﻿using HiveMQtt.Client;
 using HiveMQtt.Client.Events;
 using HiveMQtt.Client.Options;
+using Wex1.Elephant.Liveviewer.Services.Interfaces.Mqtt;
 
 namespace Wex1.Elephant.Liveviewer.Services.Mqtt
 {
