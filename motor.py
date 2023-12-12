@@ -52,6 +52,8 @@ def on_message(client, userdata,message):
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
               speed = 2
+         elif movement == "none":
+             print ("Crane has stopped")     
          else:
              print("invalid key detected")      
 
@@ -80,6 +82,8 @@ def on_message(client, userdata,message):
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
               speed = 3
+         elif movement == "none":
+             print ("Crane has stopped")  
          else:
              print("invalid key detected")  
 
@@ -108,6 +112,8 @@ def on_message(client, userdata,message):
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
               speed = 1
+         elif movement == "none":
+             print ("Crane has stopped")  
          else:
              print("invalid key detected")         
         else:
