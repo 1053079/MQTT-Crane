@@ -7,7 +7,7 @@ using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services.Interfaces.Mqtt;
 using Wex1.Elephant.Liveviewer.Services.Mqtt;
 
-namespace Wex1.Elephant.Liveviewer.Component
+namespace Wex1.Elephant.Liveviewer.Component.LogLists
 {
     public partial class SessionLogsList
     {
@@ -19,7 +19,7 @@ namespace Wex1.Elephant.Liveviewer.Component
         private List<Baselog> _logs = new List<Baselog>();
 
         protected async override Task OnInitializedAsync()
-        {   
+        {
             _mqttClient = await _mqttService.CreateMqttClient();
 
             _mqttClient.OnMessageReceived += _mqttClient_OnMessageReceived;
@@ -31,13 +31,13 @@ namespace Wex1.Elephant.Liveviewer.Component
         {
             var newLog = JsonSerializer.Deserialize<Baselog>(e.PublishMessage.Payload);
             newLog.Timestamp = DateTime.UtcNow;
-            if(newLog is not null)
+            if (newLog is not null)
             {
                 _logs.Add(newLog);
                 await InvokeAsync(StateHasChanged);
             }
         }
 
-        
+
     }
 }
