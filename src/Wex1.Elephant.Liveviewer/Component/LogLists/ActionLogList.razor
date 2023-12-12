@@ -1,0 +1,59 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
+
+
+<h3>Action Logs</h3>
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else{
+@if (ActionLogs != null)
+{
+    <LogList TModel="ActionLog" Logs="ActionLogs" />
+}
+else
+{
+    <p>No action logs found.</p>
+}
+}
+
+@code {
+    private ActionLog[] ActionLogs;
+
+    private string ErrorMessage;
+    private bool IsError;
+
+   
+    private int pageNumber;
+    private int pageSize;
+
+    [Inject]
+    private IApiActionLogProvider _actionLogProvider { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchActionLogs();
+    }
+
+    private async Task FetchActionLogs()
+    {
+        try
+        {
+            IsError = false;
+            var actionLogs = await _actionLogProvider.GetAll(pageNumber, pageSize);
+            ActionLogs = actionLogs.ToArray();
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+            ErrorMessage = $"Actionlogs could not be shown due to an error: \n {ex.Message}";
+
+        }
+        
+    }
+}

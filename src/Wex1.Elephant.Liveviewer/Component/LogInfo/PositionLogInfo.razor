@@ -1,8 +1,8 @@
-﻿@page "/positionLogInfo/{Id}"
+﻿
 @using Wex1.Elephant.Liveviewer.Model
 @using Wex1.Elephant.Liveviewer.Services
-@using Wex1.Elephant.Liveviewer.Services.Mock
-@inject PositionLogService LogService
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
 @inject NavigationManager NavigationManager
 
 
@@ -10,6 +10,15 @@
     <a class="btn btn-secondary mb-3" @onclick="GoBack">Back</a>
 </div>
 <h3>Position Log Information</h3>
+
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else
+{
 @if (PositionLog != null)
 {
     <div class="card">
@@ -44,6 +53,7 @@ else
 {
     <p>PositionLog not found.</p>
 }
+}
 
 @code {
     [Parameter]
@@ -51,14 +61,30 @@ else
 
     private PositionLog PositionLog { get; set; }
 
+    [Inject]
+    private IApiPositionLogProvider _positionLogProvider { get; set; }
+
+    private string ErrorMessage;
+    private bool IsError;
 
 
     protected override async Task OnInitializedAsync()
     {
-        PositionLog = await LogService.Get(Id);
+        try
+        {
+            IsError = false;
+            var positionLog = await _positionLogProvider.Get(Id);
+            PositionLog = positionLog;
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+            ErrorMessage = $"Positionlog could not be shown due to an error: \n {ex.Message}";
+
+        }
     }
     private void GoBack()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/positionlogs");
     }
 }
