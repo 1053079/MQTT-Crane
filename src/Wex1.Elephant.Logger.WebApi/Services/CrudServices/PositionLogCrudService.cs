@@ -35,8 +35,8 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             {
                 return new NotFoundObjectResult("No position logs were found.");
             }
-            
-            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validFilter, totalRecords,_uriService, route);
+
+            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validFilter, totalRecords, _uriService, route);
             return new OkObjectResult(pagedResponse);
         }
 
@@ -59,6 +59,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
         {
             throw new NotImplementedException();
         }
-        
+
     }
 }
