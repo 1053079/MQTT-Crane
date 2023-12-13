@@ -15,7 +15,7 @@ namespace Wex1.Elephant.Spreader.Core.Interfaces.Mqtt
     {
 
         Task CreateMqttClient(HiveMQClientOptions options);
-        
+        Task SubscribeJoystick();
         Task SubscribePositionSpreader();
 
         Task PublishSensorStatus(bool detectedContainer);
