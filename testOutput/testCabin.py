@@ -4,6 +4,7 @@ import json
 
 # topics that we are subscribed to
 topic_1 = "outputs/motorCabin"
+topic_2 = "inputs/cabinEmergencyButton"
 
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
@@ -21,10 +22,12 @@ def on_message(client, userdata,message):
     movement = payload_data.get("movement")
     speed = payload_data.get("speed")
     lock = payload_data.get("lock")
+    emergency = payload_data.get("emergency")
 
     print (payload_data)
     try:  
       if payload_data: 
+       if not emergency: 
         if speed == "normal" : ## normal speed
          ## Forward and backward are for the Cabin movements
          if movement == "forward":  
@@ -77,7 +80,11 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.connect(broker, port)
-client.subscribe(topic_1) # Subscribed to the topic
+
+# Subscribed to these topics
+client.subscribe(topic_1) 
+client.subscribe(topic_2)
+
 client.loop_start()
 
 while connected!= True:

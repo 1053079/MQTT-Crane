@@ -29,7 +29,7 @@ def on_message(client, userdata,message):
          # if cabinEmergency is true it will perform these actions
          if movement == "cabinEmergency" and emergency == True:  
               print("Cabin will be stopped")
-         else:
+         else: # if cabinEmergency is false
              print ("Cabin will be restarted")          
       else:
              print("Movements have stopped due to emergency")       

@@ -68,7 +68,7 @@ try:
             speed = "normal"
 
         # Payload
-        payload = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency}
+        payload = {"movement": movement, "emergency": emergency}
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
         print(payload)
