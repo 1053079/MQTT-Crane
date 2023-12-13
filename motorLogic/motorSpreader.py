@@ -65,7 +65,7 @@ def on_message(client, userdata,message):
             else: # if Emergency is true this will happen
                 print("Emergency button has activated")
        
-            # Payload that we send to topic_2 which is output/motorHoist
+            # Payload that we send to topic_2 which is output/motorSpreader
             payload_2 = {"movement": movement, "speed": speed, "lock": lock}
             print("payload is " , payload_2) 
             payload_string = json.dumps(payload_2)
