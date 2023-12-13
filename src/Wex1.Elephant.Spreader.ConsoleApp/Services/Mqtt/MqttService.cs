@@ -19,6 +19,17 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
     {
         public HiveMQClient _mqttClient { set; get; }
         private Spreaders _spreader = new Spreaders();
+        private Container _container = new Container();
+        // coordinaten sts-kraan gebied
+        readonly double _minStsX = 200;
+        readonly double _maxStsX = 315;
+        readonly double _minStsY = 0;
+        readonly double _maxStsY = 145;
+        // coordinaten boot gebied
+        readonly double _minBoatX = 80;
+        readonly double _maxBoatX = 180;
+        readonly double _minBoatY = 0;
+        readonly double _maxBoatY = 200;
         public MqttService()
         {
             var options = new HiveMQClientOptions
@@ -58,6 +69,18 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         }
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
+            if(e.PublishMessage.Topic == "outputs/positionContainer")
+            {
+                var payload = e.PublishMessage.PayloadAsString;
+
+                Console.WriteLine(payload);
+
+                List<double> positionValues = JsonSerializer.Deserialize<List<double>>(payload);
+
+                _container.PositionX = positionValues[0];
+                _container.PositionY = positionValues[1];
+
+            }
             if (e.PublishMessage.Topic == "outputs/positionSpreader")
             {
                 var payload = e.PublishMessage.PayloadAsString;
@@ -69,9 +92,9 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 _spreader.PositionX = positionValues[0];
                 _spreader.PositionY = positionValues[1];
                 //_spreader.PositionZ = positionValues[2];
-
-                if (_spreader.PositionX == 110.0
-                    && _spreader.PositionY == 185.0)
+                //container starting position : 110 - 150 X || 185-200 Y
+                if (_spreader.PositionX >= _container.PositionX && _spreader.PositionX <= (_container.PositionX + 40)
+                    && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 15))
                 {
                     _spreader.Sensor.DetectedContainer = true;
 
@@ -84,6 +107,10 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                     {
                         await PublishSensorStatus(false);
                     }
+                }
+                else
+                {
+                    _spreader.Sensor.DetectedContainer = false;
                 }
 
             }
@@ -102,12 +129,17 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 if (payloadData.TryGetValue("lock", out var lockValue) && (bool)lockValue)
                 {
                     
-                    if (_spreader.Sensor.DetectedContainer && (bool)lockValue)
+                    if (_spreader.Sensor.DetectedContainer && (bool)lockValue && 
+                        _spreader.PositionX >= _minBoatX && _spreader.PositionX <= _maxBoatX &&
+                        _spreader.PositionY >= _minBoatY && _spreader.PositionY >= _maxBoatY )
                     {
                         _spreader.Lock = true;
                         await PublishLockStatus(true);
                     }
-                    else
+                    else if (_spreader.Sensor.DetectedContainer = false || _spreader.PositionX >= _minStsX 
+                        && _spreader.PositionX <= _maxStsX 
+                        && _spreader.PositionY >= _minStsY 
+                        && _spreader.PositionY >= _maxStsY)
                     {
                         _spreader.Lock = false;
                         await PublishLockStatus(false);
