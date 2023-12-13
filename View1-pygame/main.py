@@ -16,22 +16,26 @@ red = (255, 0, 0)
 orange = (255, 165, 0)
 grey = (169, 169, 169)
 purple = (128, 0, 128)
+dark_green = (1, 50, 32)
 
+
+clock = pygame.time.Clock()
 # Set up Rects
-Cabin = pygame.Rect(90, 50, 20, 20)
+Cabin = pygame.Rect(225, 100, 20, 20)
 cabin_speed = 1
 rope_height = 110
 container_picked_up = False
-Shore = pygame.Rect(200, 150, 115, 10)
-Shore_leg1 = pygame.Rect(205, 145, 10, 110)
-Shore_leg2 = pygame.Rect(300, 145, 10, 110)
-Crane_Leg = pygame.Rect(240, 30, 10, 120)
-Bridge = pygame.Rect(80, 40, 200, 10)
-Container_1 = pygame.Rect(110, 185, 40, 15)
-Waterline = pygame.Rect(0, 250, 800, 50)
+leg_bridge = pygame.Rect(330, 200, 115, 10)
+Shore_leg1 = pygame.Rect(345, 190, 10, 110)
+Shore_leg2 = pygame.Rect(425, 190, 10, 110)
+Crane_Leg = pygame.Rect(385, 80, 10, 120)
+Bridge = pygame.Rect(225, 90, 200, 10)
+Container_1 = pygame.Rect(230, 235, 40, 15)
+Waterline = pygame.Rect(75, 300, 250, 50)
+shore = pygame.Rect(325, 300, 250, 50)
 original_container_1_position = Container_1.topleft
 picked_up_container_position = (0, 0)
-clock = pygame.time.Clock()
+
 
 # Main game loop
 while True:
@@ -42,14 +46,14 @@ while True:
 
     keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_w] and rope_height > 10:
+    if keys[pygame.K_UP] and rope_height > 10:
         rope_height -= 1
-    if keys[pygame.K_s] and rope_height < 180:
+    if keys[pygame.K_DOWN] and rope_height < 180:
         rope_height += 1
 
-    if keys[pygame.K_a] and Cabin.left > 80:
+    if keys[pygame.K_a] and Cabin.left > 225:
         Cabin.x -= cabin_speed
-    if keys[pygame.K_d] and Cabin.right < 280:
+    if keys[pygame.K_d] and Cabin.right < 425:
         Cabin.x += cabin_speed
 
     if keys[pygame.K_RETURN]:
@@ -60,27 +64,30 @@ while True:
                     Container_1.x - Cabin.x,
                     Container_1.y - (Cabin.bottom + rope_height),
                 )
-                Container_1.topleft = (width, height)
+                Container_1.topleft = (3000, 15)
         else:
             container_picked_up = False
             Container_1.topleft = (
                 Cabin.x + picked_up_container_position[0],
                 Cabin.bottom + rope_height + picked_up_container_position[1],
             )
+            screen.fill(black)
 
     screen.fill(black)
 
     # Your drawings (x, y, width, height)
-    pygame.draw.rect(screen, red, Shore)
-    pygame.draw.rect(screen, red, Shore_leg1)
-    pygame.draw.rect(screen, red, Shore_leg2)
+    pygame.draw.rect(screen, yellow, leg_bridge)
+    pygame.draw.rect(screen, yellow, Shore_leg1)
+    pygame.draw.rect(screen, yellow, Shore_leg2)
     pygame.draw.rect(screen, yellow, Crane_Leg)
     pygame.draw.rect(screen, yellow, Bridge)
     pygame.draw.rect(screen, purple, Cabin)
-    pygame.draw.rect(screen, grey, Waterline)
-    pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height), 5)  # Rope
-    pygame.draw.polygon(screen, orange, [(80, 200), (130, 250), (180, 200)])  # Boat triangle
-    pygame.draw.rect(screen, blue, Container_1)
+    pygame.draw.rect(screen, blue, Waterline)
+    pygame.draw.rect(screen, grey, shore)
+    pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height),
+                     5)  # Rope
+    pygame.draw.polygon(screen, red, [(200, 250), (250, 300), (300, 250)])  # Boat triangle
+    pygame.draw.rect(screen, dark_green, Container_1)
 
     if container_picked_up:
         pygame.draw.rect(
