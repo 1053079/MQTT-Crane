@@ -13,7 +13,7 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
         private bool IsError;
 
         private int currentPageNumber = 1;
-        private int pageSize;
+        private int pageSize = 30;
         private int totalPages;
 
         [Inject]
