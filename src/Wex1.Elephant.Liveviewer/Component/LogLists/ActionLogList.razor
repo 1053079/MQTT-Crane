@@ -2,34 +2,14 @@
 @using Wex1.Elephant.Liveviewer.Services
 @using Wex1.Elephant.Liveviewer.Services.Interfaces
 
-<div class="d-flex p-2">
-    <div>
-        <label>Page</label>
-        <Pagination ActivePageNumber="@currentPageNumber"
-                    TotalPages="@totalPages"
-                    DisplayPages="8"
-                    FirstLinkIcon="IconName.ChevronDoubleLeft"
-                    PreviousLinkIcon="IconName.ChevronLeft"
-                    NextLinkIcon="IconName.ChevronRight"
-                    LastLinkIcon="IconName.ChevronDoubleRight"
-                    PageChanged="HandlePageChangeAsync" />
-    </div>
-
-    <div>
-        <label>PageSize</label>
-        <select class="form-select" aria-label="PageSize" @onchange="OnPageSizeChange">
-            <option value="5">5</option>
-            <option selected value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="40">40</option>
-            <option value="50">50</option>
-        </select>
-    </div>
-</div>
-
-
-
+<Pagination ActivePageNumber="@currentPageNumber"
+            TotalPages="@totalPages"
+            DisplayPages="8"
+            FirstLinkIcon="IconName.ChevronDoubleLeft"
+            PreviousLinkIcon="IconName.ChevronLeft"
+            NextLinkIcon="IconName.ChevronRight"
+            LastLinkIcon="IconName.ChevronDoubleRight"
+            PageChanged="HandlePageChangeAsync" />
 
 <h3>Action Logs</h3>
 @if (IsError)
