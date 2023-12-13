@@ -47,9 +47,9 @@ def on_message(client, userdata,message):
                else:
                  print("Invalid key detected")      
 
-        #  For fast speed
+            #  For fast speed
             elif speed == 'fast':
-         # Left and right are for the Crane movements 
+                # Left and right are for the Crane movements 
                 if movement == "left":
                     print("You have pressed " + movement + " at " + speed + " speed")
                 elif movement == "right":
@@ -57,9 +57,9 @@ def on_message(client, userdata,message):
                 else:
                     print("Invalid key detected")  
 
-        # For slow speed      
+            # For slow speed      
             elif speed == 'slow':   
-          # Left and right are for the Crane movements 
+                # Left and right are for the Crane movements 
                 if movement == "left":
                     print("You have pressed " + movement + " at " + speed + " speed")
                 elif movement == "right":
@@ -70,7 +70,7 @@ def on_message(client, userdata,message):
             else: # if Emergency is true this will happen
                 print("Emergency button has activated")
        
-            # Payload that we send to topic_2 which is output/motorCabin
+            # Payload that we send to topic_2 which is output/motorCrane
             payload_2 = {"movement": movement, "speed": speed, "lock": lock}
             print("payload is " , payload_2) 
             payload_string = json.dumps(payload_2)
