@@ -172,7 +172,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         {
 
 
-            await SubscribeToTopic("outputs/inputsJoystick");
+            await SubscribeToTopic("inputs/joystick");
         }
 
 
