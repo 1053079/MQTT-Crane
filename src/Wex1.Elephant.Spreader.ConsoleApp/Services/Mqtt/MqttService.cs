@@ -11,6 +11,7 @@ using System.Diagnostics;
 using Wex1.Elephant.Spreader.Core.Entities;
 using System.Net.Sockets;
 using Amazon.Util.Internal;
+using MongoDB.Bson;
 
 namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 {
@@ -60,9 +61,17 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
             if (e.PublishMessage.Topic == "outputs/positionSpreader")
             {
                 var payload = e.PublishMessage.PayloadAsString;
+
                 Console.WriteLine(payload);
-                double positionValue = double.Parse(payload);
-                if (positionValue == 0.0)
+                
+                List<double> positionValues = JsonSerializer.Deserialize<List<double>>(payload);
+
+                _spreader.PositionX = positionValues[0];
+                _spreader.PositionY = positionValues[1];
+                //_spreader.PositionZ = positionValues[2];
+
+                if (_spreader.PositionX == 110.0
+                    && _spreader.PositionY == 185.0)
                 {
                     _spreader.Sensor.DetectedContainer = true;
 
@@ -95,10 +104,12 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                     
                     if (_spreader.Sensor.DetectedContainer && (bool)lockValue)
                     {
+                        _spreader.Lock = true;
                         await PublishLockStatus(true);
                     }
                     else
                     {
+                        _spreader.Lock = false;
                         await PublishLockStatus(false);
                     }
                 }
