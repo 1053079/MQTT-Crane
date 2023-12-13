@@ -29,10 +29,21 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
 
         private async void _mqttClient_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
-            var newLog = JsonSerializer.Deserialize<Baselog>(e.PublishMessage.Payload);
-            newLog.Timestamp = DateTime.UtcNow;
-            if (newLog is not null)
+            
+            var payloadModel = JsonSerializer.Deserialize<LogPayLoadModel>(e.PublishMessage.Payload);
+            
+            if (payloadModel is not null)
             {
+
+                var newLog = new Baselog
+                {
+                    Id = payloadModel.Id.ToString(),
+                    Component = payloadModel.Component,
+                    Description = payloadModel.Description,
+                    Timestamp = payloadModel.Timestamp,
+                    Type = payloadModel.Type
+                };
+
                 _logs.Add(newLog);
                 _logs.Sort((x, y) => y.Timestamp.CompareTo(x.Timestamp));
                 await InvokeAsync(StateHasChanged);

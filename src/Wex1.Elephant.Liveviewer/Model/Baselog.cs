@@ -13,7 +13,6 @@ namespace Wex1.Elephant.Liveviewer.Model
         
         public string Component { get; set; }
 
-        [JsonPropertyName("EventType")]
         public string Type { get; set; }
         
         public string Description { get; set;  }
