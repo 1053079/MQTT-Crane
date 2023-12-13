@@ -7,6 +7,7 @@ client = mqtt.Client()
 
 # topics that we are subscribed to
 topic = "inputs/joystick"
+topic_1 = "inputs/cabinEmergencyButton"
 
 # topics that publish our data to
 topic_2 = "outputs/motorCabin"
@@ -27,10 +28,12 @@ def on_message(client, userdata,message):
     movement = payload_data.get("movement") # The movement of the joystick input
     speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
     lock = payload_data.get("lock") # Checks whether spreader is locked or not
+    emergency = payload_data.get("emergency") # Checks for emergency from the inputs/cabinEmergencyButton
 
 
     try:  
        if payload_data: # only does actions if we receive payload data from inputs/joystick
+        if not emergency: # only does actions if emergency is set to false
          if speed == 'normal': # normal speed
          # Forward and backward are for the Cabin movements
           if movement == "forward":  
@@ -59,9 +62,10 @@ def on_message(client, userdata,message):
           elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
           else:
-              print("Invalid key detected")         
-         else:
-              print("Invalid key has been detected")
+              print("Invalid key detected")    
+                       
+         else: # if Emergency is true this will happen
+              print("Emergency button has activated")
        
         # Payload that we send to topic_2 which is output/motorCabin
          payload_2 = {"movement": movement, "speed": speed, "lock": lock}
@@ -92,7 +96,9 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.connect(broker, port)
-client.subscribe(topic) # have to be subscribed first then client_loop start!
+# Have to be subscribed first then client_loop start!
+client.subscribe(topic) 
+client.subscribe(topic_1)
 client.loop_start()
 
 while connected!= True:

@@ -7,6 +7,7 @@ client = mqtt.Client()
 
 # topics that we are subscribed to
 topic = "inputs/joystick"
+topic_1 = "inputs/cabinEmergencyButton"
 
 # topics that publish our data to
 topic_2 = "outputs/motorCrane"
@@ -27,9 +28,11 @@ def on_message(client, userdata,message):
     movement = payload_data.get("movement") # The movement of the joystick input
     speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
     lock = payload_data.get("lock") # Checks whether spreader is locked or not
+    emergency = payload_data.get("emergency") # Checks for emergency from the inputs/cabinEmergencyButton
 
     try:  
        if payload_data: # only does actions if we receive payload data from inputs/joystick
+        if not emergency: # only does actions if emergency is set to false
          if speed == 'normal': # normal speed
          # Left and right are for the Crane movements 
           if movement == "left":
@@ -57,9 +60,10 @@ def on_message(client, userdata,message):
           elif movement == "right":
               print("You have pressed " + movement + " at " + speed + " speed")    
           else:
-              print("Invalid key detected")         
-         else:
-              print("Invalid key has been detected")
+              print("Invalid key detected")     
+                  
+         else: # if Emergency is true this will happen
+              print("Emergency button has activated")
        
         # Payload that we send to topic_2 which is output/motorCabin
          payload_2 = {"movement": movement, "speed": speed, "lock": lock}
