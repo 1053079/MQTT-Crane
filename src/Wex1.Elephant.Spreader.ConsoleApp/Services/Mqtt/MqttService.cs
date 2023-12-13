@@ -54,7 +54,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
             await _mqttClient.ConnectAsync().ConfigureAwait(false);
             await SubscribePositionSpreader();
             await SubscribeJoystick();
-
+            await SubscribePositionContainer();
 
 
         }
@@ -174,9 +174,17 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 
             await SubscribeToTopic("inputs/joystick");
         }
+        public async Task SubscribePositionContainer()
+        {
 
 
-            public async Task PublishSensorStatus(bool detectedContainer)
+            await SubscribeToTopic("outputs/positionContainer");
+
+
+        }
+
+
+        public async Task PublishSensorStatus(bool detectedContainer)
         {
             if (detectedContainer)
             {
