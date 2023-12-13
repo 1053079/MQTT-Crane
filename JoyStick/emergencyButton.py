@@ -6,7 +6,7 @@ address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud" # Pull Request c
 port = 8883 # Pull Request comment 1: Port van broker. Dit hoort bij de address. Ook belangrijk voor connectie.
 
 # Pull Request comment 1: MQTT topic naam om naar te publishen, en subscribers kunnen subscriben op deze topic om de data te ontvangen
-topic_1 = "inputs/cabinEmergencybutton"
+topic_1 = "inputs/cabinEmergencyButton"
 
 # Pull Request comment 1: MQTT client aanmaken (in een variable gezet) om later mee te connecten
 client = mqtt.Client()
@@ -68,7 +68,7 @@ try:
             speed = "normal"
 
         # Payload
-        payload = {"emergency": emergency}
+        payload = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency}
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
         print(payload)
