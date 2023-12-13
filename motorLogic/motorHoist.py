@@ -20,8 +20,12 @@ def on_connect(client, userdata, flags, rc, properties=None):
 
 # prints back the message received and the topic
 def on_message(client, userdata,message):
-    print("Message received: " + str((message.payload.decode("utf-8"))))
-    print("Topic is " + str(message.topic))
+    if message.topic == topic_1: # checks for topic
+     print("Message received: " + str((message.payload.decode("utf-8"))))
+     print("Topic is " + str(message.topic))
+    else: 
+     print("Message received is " + str((message.payload.decode("utf-8"))))
+     print("Topic is " + str(message.topic))
     
     # decodes the JSON and allows us to get the values of the movement, speed and lock.
     payload_data = json.loads(message.payload.decode('utf-8'))
@@ -31,44 +35,45 @@ def on_message(client, userdata,message):
     emergency = payload_data.get("emergency") # Checks for emergency from the inputs/cabinEmergencyButton
 
     try:  
-       if payload_data: # only does actions if we receive payload data from inputs/joystick
-        if not emergency: # only does actions if emergency is set to false
-         if speed == 'normal': # normal speed
-          # Up and down are for the Hoist movements
-          if movement == "up":
-              print("You have pressed " + movement + " at " + speed + " speed") 
-          elif movement == "down":    
-              print("You have pressed " + movement + " at " + speed + " speed") 
-          else:
-             print("invalid key detected")      
+        if message.topic == topic_1 and emergency is True:
+            print('dog') # replace print with code that stops all movement
+        elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
+            if speed == 'normal': # normal speed
+                # Up and down are for the Hoist movements
+                if movement == "up":
+                    print("You have pressed " + movement + " at " + speed + " speed") 
+                elif movement == "down":    
+                    print("You have pressed " + movement + " at " + speed + " speed") 
+                else:
+                    print("invalid key detected")      
 
-        #  for fast speed
-         elif speed == 'fast':
-          if movement == "up":
-              print("You have pressed " + movement + " at " + speed + " speed") 
-          elif movement == "down":    
-              print("You have pressed " + movement + " at " + speed + " speed") 
-          else:
-              print("invalid key detected")  
+            # For fast speed
+            elif speed == 'fast':
+                if movement == "up":
+                    print("You have pressed " + movement + " at " + speed + " speed") 
+                elif movement == "down":    
+                    print("You have pressed " + movement + " at " + speed + " speed") 
+                else:
+                    print("invalid key detected")  
 
-        # for slow speed      
-         elif speed == 'slow':   
-          # Up and down are for the Hoist movements
-          if movement == "up":
-              print("You have pressed " + movement + " at " + speed + " speed") 
-          elif movement == "down":    
-              print("You have pressed " + movement + " at " + speed + " speed")    
-          else:
-              print("invalid key detected")
+            # For slow speed      
+            elif speed == 'slow':   
+            # Up and down are for the Hoist movements
+                if movement == "up":
+                    print("You have pressed " + movement + " at " + speed + " speed") 
+                elif movement == "down":    
+                    print("You have pressed " + movement + " at " + speed + " speed")    
+                else:
+                    print("invalid key detected")
                        
-         else: # if Emergency is true this will happen
+            else: # if Emergency is true this will happen
               print("Emergency button has activated ")
        
         # Payload that we send to topic_2 which is output/motorCabin
-         payload_2 = {"movement": movement, "speed": speed, "lock": lock}
-         print("payload is " , payload_2) 
-         payload_string = json.dumps(payload_2)
-         client.publish(topic_2, payload_string, qos=0)
+            payload_2 = {"movement": movement, "speed": speed, "lock": lock}
+            print("payload is " , payload_2) 
+            payload_string = json.dumps(payload_2)
+            client.publish(topic_2, payload_string, qos=0)
 
     except Exception as e:
         print("Error:", e)

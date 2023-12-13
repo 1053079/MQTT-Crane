@@ -38,38 +38,38 @@ def on_message(client, userdata,message):
         if message.topic == topic_1 and emergency is True:
             print('dog') # replace print with code that stops all movement
         elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
-                if speed == 'normal':  # normal speed
+            if speed == 'normal':  # normal speed
+                # Forward and backward are for the Cabin movements
+                if movement == "forward":
+                    print("You have pressed " + movement + " at " + speed + " speed")
+                elif movement == "backward":
+                    print("You have pressed " + movement + " at " + speed + " speed")
+                else:
+                    print("Invalid key detected")
+
+            # For fast speed
+            elif speed == 'fast':
+                # Forward and backward are for the Cabin movements
+                if movement == "forward":
+                    print("You have pressed " + movement + " at " + speed + " speed")
+                elif movement == "backward":
+                    print("You have pressed " + movement + " at " + speed + " speed")
+                else:
+                    print("Invalid key detected")
+
+            # For slow speed
+            elif speed == 'slow':
                     # Forward and backward are for the Cabin movements
-                    if movement == "forward":
-                        print("You have pressed " + movement + " at " + speed + " speed")
-                    elif movement == "backward":
-                        print("You have pressed " + movement + " at " + speed + " speed")
-                    else:
-                        print("Invalid key detected")
+                if movement == "forward":
+                    print("You have pressed " + movement + " at " + speed + " speed")
 
-                # for fast speed
-                elif speed == 'fast':
-                    # Forward and backward are for the Cabin movements
-                    if movement == "forward":
-                        print("You have pressed " + movement + " at " + speed + " speed")
-                    elif movement == "backward":
-                        print("You have pressed " + movement + " at " + speed + " speed")
-                    else:
-                        print("Invalid key detected")
+                elif movement == "backward":
+                    print("You have pressed " + movement + " at " + speed + " speed")
+                else:
+                    print("Invalid key detected")
 
-                # for slow speed
-                elif speed == 'slow':
-                    # Forward and backward are for the Cabin movements
-                    if movement == "forward":
-                        print("You have pressed " + movement + " at " + speed + " speed")
-
-                    elif movement == "backward":
-                        print("You have pressed " + movement + " at " + speed + " speed")
-                    else:
-                        print("Invalid key detected")
-
-                else:  # if Emergency is true this will happen
-                    print("Emergency button has activated")
+            else: # If Emergency is true this will happen
+                print("Emergency button has activated")
         else:
                 # Payload that we send to topic_2, which is output/motorCabin
                 payload_2 = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency}
