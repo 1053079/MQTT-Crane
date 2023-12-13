@@ -9,7 +9,7 @@ client = mqtt.Client()
 topic = "inputs/joystick"
 topic_1 = "inputs/cabinEmergencyButton"
 
-# topics that publish our data to
+# topics that we publish our data to
 topic_2 = "outputs/motorCabin"
 
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -35,7 +35,7 @@ def on_message(client, userdata,message):
     emergency = payload_data.get("emergency") # Checks for emergency from the inputs/cabinEmergencyButton
 
     try:
-        if message.topic == topic_1:
+        if message.topic == topic_1 and emergency is True:
             print('dog') # replace print with code that stops all movement
         elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
                 if speed == 'normal':  # normal speed

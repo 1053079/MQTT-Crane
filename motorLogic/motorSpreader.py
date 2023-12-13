@@ -9,7 +9,7 @@ client = mqtt.Client()
 topic = "inputs/joystick"
 topic_1 = "inputs/cabinEmergencyButton"
 
-# topics that publish our data to
+# topics that we publish our data to
 topic_2 = "outputs/motorSpreader"
 
 def on_connect(client, userdata, flags, rc, properties=None):
