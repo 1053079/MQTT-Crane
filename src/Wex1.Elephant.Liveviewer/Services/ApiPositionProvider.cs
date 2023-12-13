@@ -31,24 +31,9 @@ namespace Wex1.Elephant.Liveviewer.Services
             return positionLog;
         }
 
-        public async Task<IEnumerable<PositionLog>> GetAll(int pageNumber, int pageSize)
+        public async Task<PageDto<PositionDto>> GetPage(int pageNumber, int pageSize)
         {
-
-            var dtos = await _httpClient.GetFromJsonAsync<PageDto<PositionDto>>($"PositionLogs?PageNumber={pageNumber}&PageSize={pageSize}");
-
-            var positionlogs = dtos.Data.Select(pl => new PositionLog
-            {
-                Id = pl.Id,
-                Description = pl.Description,
-                Component = pl.Component,
-                Timestamp = pl.Timestamp,
-                Type = pl.Type,
-                PositionX = pl.PositionX,
-                PositionY = pl.PositionY,
-                PositionZ = pl.PositionZ
-            });
-
-            return positionlogs;
+            return await _httpClient.GetFromJsonAsync<PageDto<PositionDto>>($"PositionLogs?PageNumber={pageNumber}&PageSize={pageSize}");
         }
     }
 }
