@@ -6,7 +6,7 @@ address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud" # Pull Request c
 port = 8883 # Pull Request comment 1: Port van broker. Dit hoort bij de address. Ook belangrijk voor connectie.
 
 # Pull Request comment 1: MQTT topic naam om naar te publishen, en subscribers kunnen subscriben op deze topic om de data te ontvangen
-topic_1 = "inputs/joystick"
+topic_1 = "inputs/cabinEmergencybutton"
 
 # Pull Request comment 1: MQTT client aanmaken (in een variable gezet) om later mee te connecten
 client = mqtt.Client()
@@ -44,34 +44,14 @@ try:
 
         while True:
             try:
-                if keyboard.is_pressed('w'):
-                    print('W key is pressed')
-                    movement = 'forward'
+                if keyboard.is_pressed('1'):
+                    print('Dock Emergency key is pressed')
+                    movement = 'dockEmergency'
                     break
-                if keyboard.is_pressed('a'):
-                    print('A key is pressed')
-                    movement = 'left'
-                    break
-                if keyboard.is_pressed('s'):
-                    print('S key is pressed')
-                    movement = 'backward'
-                    break
-                if keyboard.is_pressed('d'):
-                    print('D key is pressed')
-                    movement = 'right'
-                    break
-                if keyboard.is_pressed('up'):
-                    print('Up Arrow key is pressed')
-                    movement = 'up'
-                    break
-                if keyboard.is_pressed('down'):
-                    print('Down Arrow key is pressed')
-                    movement = 'down'
-                    break
-                if keyboard.is_pressed('enter'):
-                    print('Enter key is pressed')
-                    lock = not lock
-                    movement = 'none'
+                if keyboard.is_pressed('2'):
+                    print('Cabin Emergency key is pressed')
+                    emergency = not emergency
+                    movement = 'cabinEmergency'
                     break
             except:
                 break
@@ -88,7 +68,7 @@ try:
             speed = "normal"
 
         # Payload
-        payload = {"movement": movement, "speed": speed, "lock": lock}
+        payload = {"emergency": emergency}
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
         print(payload)

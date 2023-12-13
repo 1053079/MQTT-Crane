@@ -4,7 +4,7 @@ import time
 import json
 
 # topics that we are subscribed to
-topic = "outputs/motorCabin"
+topic_1 = "outputs/motorCabin"
 
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
@@ -22,89 +22,82 @@ def on_message(client, userdata,message):
     movement = payload_data.get("movement")
     speed = payload_data.get("speed")
     lock = payload_data.get("lock")
-    
 
+    print (payload_data)
     try:  
       if payload_data: 
-       if not lock: ## if lock is not on we will perform these actions
-        if speed == 2 : ## normal speed
+        if speed == "normal" : ## normal speed
          ## Forward and backward are for the Cabin movements
          if movement == "forward":  
-              print("You have pressed " + movement + " at cabinspeed 2")
+              print("You have pressed " + movement + " at normal cabinspeed ")
          elif movement == "backward":
-              print("You have pressed " + movement + " at cabinspeed 2")
-         elif movement == "cabinEmergency":
-              print("Cabin stopped due to " + movement + " at cabinspeed 2") 
+              print("You have pressed " + movement + " at normal cabinspeed ")
 
          ## Left and right are for the Crane movements 
          elif movement == "left":
-              print("You have pressed " + movement + " at cranespeed 2")
+              print("You have pressed " + movement + " at normal cranespeed ")
          elif movement == "right":
-              print("You have pressed " + movement + " at cranespeed 2")
+              print("You have pressed " + movement + " at normal cranespeed ")
           ## Up and down are for the Hoist movements
          elif movement == "up":
-             print("You have pressed " + movement + " at hoistspeed 2")
+             print("You have pressed " + movement + " at normal hoistspeed ")
          elif movement == "down":    
-             print("You have pressed " + movement + " at hoistspeed 2")
-         elif movement == "none":
-             print("Crane lock is " + lock)     
+             print("You have pressed " + movement + " at normal hoistspeed ")
+         ## For spreader lock and unlock
+         elif movement == "none": 
+              print("Crane lock is unlocked / locked " )  
          else:
              print("invalid key detected")      
 
         ## for fast speed
-        elif speed == 3:
+        elif speed == "fast":
         ## Forward and backward are for the Cabin movements
          if movement == "forward":  
-             print("You have pressed " + movement + " at cabinspeed 3")
+             print("You have pressed " + movement + " at fast cabinspeed ")
          elif movement == "backward":
-             print("You have pressed " + movement + " at cabinspeed 3")
-         elif movement == "cabinEmergency":
-             print("Cabin stopped due to " + movement + " at cabinspeed 3") 
+             print("You have pressed " + movement + " at fast cabinspeed ")
 
          ## Left and right are for the Crane movements 
          elif movement == "left":
-             print("You have pressed " + movement + " at cranespeed 3")
+             print("You have pressed " + movement + " at fast cranespeed")
          elif movement == "right":
-             print("You have pressed " + movement + " at cranespeed 3")
+             print("You have pressed " + movement + " at fast cranespeed")
              
 
           ## Up and down are for the Hoist movements
          elif movement == "up":
-              print("You have pressed " + movement + " at hoistspeed 3")
+              print("You have pressed " + movement + " at fast hoistspeed")
          elif movement == "down":    
-              print("You have pressed " + movement + " at hoistspeed 3")
-         elif movement == "none":
-              print("Crane lock is " + lock)  
+              print("You have pressed " + movement + " at fast hoistspeed")
+         elif movement == "none": 
+              print("Crane lock is unlocked / locked ")    
          else:
               print("invalid key detected")  
 
         ## for slow speed      
-        elif speed == 1:   
+        elif speed == "slow":   
          ## Forward and backward are for the Cabin movements
          if movement == "forward":  
-              print("You have pressed " + movement + " at cabinspeed 1")
+              print("You have pressed " + movement + " at slow cabinspeed ")
          elif movement == "backward":
-              print("You have pressed " + movement + " at cabinspeed 1")
-         elif movement == "cabinEmergency":
-              print("Cabin stopped due to " + movement + " at cabinspeed 1")   
+              print("You have pressed " + movement + " at slow cabinspeed ")
          ## Left and right are for the Crane movements 
          elif movement == "left":
-             print("You have pressed " + movement + " at cranespeed 1")
+             print("You have pressed " + movement + " at slow cranespeed ")
          elif movement == "right":
-             print("You have pressed " + movement + " at cranespeed 1")
+             print("You have pressed " + movement + " at slow cranespeed ")
              
           ## Up and down are for the Hoist movements
          elif movement == "up":
-              print("You have pressed " + movement + " at hoistspeed 1") 
+              print("You have pressed " + movement + " at slow hoistspeed") 
          elif movement == "down":    
-              print("You have pressed " + movement + " at hoistspeed 1")
-         elif movement == "none":
-             print("Crane lock is " + lock)   
+              print("You have pressed " + movement + " at slow hoistspeed")
+         elif movement == "none": 
+              print("Crane lock is unlocked / locked")     
          else:
-             print("invalid key detected")         
-        else:
-         print("There was an error trying to get " + movement + " key")
-
+              print("invalid key detected")         
+      else:
+              print("Movements have stopped due to emergency")       
     except Exception as e:
         print("Error:", e)
     
@@ -129,7 +122,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.connect(broker, port)
-client.subscribe(topic) # Subscribed to the topic
+client.subscribe(topic_1) # Subscribed to the topic
 client.loop_start()
 
 while connected!= True:

@@ -24,110 +24,101 @@ def on_message(client, userdata,message):
     
     # decodes the JSON and allows us to get the values of the movement, speed and lock.
     payload_data = json.loads(message.payload.decode('utf-8'))
-    movement = payload_data.get("movement") ## the movement of the joystick input
-    speed = payload_data.get("speed") ## speed from joystick input, we will adjust this in our payload
-    lock = payload_data.get("lock") ## Checks whether motor is locked or not
-     
+    movement = payload_data.get("movement") # The movement of the joystick input
+    speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
+    lock = payload_data.get("lock") # Checks whether spreader is locked or not
+    emergency = payload_data.get("emergency") # Checks whether the emergency button is pressed
+
     try:  
-      if payload_data: ## only does actions if we receive payload data from inputs/joystick
-       if not lock: ## if lock is not on we will perform these actions
-        if speed == 'normal': ## normal speed
-         ## Forward and backward are for the Cabin movements
-         if movement == "forward":  
+       if payload_data: # only does actions if we receive payload data from inputs/joystick
+         if speed == 'normal': # normal speed
+         # Forward and backward are for the Cabin movements
+          if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 2
-         elif movement == "backward":
-              print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 2
-         elif movement == "cabinEmergency":
-              print("Stop cabin due to " + movement + " at " + speed + " speed")     
-              speed = 2
 
-         ## Left and right are for the Crane movements 
-         elif movement == "left":
+          elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 2
-         elif movement == "right":
+            
+         # Left and right are for the Crane movements 
+          elif movement == "left":
               print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 2
+     
+          elif movement == "right":
+              print("You have pressed " + movement + " at " + speed + " speed")
+      
 
-          ## Up and down are for the Hoist movements
-         elif movement == "up":
+          # Up and down are for the Hoist movements
+          elif movement == "up":
               print("You have pressed " + movement + " at " + speed + " speed") 
-              speed = 2
-         elif movement == "down":    
+          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
-              speed = 2     
-         else:
+          #  Spreader lock and unlock
+          elif movement == "none":
+             print("Spreader is unlocked / locked ")
+          else:
              print("invalid key detected")      
 
-        ## for fast speed
-        elif speed == 'fast':
-        ## Forward and backward are for the Cabin movements
-         if movement == "forward":  
+        #  for fast speed
+         elif speed == 'fast':
+        #  Forward and backward are for the Cabin movements
+          if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 3
-         elif movement == "backward":
+          elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 3
-         elif movement == "cabinEmergency":
-              print("Stop cabin due to " + movement + " at " + speed + " speed")      
-              speed = 3
-         ## Left and right are for the Crane movements 
-         elif movement == "left":
-              print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 3
-         elif movement == "right":
-              print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 3
 
-          ## Up and down are for the Hoist movements
-         elif movement == "up":
-              print("You have pressed " + movement + " at " + speed + " speed") 
-              speed = 3
-         elif movement == "down":    
-              print("You have pressed " + movement + " at " + speed + " speed") 
-              speed = 3
-         else:
-             print("invalid key detected")  
+         # Left and right are for the Crane movements 
+          elif movement == "left":
+              print("You have pressed " + movement + " at " + speed + " speed")
+          elif movement == "right":
+              print("You have pressed " + movement + " at " + speed + " speed")
 
-        ## for slow speed      
-        elif speed == 'slow':   
-         ## Forward and backward are for the Cabin movements
-         if movement == "forward":  
+          # Up and down are for the Hoist movements
+          elif movement == "up":
+              print("You have pressed " + movement + " at " + speed + " speed") 
+          elif movement == "down":    
+              print("You have pressed " + movement + " at " + speed + " speed") 
+          # Spreader lock and unlock
+          elif movement == "none":
+              print("Spreader is unlocked / locked")
+          else:
+              print("invalid key detected")  
+
+        # for slow speed      
+         elif speed == 'slow':   
+         # Forward and backward are for the Cabin movements
+          if movement == "forward":  
               print("You have pressed " + movement + " at " + speed + " speed")   
-              speed = 1
-         elif movement == "backward":
+      
+          elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 1
-         elif movement == "cabinEmergency":
-              print("Stop cabin due to " + movement + " at " + speed + " speed")      
-              speed = 1
-         ## Left and right are for the Crane movements 
-         elif movement == "left":
+                  
+          # Left and right are for the Crane movements 
+          elif movement == "left":
               print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 1
-         elif movement == "right":
+             
+          elif movement == "right":
               print("You have pressed " + movement + " at " + speed + " speed")
-              speed = 1
+              
 
-          ## Up and down are for the Hoist movements
-         elif movement == "up":
+          # Up and down are for the Hoist movements
+          elif movement == "up":
               print("You have pressed " + movement + " at " + speed + " speed") 
-              speed = 1
-         elif movement == "down":    
+        
+          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
-              speed = 1 
+          #  Spreader lock and unlock    
+          elif movement == "none":
+              print("Crane lock is unlocked / locked" )     
+          else:
+              print("invalid key detected")         
          else:
-             print("invalid key detected")         
-        else:
-         print("There was an error trying to get " + movement)
-
+              print("Movements have stopped due to emergency")
+       
         # Payload that we send to topic_2 which is output/motorCabin
-        payload_2 = {"movement": movement, "speed": speed, "lock": lock}
-        payload_string = json.dumps(payload_2)
-        client.publish(topic_2, payload_string, qos=0)
-        print(payload_2) 
+         payload_2 = {"movement": movement, "speed": speed, "lock": lock}
+         print("payload is " , payload_2) 
+         payload_string = json.dumps(payload_2)
+         client.publish(topic_2, payload_string, qos=0)
 
     except Exception as e:
         print("Error:", e)
