@@ -69,18 +69,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         }
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
-            if(e.PublishMessage.Topic == "outputs/positionContainer")
-            {
-                var payload = e.PublishMessage.PayloadAsString;
-
-                Console.WriteLine(payload);
-
-                List<double> positionValues = JsonSerializer.Deserialize<List<double>>(payload);
-
-                _container.PositionX = positionValues[0];
-                _container.PositionY = positionValues[1];
-
-            }
+           
             if (e.PublishMessage.Topic == "outputs/positionSpreader")
             {
                 var payload = e.PublishMessage.PayloadAsString;

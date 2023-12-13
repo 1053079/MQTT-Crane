@@ -12,5 +12,12 @@ namespace Wex1.Elephant.Spreader.Core.Entities
 
         public double PositionY { get; set; }
         public double PositionZ { get; set; }
+
+        public Container()
+        {
+
+            PositionX = 110;
+            PositionY = 185;
+        }
     }
 }
