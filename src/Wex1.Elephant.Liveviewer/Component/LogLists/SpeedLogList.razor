@@ -2,6 +2,14 @@
 @using Wex1.Elephant.Liveviewer.Services.Interfaces
 @using Wex1.Elephant.Liveviewer.Services
 
+<Pagination ActivePageNumber="@currentPageNumber"
+            TotalPages="@totalPages"
+            DisplayPages="8"
+            FirstLinkIcon="IconName.ChevronDoubleLeft"
+            PreviousLinkIcon="IconName.ChevronLeft"
+            NextLinkIcon="IconName.ChevronRight"
+            LastLinkIcon="IconName.ChevronDoubleRight"
+            PageChanged="HandlePageChangeAsync" />
 
 <h3>Speed Logs</h3>
 @if (IsError)
@@ -22,36 +30,3 @@ else
     }
 }
 
-@code {
-    private SpeedLog[] SpeedLogs;
-    private string ErrorMessage;
-    private bool IsError;
-
-    private int pageNumber;
-    private int pageSize;
-
-    [Inject]
-    private IApiSpeedLogProvider _speedLogProvider { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await FetchSpeedLogs();
-    }
-
-    private async Task FetchSpeedLogs()
-    {
-        try
-        {
-            IsError = false;
-            var speedLogs = await _speedLogProvider.GetAll(pageNumber, pageSize);
-            SpeedLogs = speedLogs.ToArray();
-        }
-        catch (Exception ex)
-        {
-            IsError = true;
-
-            ErrorMessage = $"Speedlogs could not be shown due to an error: \n {ex.Message}";
-
-        }
-    }
-}
