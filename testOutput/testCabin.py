@@ -4,8 +4,6 @@ import json
 
 # topics that we are subscribed to
 topic_1 = "outputs/motorCabin"
-topic_2 = "inputs/cabinEmergencyButton"
-
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
         print("Connected to broker")
@@ -83,7 +81,6 @@ client.connect(broker, port)
 
 # Subscribed to these topics
 client.subscribe(topic_1) 
-client.subscribe(topic_2)
 
 client.loop_start()
 

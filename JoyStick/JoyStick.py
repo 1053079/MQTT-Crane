@@ -73,6 +73,11 @@ try:
                     lock = not lock
                     movement = 'none'
                     break
+                if keyboard.is_pressed('2'):
+                    print('Cabin Emergencykey is pressed')
+                    movement = 'cabinEmergency'   
+                    emergency = not emergency 
+                    break
             except:
                 break
 
@@ -88,7 +93,7 @@ try:
             speed = "normal"
 
         # Payload
-        payload = {"movement": movement, "speed": speed, "lock": lock}
+        payload = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency}
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
         print(payload)
