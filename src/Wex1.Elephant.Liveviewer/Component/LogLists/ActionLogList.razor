@@ -2,6 +2,33 @@
 @using Wex1.Elephant.Liveviewer.Services
 @using Wex1.Elephant.Liveviewer.Services.Interfaces
 
+<div class="d-flex p-2">
+    <div>
+        <label>Page</label>
+        <Pagination ActivePageNumber="@currentPageNumber"
+                    TotalPages="@totalPages"
+                    DisplayPages="8"
+                    FirstLinkIcon="IconName.ChevronDoubleLeft"
+                    PreviousLinkIcon="IconName.ChevronLeft"
+                    NextLinkIcon="IconName.ChevronRight"
+                    LastLinkIcon="IconName.ChevronDoubleRight"
+                    PageChanged="HandlePageChangeAsync" />
+    </div>
+
+    <div>
+        <label>PageSize</label>
+        <select class="form-select" aria-label="PageSize" @onchange="OnPageSizeChange">
+            <option value="5">5</option>
+            <option selected value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+        </select>
+    </div>
+</div>
+
+
 
 
 <h3>Action Logs</h3>
@@ -11,49 +38,14 @@
         @ErrorMessage
     </div>
 }
-else{
-@if (ActionLogs != null)
-{
-    <LogList TModel="ActionLog" Logs="ActionLogs" />
-}
 else
 {
-    <p>No action logs found.</p>
-}
-}
-
-@code {
-    private ActionLog[] ActionLogs;
-
-    private string ErrorMessage;
-    private bool IsError;
-
-   
-    private int pageNumber;
-    private int pageSize;
-
-    [Inject]
-    private IApiActionLogProvider _actionLogProvider { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    @if (ActionLogs != null)
     {
-        await FetchActionLogs();
+        <LogList TModel="ActionLog" Logs="ActionLogs" />
     }
-
-    private async Task FetchActionLogs()
+    else
     {
-        try
-        {
-            IsError = false;
-            var actionLogs = await _actionLogProvider.GetAll(pageNumber, pageSize);
-            ActionLogs = actionLogs.ToArray();
-        }
-        catch (Exception ex)
-        {
-            IsError = true;
-            ErrorMessage = $"Actionlogs could not be shown due to an error: \n {ex.Message}";
-
-        }
-        
+        <p>No action logs found.</p>
     }
 }
