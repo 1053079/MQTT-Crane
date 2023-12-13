@@ -11,12 +11,15 @@
             <tr>
                 @foreach (var property in typeof(TModel).GetProperties().Select(p => p.Name))
                 {
-                    @if (property != "Id" && property != "Type")
+                    @if (property != "Id" && (ShowType ? ShowType : property != "Type"))
                     {
                         <th>@property</th>
                     }
                 }
-                <th>Details</th>
+                @if (ShowDetailsBtn)
+                {
+                    <th>Details</th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -25,35 +28,38 @@
                 <tr>
                     @foreach (var property in log.GetType().GetProperties())
                     {
-                        @if (property.Name != "Id" && property.Name != "Type")
+                        @if (property.Name != "Id" && (ShowType ? ShowType : property.Name != "Type"))
                         {
                             <td>@property.GetValue(log)</td>
                         }
-                       
+
                     }
-                    @if (log is ErrorLog)
+                    @if (ShowDetailsBtn)
                     {
-                        <td>
-                            <a class="btn btn-primary" href="@($"errorLogInfo/{(log).Id}")">View Details</a>
-                        </td>
-                    }
-                    @if (log is SpeedLog)
-                    {
-                        <td>
-                            <a class="btn btn-primary" href="@($"speedLogInfo/{(log).Id}")">View Details</a>
-                        </td>
-                    }
-                    @if (log is ActionLog)
-                    {
-                        <td>
-                            <a class="btn btn-primary" href="@($"actionLogInfo/{(log).Id}")">View Details</a>
-                        </td>
-                    }
-                    @if (log is PositionLog)
-                    {
-                        <td>
-                            <a class="btn btn-primary" href="@($"positionLogInfo/{(log).Id}")">View Details</a>
-                        </td>
+                        @if (log is ErrorLog)
+                        {
+                            <td>
+                                <a class="btn btn-primary" href="@($"errorLogInfo/{(log).Id}")">View Details</a>
+                            </td>
+                        }
+                        @if (log is SpeedLog)
+                        {
+                            <td>
+                                <a class="btn btn-primary" href="@($"speedLogInfo/{(log).Id}")">View Details</a>
+                            </td>
+                        }
+                        @if (log is ActionLog)
+                        {
+                            <td>
+                                <a class="btn btn-primary" href="@($"actionLogInfo/{(log).Id}")">View Details</a>
+                            </td>
+                        }
+                        @if (log is PositionLog)
+                        {
+                            <td>
+                                <a class="btn btn-primary" href="@($"positionLogInfo/{(log).Id}")">View Details</a>
+                            </td>
+                        }
                     }
                 </tr>
             }
@@ -66,9 +72,13 @@
     public string Title { get; set; }
 
     [Parameter]
+    public bool ShowType { get; set; }
+
+    [Parameter]
+    public bool ShowDetailsBtn { get; set; }
+
+    [Parameter]
     public TModel[] Logs { get; set; }
-
-
 
     private string[] PropertyNames { get; }
 
@@ -78,7 +88,7 @@
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
-  
+
 
 }
 

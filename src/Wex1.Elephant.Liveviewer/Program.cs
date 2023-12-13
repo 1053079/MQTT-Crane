@@ -1,5 +1,7 @@
 using Wex1.Elephant.Liveviewer.Services;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
+using Wex1.Elephant.Liveviewer.Services.Interfaces.Mqtt;
+using Wex1.Elephant.Liveviewer.Services.Mqtt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,7 @@ builder.Services.AddTransient<IApiSpeedLogProvider, ApiSpeedProvider>();
 builder.Services.AddTransient<IApiPositionLogProvider, ApiPositionProvider>();
 
 //builder.Services.AddScoped<ILogsRepositorybase<ErrorLog>, ErrorLogRepository>();
+builder.Services.AddTransient<IMqttService, MqttService>();
 
 var app = builder.Build();
 

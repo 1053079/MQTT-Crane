@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Wex1.Elephant.Logger.WebApi\Wex1.Elephant.Logger.WebApi.csproj" />
+    <PackageReference Include="HiveMQtt" Version="0.6.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.25" />
+    <PackageReference Include="MongoDB.Bson" Version="2.22.0" />
   </ItemGroup>
 
 	
