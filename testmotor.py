@@ -3,6 +3,8 @@ import paho.mqtt.client as mqtt
 import time
 import json
 
+# topics that we are subscribed to
+topic = "outputs/motorCabin"
 
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
@@ -31,6 +33,8 @@ def on_message(client, userdata,message):
               print("You have pressed " + movement + " at cabinspeed 2")
          elif movement == "backward":
               print("You have pressed " + movement + " at cabinspeed 2")
+         elif movement == "cabinEmergency":
+              print("Cabin stopped due to " + movement)     
          ## Left and right are for the Crane movements 
          elif movement == "left":
               print("You have pressed " + movement + " at cranespeed 2")
@@ -42,7 +46,7 @@ def on_message(client, userdata,message):
          elif movement == "down":    
              print("You have pressed " + movement + " at hoistspeed 2")
          elif movement == "none":
-             print("Crane has stopped")    
+             print("Crane lock is " + lock)     
          else:
              print("invalid key detected")      
 
@@ -53,7 +57,8 @@ def on_message(client, userdata,message):
              print("You have pressed " + movement + " at cabinspeed 3")
          elif movement == "backward":
              print("You have pressed " + movement + " at cabinspeed 3")
-
+         elif movement == "cabinEmergency":
+             print("Cabin stopped due to " + movement)  
          ## Left and right are for the Crane movements 
          elif movement == "left":
              print("You have pressed " + movement + " at cranespeed 3")
@@ -67,7 +72,7 @@ def on_message(client, userdata,message):
          elif movement == "down":    
               print("You have pressed " + movement + " at hoistspeed 3")
          elif movement == "none":
-              print("Crane has stopped")  
+              print("Crane lock is " + lock)  
          else:
               print("invalid key detected")  
 
@@ -78,7 +83,8 @@ def on_message(client, userdata,message):
               print("You have pressed " + movement + " at cabinspeed 1")
          elif movement == "backward":
               print("You have pressed " + movement + " at cabinspeed 1")
-
+         elif movement == "cabinEmergency":
+              print("Cabin stopped due to " + movement)  
          ## Left and right are for the Crane movements 
          elif movement == "left":
              print("You have pressed " + movement + " at cranespeed 1")
@@ -91,7 +97,7 @@ def on_message(client, userdata,message):
          elif movement == "down":    
               print("You have pressed " + movement + " at hoistspeed 1")
          elif movement == "none":
-             print("Crane has stopped")  
+             print("Crane lock is " + lock)   
          else:
              print("invalid key detected")         
         else:
@@ -121,7 +127,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.connect(broker, port)
-client.subscribe("output/motorCabin")
+client.subscribe(topic) # Subscribed to the topic
 client.loop_start()
 
 while connected!= True:

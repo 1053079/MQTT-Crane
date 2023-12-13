@@ -5,6 +5,12 @@ import json
 # connects us to the MQTT client
 client = mqtt.Client()
 
+# topics that we are subscribed to
+topic = "inputs/joystick"
+
+# topics that publish our data to
+topic_2 = "outputs/motorCabin"
+
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
         print("Connected to broker")
@@ -22,9 +28,6 @@ def on_message(client, userdata,message):
     speed = payload_data.get("speed") ## speed from joystick input, we will adjust this in our payload
     lock = payload_data.get("lock") ## Checks whether motor is locked or not
      
-    # topics that we send data to
-    topic_2 = "output/motorCabin"
-
     try:  
       if payload_data: ## only does actions if we receive payload data from inputs/joystick
        if not lock: ## if lock is not on we will perform these actions
@@ -36,6 +39,8 @@ def on_message(client, userdata,message):
          elif movement == "backward":
               print("You have pressed " + movement + " at " + speed + " speed")
               speed = 2
+         elif movement == "cabinEmergency":
+              print("stop cabin due to " + movement)     
 
          ## Left and right are for the Crane movements 
          elif movement == "left":
@@ -51,9 +56,7 @@ def on_message(client, userdata,message):
               speed = 2
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
-              speed = 2
-         elif movement == "none":
-             print ("Crane has stopped")     
+              speed = 2     
          else:
              print("invalid key detected")      
 
@@ -82,8 +85,6 @@ def on_message(client, userdata,message):
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
               speed = 3
-         elif movement == "none":
-             print ("Crane has stopped")  
          else:
              print("invalid key detected")  
 
@@ -111,9 +112,7 @@ def on_message(client, userdata,message):
               speed = 1
          elif movement == "down":    
               print("You have pressed " + movement + " at " + speed + " speed") 
-              speed = 1
-         elif movement == "none":
-             print ("Crane has stopped")  
+              speed = 1 
          else:
              print("invalid key detected")         
         else:
@@ -148,7 +147,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.connect(broker, port)
-client.subscribe("inputs/joystick") ## have to be subscribed first then client_loop start!
+client.subscribe(topic) ## have to be subscribed first then client_loop start!
 client.loop_start()
 
 while connected!= True:

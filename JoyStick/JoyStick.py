@@ -74,11 +74,11 @@ try:
                     break
                 if keyboard.is_pressed('1'):
                     print('Dock Emergency key is pressed')
-                    movement = 'none'
+                    movement = 'dockEmergency'
                     break
                 if keyboard.is_pressed('2'):
                     print('Cabin Emergency key is pressed')
-                    movement = 'none'
+                    movement = 'cabinEmergency'
                     break
             except:
                 break
