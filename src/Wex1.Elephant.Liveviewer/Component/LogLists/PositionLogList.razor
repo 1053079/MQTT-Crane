@@ -18,15 +18,14 @@
         @ErrorMessage
     </div>
 }
+else{
+@if (PositionLogs != null)
+{
+        <LogList TModel="PositionLog" Logs="PositionLogs" ShowDetailsBtn=true />
+}
 else
 {
-    @if (PositionLogs != null)
-    {
-        <LogList TModel="PositionLog" Logs="PositionLogs" />
-    }
-    else
-    {
-        <p>No position logs found.</p>
-    }
+    <p>No position logs found.</p>
+}
 }
 
