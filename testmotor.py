@@ -34,7 +34,8 @@ def on_message(client, userdata,message):
          elif movement == "backward":
               print("You have pressed " + movement + " at cabinspeed 2")
          elif movement == "cabinEmergency":
-              print("Cabin stopped due to " + movement)     
+              print("Cabin stopped due to " + movement + " at cabinspeed 2") 
+
          ## Left and right are for the Crane movements 
          elif movement == "left":
               print("You have pressed " + movement + " at cranespeed 2")
@@ -58,7 +59,8 @@ def on_message(client, userdata,message):
          elif movement == "backward":
              print("You have pressed " + movement + " at cabinspeed 3")
          elif movement == "cabinEmergency":
-             print("Cabin stopped due to " + movement)  
+             print("Cabin stopped due to " + movement + " at cabinspeed 3") 
+
          ## Left and right are for the Crane movements 
          elif movement == "left":
              print("You have pressed " + movement + " at cranespeed 3")
@@ -84,7 +86,7 @@ def on_message(client, userdata,message):
          elif movement == "backward":
               print("You have pressed " + movement + " at cabinspeed 1")
          elif movement == "cabinEmergency":
-              print("Cabin stopped due to " + movement)  
+              print("Cabin stopped due to " + movement + " at cabinspeed 1")   
          ## Left and right are for the Crane movements 
          elif movement == "left":
              print("You have pressed " + movement + " at cranespeed 1")
