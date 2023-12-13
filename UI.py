@@ -1,9 +1,12 @@
 import pygame 
-import os  
+import os
+from All_views.view1 import draw_view1
+
+
 
 # Initialize pygame
-pygame.init() 
-  
+pygame.init()
+clock = pygame.time.Clock()
 # Creates the screen allows you to change the (Width, Height) in px.
 WIDTH = 1200
 HEIGHT = 800
@@ -14,7 +17,7 @@ pygame.display.set_caption("Elephant Crane")
 exit = False
 
 # Colours that we can use for visualisation
-white = (255,255,255),
+white = (255,255,255)
 black = (0,0,0),
 blue = (0,0,255)
 skyBlue = (0,255,255)
@@ -44,13 +47,23 @@ circle2 = pygame.image.load('UserInterface/buttons/plusButton.png')
 # circle2 = pygame.Surface((60,60), pygame.SRCALPHA)
 # drawCircle2 = pygame.draw.circle(circle2, white, (30,30), 30)
 
+rope_height = 110
+container_picked_up = False
+Container_1 = pygame.Rect(230, 245, 40, 15)
+
+boat_view1 = pygame.image.load('UserInterface/boat_view1.png')
+new_size_view1 = (100, 50)
+resized_boat_view1 = pygame.transform.scale(boat_view1, new_size_view1)
+font = pygame.font.Font(None, 15)
+text_color = white = (255, 255, 255)
+
 # the while loop..
 while not exit: 
     # Fills the background with blue color
     screen.fill(blueDeFrance)
 
     # blits the views to the screen. the parameters are the x and y coordinates.
-    screen.blit(view, (75,50)) 
+    screen.blit(view, (75,50))
     screen.blit(view2, (625,50))
     screen.blit(view3, (75,400))
     
@@ -63,11 +76,17 @@ while not exit:
     # blits the circles to screen
     screen.blit(circle, (1025,505))
     screen.blit(circle2, (1025,585))
-    
+
+    screen.blit(resized_boat_view1, (200, 255))
+
+    rope_height = draw_view1(screen, rope_height, font, text_color)
+
+
     # if user presses quit the application closes.
     for event in pygame.event.get(): 
         if event.type == pygame.QUIT: 
             exit = True
 
     # updates the display
-    pygame.display.flip() 
+    pygame.display.flip()
+    clock.tick(30)
