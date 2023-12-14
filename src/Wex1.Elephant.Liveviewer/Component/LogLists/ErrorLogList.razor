@@ -3,19 +3,23 @@
 @using Wex1.Elephant.Liveviewer.Services.Interfaces
 
 <h3>Error Logs</h3>
-<DateInput TValue="DateOnly?"
-           Value="selectedDate"
-           ValueExpression="() => selectedDate"
-           ValueChanged="(value) => HandleDateChangeAsync(value)"
-           EnableMinMax="true"
-           Min="@minDate"
-           Max="@maxDate"
-           Placeholder="Enter Date" />
 
-<select @onchange="HandleSortDirectionChange">
-    <option value="false">Oldest</option>
-    <option value="true" selected>Newest</option>
-</select>
+<div class="d-flex">
+    <div>
+        <DateInput TValue="DateOnly?"
+                   Value="selectedDate"
+                   ValueExpression="() => selectedDate"
+                   ValueChanged="(value) => HandleDateChangeAsync(value)"
+                   EnableMinMax="true"
+                   Min="@minDate"
+                   Max="@maxDate"
+                   Placeholder="Enter Date" />
+    </div>
+    <select @onchange="HandleSortDirectionChange">
+        <option value="false">Oldest</option>
+        <option value="true" selected>Newest</option>
+    </select>
+</div>
 
 @if (IsError)
 {
