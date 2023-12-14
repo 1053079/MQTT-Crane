@@ -56,3 +56,15 @@ The MqttService has to subscribe to all the Logger/{LogType} Mqtt endpoints. one
 ```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Position","Component":"Spreader","Description":"Spreader moved downwards","Position":[15,10,8]}```
 - ActionLog ->
 ```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Action","Component":"joystick","Description":"Joystick send a forward movement"}```
+# Spreader 
+De spreader luistert naar de volgende topics: "inputs/joystick" en "outputs/positionSpreader".
+Met het topic outputs/positionSpreader weten we wanneer de sensoren de container detecteren en dus wanneer hij kan locken.
+Met het topic inputs/joystick kijken we of de gebruiker de container effectief wil locken, dit gebeurd via volgende payload:
+payload = {"movement": movement, "speed": speed, "lock": lock}
+De spreader kijkt ook waar hij zich bevind zodat deze niet zomaar kan unlocken boven de zee en dat dit enkel in het doelgerichte gebied (sts-kraan) is.
+
+De topics die de spreader verstuurt zijn twee verschillende --> een voor wanneer hij de sensor van de spreader de container detecteert,
+een zodat de spreader kan locken op de container en kan unlocken in het gerichte doelgebied. Hieronder zie je de volgende topics
+![Alt text](images/spreaderTopics.png)
+
+ 
