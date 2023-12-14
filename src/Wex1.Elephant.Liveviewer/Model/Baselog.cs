@@ -1,4 +1,6 @@
-﻿using Wex1.Elephant.Liveviewer.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Wex1.Elephant.Liveviewer.Model
 {
@@ -8,12 +10,12 @@ namespace Wex1.Elephant.Liveviewer.Model
         public string Id { get; set; }
 
         public DateTime Timestamp { get; set; }
+        
+        public string Component { get; set; }
 
-        public Components Component { get; set; }
-
-        public EventType Type { get; set; }
-
-        public string Description { get; set; }
+        public string Type { get; set; }
+        
+        public string Description { get; set;  }
 
 
     }

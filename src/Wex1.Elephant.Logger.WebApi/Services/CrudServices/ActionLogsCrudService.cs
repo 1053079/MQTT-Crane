@@ -16,7 +16,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
         private readonly IUriService _uriService;
 
         public ActionLogsCrudService(
-            IActionLogRepository actionLogRepository, 
+            IActionLogRepository actionLogRepository,
             IUriService uriService)
         {
             _actionLogRepository = actionLogRepository;
@@ -61,6 +61,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
         }
 
 
-        
+
     }
 }
