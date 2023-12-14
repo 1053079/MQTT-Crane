@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import keyboard
 import json
+import time
 
 address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud" # Pull Request comment 1: Address van broker. Dit is belangrijk, want anders kan je niet connecten.
 port = 8883 # Pull Request comment 1: Port van broker. Dit hoort bij de address. Ook belangrijk voor connectie.
@@ -91,6 +92,11 @@ try:
                     print('Enter key is pressed')
                     lock = not lock
                     movement = 'none'
+                    break
+                if keyboard.KEY_UP == key_event.event_type:
+                    print('Key is released')
+                    movement = 'none'
+                    time.sleep(0.1) # Een delay zodat de 'none' key verstuurd wordt ongeacht de snelheid van andere key inputs.
                     break
             except:
                 break
