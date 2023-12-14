@@ -24,7 +24,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             _uriService = uriService;
         }
 
-        public async Task<IActionResult> GetAllPaged(PaginationFilter paginationFilter,DateFilter dateFilter, HttpRequest request)
+        public async Task<IActionResult> GetAllPaged(PaginationFilter paginationFilter, DateFilter dateFilter, HttpRequest request)
         {
             var route = request.Path.Value;
             var validPageFilter = new PaginationFilter(paginationFilter.PageNumber, paginationFilter.PageSize);

@@ -2,10 +2,8 @@
 using HiveMQtt.Client.Events;
 using Microsoft.AspNetCore.Components;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services.Interfaces.Mqtt;
-using Wex1.Elephant.Liveviewer.Services.Mqtt;
 
 namespace Wex1.Elephant.Liveviewer.Component.LogLists
 {
@@ -29,9 +27,9 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
 
         private async void _mqttClient_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e)
         {
-            
+
             var payloadModel = JsonSerializer.Deserialize<LogPayLoadModel>(e.PublishMessage.Payload);
-            
+
             if (payloadModel is not null)
             {
 

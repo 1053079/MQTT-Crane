@@ -4,7 +4,6 @@ using HiveMQtt.Client.Options;
 using MongoDB.Bson;
 using System.Diagnostics;
 using System.Text.Json;
-using Wex.Elephant.Logger.Infrastructure.Repositories;
 using Wex1.Elephant.Logger.Core;
 using Wex1.Elephant.Logger.Core.Entities;
 using Wex1.Elephant.Logger.Core.Interfaces.Mqtt;
@@ -22,7 +21,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
         protected HiveMQClient _mqttClient { private set; get; }
 
         public MqttLoggerService(
-            IErrorLogRepository errorLogRepository, 
+            IErrorLogRepository errorLogRepository,
             ISpeedLogRepository speedLogRepository,
             IActionLogRepository actionLogRepository,
             IPositionLogRepository positionLogRepository)

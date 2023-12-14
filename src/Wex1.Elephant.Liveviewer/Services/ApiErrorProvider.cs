@@ -32,7 +32,7 @@ namespace Wex1.Elephant.Liveviewer.Services
         {
 
             var dtos = await _httpClient.GetFromJsonAsync<PageDto<ErrorDto>>($"ErrorLogs?PageNumber={pageNumber}&PageSize={pageSize}");
-           
+
             var errorLogs = dtos.Data.Select(el => new ErrorLog
             {
                 Id = el.Id,
