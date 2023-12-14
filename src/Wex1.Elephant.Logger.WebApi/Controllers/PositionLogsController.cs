@@ -16,9 +16,10 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> Get([FromQuery] PaginationFilter filter)
+        public Task<IActionResult> Get([FromQuery] PaginationFilter paginationFilter, [FromQuery] DateFilter dateFilter)
         {
-            return _positionLogCrudService.GetAllPaged(filter, Request);
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+            return _positionLogCrudService.GetAllPaged(paginationFilter, dateFilter, Request);
         }
     }
 }
