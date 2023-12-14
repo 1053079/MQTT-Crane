@@ -21,7 +21,7 @@ namespace Wex1.Elephant.Liveviewer.Services.Mapper
         {
             return dtos.Select(dto => dto.MapToLog());
         }
-        public static ActionLog MapToLOg(this ActionDto dto)
+        public static ActionLog MapToLog(this ActionDto dto)
         {
             return new ActionLog
             {
@@ -35,7 +35,7 @@ namespace Wex1.Elephant.Liveviewer.Services.Mapper
 
         public static IEnumerable<ActionLog> MapToLog(this IEnumerable<ActionDto> dtos)
         {
-            return dtos.Select(dto => dto.MapToLOg());
+            return dtos.Select(dto => dto.MapToLog());
         }
 
         public static PositionLog MapToLog(this PositionDto dto)
