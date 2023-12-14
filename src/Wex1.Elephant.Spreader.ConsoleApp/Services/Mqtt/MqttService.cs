@@ -12,6 +12,7 @@ using Wex1.Elephant.Spreader.Core.Entities;
 using System.Net.Sockets;
 using Amazon.Util.Internal;
 using MongoDB.Bson;
+using Wex1.Elephant.Spreader.Core.SpreaderPositionDto;
 
 namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 {
@@ -54,7 +55,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
             await _mqttClient.ConnectAsync().ConfigureAwait(false);
             await SubscribePositionSpreader();
             await SubscribeJoystick();
-            await SubscribePositionContainer();
+            
 
 
         }
@@ -69,28 +70,17 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         }
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
-            if(e.PublishMessage.Topic == "outputs/positionContainer")
-            {
-                var payload = e.PublishMessage.PayloadAsString;
-
-                Console.WriteLine(payload);
-
-                List<double> positionValues = JsonSerializer.Deserialize<List<double>>(payload);
-
-                _container.PositionX = positionValues[0];
-                _container.PositionY = positionValues[1];
-
-            }
+           
             if (e.PublishMessage.Topic == "outputs/positionSpreader")
             {
                 var payload = e.PublishMessage.PayloadAsString;
 
                 Console.WriteLine(payload);
-                
-                List<double> positionValues = JsonSerializer.Deserialize<List<double>>(payload);
 
-                _spreader.PositionX = positionValues[0];
-                _spreader.PositionY = positionValues[1];
+                SpreaderPositionDto positionValues = JsonSerializer.Deserialize<SpreaderPositionDto>(payload);
+
+                _spreader.PositionX = positionValues.PositionX;
+                _spreader.PositionY = positionValues.PositionY;
                 //_spreader.PositionZ = positionValues[2];
                 //container starting position : 110 - 150 X || 185-200 Y
                 if (_spreader.PositionX >= _container.PositionX && _spreader.PositionX <= (_container.PositionX + 40)
@@ -174,15 +164,6 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 
             await SubscribeToTopic("inputs/joystick");
         }
-        public async Task SubscribePositionContainer()
-        {
-
-
-            await SubscribeToTopic("outputs/positionContainer");
-
-
-        }
-
 
         public async Task PublishSensorStatus(bool detectedContainer)
         {
