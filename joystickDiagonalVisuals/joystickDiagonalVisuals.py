@@ -46,10 +46,10 @@ while run:
     screen.fill((128, 128, 128))
 
     # Dit update de positie van de PNG's (pas deze aan naar wens)
-    forwardLeft_rect.topleft = (SCREEN_WIDTH // 2 + 320 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2)
-    forwardRight_rect.topleft = (SCREEN_WIDTH // 2 + 320 - arrow_width // 2, SCREEN_HEIGHT - arrow_height)
-    backwardLeft_rect.topleft = (SCREEN_WIDTH // 2 + 430 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5)
-    backwardRight_rect.topleft = (SCREEN_WIDTH // 2 + 320 , SCREEN_HEIGHT - arrow_height * 1.5)
+    forwardLeft_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width * 1.5, SCREEN_HEIGHT - arrow_height * 2.5)
+    forwardRight_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width * 0.5, SCREEN_HEIGHT - arrow_height * 2.5)
+    backwardLeft_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width * 1.5, SCREEN_HEIGHT - arrow_height * 1.5)
+    backwardRight_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width * 0.5, SCREEN_HEIGHT - arrow_height * 1.5)
 
     # Dit zorgt ervoor dat de images verschijnen als de toetsen worden ingedrukt
     if keys[pygame.K_w] and keys[pygame.K_a]:
