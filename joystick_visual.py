@@ -7,17 +7,17 @@ SCREEN_HEIGHT = 1000
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# Dit zijn de variabelen voor de afbeeldingen
-arrow_up = pygame.image.load('afbeeldingen/arrow_up.png').convert_alpha()
-arrow_down = pygame.image.load('afbeeldingen/arrow_down.png').convert_alpha()
-arrow_left = pygame.image.load('afbeeldingen/arrow_left.png').convert_alpha()
-arrow_right = pygame.image.load('afbeeldingen/arrow_right.png').convert_alpha()
-arrow_upstairs = pygame.image.load('afbeeldingen/arrow_upstairs.png').convert_alpha()
-arrow_downstairs = pygame.image.load('afbeeldingen/arrow_downstairs.png').convert_alpha()
-locked = pygame.image.load('afbeeldingen/locked.png').convert_alpha()
-unlocked = pygame.image.load('afbeeldingen/unlocked.png').convert_alpha()
-siren = pygame.image.load('afbeeldingen/siren.png').convert_alpha()
-emergency = pygame.image.load('afbeeldingen/emergency.png').convert_alpha()
+# Dit zijn de variabelen voor de images
+arrow_up = pygame.image.load('images/arrow_up.png').convert_alpha()
+arrow_down = pygame.image.load('images/arrow_down.png').convert_alpha()
+arrow_left = pygame.image.load('images/arrow_left.png').convert_alpha()
+arrow_right = pygame.image.load('images/arrow_right.png').convert_alpha()
+arrow_upstairs = pygame.image.load('images/arrow_upstairs.png').convert_alpha()
+arrow_downstairs = pygame.image.load('images/arrow_downstairs.png').convert_alpha()
+locked = pygame.image.load('images/locked.png').convert_alpha()
+unlocked = pygame.image.load('images/unlocked.png').convert_alpha()
+siren = pygame.image.load('images/siren.png').convert_alpha()
+emergency = pygame.image.load('images/emergency.png').convert_alpha()
 
 # dit definieert de  breedte en hoogte van de PNG
 new_arrow_width = 100
@@ -39,7 +39,7 @@ emergency = pygame.transform.scale(emergency, (new_arrow_width, new_arrow_height
 arrow_width = new_arrow_width
 arrow_height = new_arrow_height
 
-# Positie van de afbeeldingen
+# Positie van de images
 arrow_up_rect = arrow_up.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2))
 arrow_down_rect = arrow_down.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height))
 arrow_left_rect = arrow_left.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5))
@@ -76,7 +76,7 @@ while run:
     arrow_upstairs_rect.topleft = (SCREEN_WIDTH // 2 + 450, SCREEN_HEIGHT - arrow_height * 3)
     arrow_downstairs_rect.topleft = (SCREEN_WIDTH // 2 + 450, SCREEN_HEIGHT - arrow_height)
 
-    # Dit zorgt ervoor dat de afbeeldingen verschijnen als de toetsen worden ingedrukt
+    # Dit zorgt ervoor dat de images verschijnen als de toetsen worden ingedrukt
     if keys[pygame.K_w]:
         screen.blit(arrow_up, arrow_up_rect)
 
