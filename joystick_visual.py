@@ -22,6 +22,10 @@ locked = pygame.image.load('images/locked.png').convert_alpha()
 unlocked = pygame.image.load('images/unlocked.png').convert_alpha()
 siren = pygame.image.load('images/siren.png').convert_alpha()
 emergency = pygame.image.load('images/emergency.png').convert_alpha()
+forwardLeft = pygame.image.load('images/forwardLeft.png').convert_alpha()
+forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
+backwardLeft = pygame.image.load('images/backwardLeft.png').convert_alpha()
+backwardRight = pygame.image.load('images/backwardRight.png').convert_alpha()
 
 # dit definieert de  breedte en hoogte van de PNG
 new_arrow_width = 100
@@ -38,6 +42,10 @@ locked = pygame.transform.scale(locked, (new_arrow_width, new_arrow_height))
 unlocked = pygame.transform.scale(unlocked, (new_arrow_width, new_arrow_height))
 siren = pygame.transform.scale(siren, (new_arrow_width, new_arrow_height))
 emergency = pygame.transform.scale(emergency, (new_arrow_width, new_arrow_height))
+forwardLeft = pygame.transform.scale(forwardLeft, (new_arrow_width, new_arrow_height))
+forwardRight = pygame.transform.scale(forwardRight, (new_arrow_width, new_arrow_height))
+backwardLeft = pygame.transform.scale(backwardLeft, (new_arrow_width, new_arrow_height))
+backwardRight = pygame.transform.scale(backwardRight, (new_arrow_width, new_arrow_height))
 
 # Werkt de breedte en hoogte variabelen bij
 arrow_width = new_arrow_width
@@ -58,6 +66,12 @@ unlocked_rect = unlocked.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGH
 
 siren_rect = siren.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height))
 emergency_rect = emergency.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 4))
+
+
+forwardLeft_rect = forwardLeft.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2))
+forwardRight_rect = forwardRight.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height))
+backwardLeft_rect = backwardLeft.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5))
+backwardRight_rect = backwardRight.get_rect(topleft=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - arrow_height * 1.5))
 
 # Dit voegt de MQTT-gegevens toe:
 mqtt_username = "Admin"
@@ -81,7 +95,9 @@ def on_connect(client, userdata, flags, rc, properties=None):
         print(f"Connection failed with code {rc}")
 
 def on_message(client, userdata, message):
-    global movement, speed, lock  # Voeg deze lijn toe
+
+    global movement, speed, lock  
+
     print(message.topic)
     payload = json.loads(message.payload.decode("utf-8"))
     print(payload)
@@ -121,6 +137,11 @@ while run:
     arrow_upstairs_rect.topleft = (SCREEN_WIDTH // 2 + 450, SCREEN_HEIGHT - arrow_height * 3)
     arrow_downstairs_rect.topleft = (SCREEN_WIDTH // 2 + 450, SCREEN_HEIGHT - arrow_height)
 
+    forwardLeft_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width + 300, SCREEN_HEIGHT - arrow_height * 2.5)
+    forwardRight_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width + 450, SCREEN_HEIGHT - arrow_height * 2.5)
+    backwardLeft_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width + 300, SCREEN_HEIGHT - arrow_height * 1.5)
+    backwardRight_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width + 450, SCREEN_HEIGHT - arrow_height * 1.5)
+
     # Dit zorgt ervoor dat de images verschijnen als de toetsen worden ingedrukt
     if movement == 'forward':
         screen.blit(arrow_up, arrow_up_rect)
@@ -144,6 +165,15 @@ while run:
         screen.blit(locked, locked_rect)
     else:
         screen.blit(unlocked, unlocked_rect)
+
+    if movement == 'forwardLeft' :
+        screen.blit(forwardLeft, forwardLeft_rect)
+    if movement == 'forwardRight' :
+        screen.blit(forwardRight, forwardRight_rect)
+    if movement == 'backwardLeft' :
+        screen.blit(backwardLeft, backwardLeft_rect)
+    if movement == 'backwardRight' :
+        screen.blit(backwardRight, backwardRight_rect)
 
   
     pygame.display.flip()
