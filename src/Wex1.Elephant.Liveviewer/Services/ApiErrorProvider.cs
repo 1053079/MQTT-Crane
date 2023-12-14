@@ -1,6 +1,7 @@
 ﻿using Wex1.Elephant.Liveviewer.Dto;
 using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
+using Wex1.Elephant.Liveviewer.Services.Mapper;
 
 namespace Wex1.Elephant.Liveviewer.Services
 {
@@ -28,21 +29,10 @@ namespace Wex1.Elephant.Liveviewer.Services
             return errorLog;
         }
 
-        public async Task<IEnumerable<ErrorLog>> GetAll(int pageNumber, int pageSize)
+        public async Task<PageDto<ErrorDto>> GetPage(int pageNumber, int pageSize)
         {
-
-            var dtos = await _httpClient.GetFromJsonAsync<PageDto<ErrorDto>>($"ErrorLogs?PageNumber={pageNumber}&PageSize={pageSize}");
-
-            var errorLogs = dtos.Data.Select(el => new ErrorLog
-            {
-                Id = el.Id,
-                Description = el.Description,
-                Component = el.Component,
-                Timestamp = el.Timestamp,
-                Type = el.Type
-            });
-
-            return errorLogs;
+            return await _httpClient.GetFromJsonAsync<PageDto<ErrorDto>>($"ErrorLogs?PageNumber={pageNumber}&PageSize={pageSize}");
         }
+
     }
 }

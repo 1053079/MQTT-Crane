@@ -5,11 +5,11 @@
 
         public string Id { get; set; }
 
-
+        [JsonPropertyName("EventTimeStamp")]
         public DateTime Timestamp { get; set; }
 
         public string Type { get; set; }
-
+        
         public string Component { get; set; }
         public string Description { get; set; }
     }
