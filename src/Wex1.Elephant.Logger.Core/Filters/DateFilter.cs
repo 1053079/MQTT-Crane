@@ -14,7 +14,9 @@
         public DateFilter(DateTime? selectedDate, bool newestFirst)
         {
             var dateNow = DateTime.UtcNow.Date;
-            SelectedDate = selectedDate.Value.Date > dateNow ? dateNow : selectedDate.Value.Date;
+            SelectedDate = selectedDate.HasValue
+            ? (selectedDate.Value.Date > dateNow ? dateNow : selectedDate.Value.Date)
+            : null;
             NewestFirst = newestFirst;
         }
 

@@ -52,28 +52,36 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
 
         public async Task<IEnumerable<T>> GetPagedData(int pageNumber, int pageSize, DateTime? selectedDate, bool newestFirst)
         {
-            var dateFilter = Builders<T>.Filter
-                .Eq(T => T.EventTimeStamp, selectedDate.Value.Date);
-
+            
             var sortFilter = newestFirst
                 ? Builders<T>.Sort.Descending("timestamp")
                 : Builders<T>.Sort.Ascending("timestamp");
 
             if (selectedDate is null)
+            {
                 return _collection
                 .Find(_ => true)
                 .Sort(sortFilter)
                 .Limit(pageSize)
                 .Skip((pageNumber - 1) * pageSize)
                 .ToList();
+            }
+            else
+            {
+                var dateFilter = Builders<T>.Filter
+                .Eq(T => T.EventTimeStamp, selectedDate.Value.Date);
+
+                return _collection
+               .Find(dateFilter)
+               .Sort(sortFilter)
+               .Limit(pageSize)
+               .Skip((pageNumber - 1) * pageSize)
+               .ToList();
+            }
+                
 
 
-            return _collection
-                .Find(dateFilter)
-                .Sort(sortFilter)
-                .Limit(pageSize)
-                .Skip((pageNumber - 1) * pageSize)
-                .ToList();
+           
         }
 
         public async Task<long> CountRecords()
