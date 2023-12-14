@@ -1,9 +1,10 @@
-
 # view1.py
 
 import pygame
+pygame.init()
 from pygame.font import Font
-pygame.font.init()
+import paho.mqtt.client as mqtt
+import json
 
 
 # Set up colors
@@ -37,6 +38,41 @@ spreader_distance = 1
 
 font = pygame.font.Font(None, 20)
 text_color = white = (255, 255, 255)
+
+def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader_width, spreader_distance, font, text_color):
+    spreader_x = cabin_centerx - spreader_width // 2
+    spreader_y = cabin_bottom + rope_height + spreader_distance
+    pygame.draw.rect(screen, yellow, (spreader_x, spreader_y, spreader_width, spreader_height))
+
+    # Show spreader location
+    spreader_location_text = font.render(f"Spreader Location: ({spreader_x}, {spreader_y})", True, text_color)
+    screen.blit(spreader_location_text, (75, 65))
+
+    return spreader_x, spreader_y
+
+mqtt_broker_address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
+mqtt_port = 8883
+mqtt_username = "Admin"
+mqtt_password = "hMu4P6L_LAMj8t3"
+mqtt_topic = "outputs/positionSpreader"
+
+client = mqtt.Client()
+client.username_pw_set(mqtt_username, mqtt_password)
+client.connect(mqtt_broker_address, mqtt_port, 60)
+
+
+def sent_spreader_location(cabin_centerx, cabin_bottom, rope_height, spreader_width, spreader_distance):
+    spreader_x = cabin_centerx - spreader_width // 2
+    spreader_y = cabin_bottom + rope_height + spreader_distance
+
+    spreader_location = {
+        "positionX": float(spreader_x),
+        "positionY": float(spreader_y)
+    }
+
+    client.publish(mqtt_topic, json.dumps(spreader_location))
+
+
 def draw_view1(screen, rope_height, font, text_color):
         keys = pygame.key.get_pressed()
 
@@ -65,13 +101,10 @@ def draw_view1(screen, rope_height, font, text_color):
         pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height),5)  # Rope
         pygame.draw.rect(screen, dark_green, Container_1)
 
-        spreader_x = Cabin.centerx - spreader_width // 2
-        spreader_y = Cabin.bottom + rope_height + spreader_distance
-        pygame.draw.rect(screen, yellow, (spreader_x, spreader_y, spreader_width, spreader_height))
-
-        # Show spreader location
-        spreader_location_text = font.render(f"Spreader Location: ({spreader_x}, {spreader_y})", True, text_color)
-        screen.blit(spreader_location_text, (75, 65))
-
+        # spreader_location
+        spreader_x, spreader_y = spreader_location(screen, Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance, font, text_color)
+        sent_spreader_location(Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance)
 
         return rope_height
+
+

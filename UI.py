@@ -1,4 +1,5 @@
 import pygame
+pygame.init()
 import os
 from All_views.view1 import draw_view1
 from All_views.view2 import draw_view2
