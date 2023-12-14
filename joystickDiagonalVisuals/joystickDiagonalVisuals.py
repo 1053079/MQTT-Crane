@@ -8,10 +8,10 @@ SCREEN_HEIGHT = 1000
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Dit zijn de variabelen voor de images
-forwardLeft = pygame.image.load('joystickDiagonalVisuals/images/forwardLeft.png').convert_alpha()
-forwardRight = pygame.image.load('joystickDiagonalVisuals/images/forwardRight.png').convert_alpha()
-backwardLeft = pygame.image.load('joystickDiagonalVisuals/images/backwardLeft.png').convert_alpha()
-backwardRight = pygame.image.load('joystickDiagonalVisuals/images/backwardRight.png').convert_alpha()
+forwardLeft = pygame.image.load('images/forwardLeft.png').convert_alpha()
+forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
+backwardLeft = pygame.image.load('images/backwardLeft.png').convert_alpha()
+backwardRight = pygame.image.load('images/backwardRight.png').convert_alpha()
 
 # Dit definieert de breedte en hoogte van de PNG
 new_arrow_width = 100
