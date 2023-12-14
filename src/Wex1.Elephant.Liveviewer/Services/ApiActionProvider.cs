@@ -28,9 +28,16 @@ namespace Wex1.Elephant.Liveviewer.Services
             return actionLog;
         }
 
-        public async Task<PageDto<ActionDto>> GetPage(int pageNumber, int pageSize)
+        public async Task<PageDto<ActionDto>> GetPage(int pageNumber, int pageSize, DateOnly? selectedDate, bool sortDirection)
         {
-            return await _httpClient.GetFromJsonAsync<PageDto<ActionDto>>($"ActionLogs?PageNumber={pageNumber}&PageSize={pageSize}");
+            DateTime? selectedDateTime =
+                selectedDate?.ToString() != null
+                ? DateTime.Parse(selectedDate.ToString())
+                : null;
+
+            var url = $"ActionLogs?PageNumber={pageNumber}&PageSize={pageSize}&SelectedDate={selectedDateTime}&NewestFirst={sortDirection}";
+
+            return await _httpClient.GetFromJsonAsync<PageDto<ActionDto>>(url);
         }
     }
 }

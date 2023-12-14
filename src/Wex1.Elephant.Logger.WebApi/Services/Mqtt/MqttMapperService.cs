@@ -115,10 +115,10 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
                 EventType = "Action",
                 Description = $"The Joystick moved {joystickInput.Direction} at a {joystickInput.Speed} and the spreader lock is {(joystickInput.IsLocked ? "Locked" : "Unlocked")}.",
                 EventTimeStamp = DateTime.UtcNow
-                
+
             };
 
-            _mqttClient.PublishAsync("logger/actions",JsonSerializer.Serialize(newActionLog)).ConfigureAwait(false);
+            _mqttClient.PublishAsync("logger/actions", JsonSerializer.Serialize(newActionLog)).ConfigureAwait(false);
         }
 
     }
