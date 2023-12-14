@@ -53,7 +53,7 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
 
         public async Task<IEnumerable<T>> GetPagedData(int pageNumber, int pageSize, DateTime? selectedDate, bool newestFirst)
         {
-            
+
             var sortFilter = newestFirst
                 ? Builders<T>.Sort.Descending("timestamp")
                 : Builders<T>.Sort.Ascending("timestamp");
@@ -80,15 +80,24 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
                .Skip((pageNumber - 1) * pageSize)
                .ToList();
             }
-           
+
         }
 
         public async Task<long> CountRecords(DateTime? selectedDate)
         {
-            var dateFilter = Builders<T>.Filter.Gte("timestamp", BsonDateTime.Create(selectedDate.Value)) &
+            if (selectedDate is null)
+            {
+                return await _collection.CountAsync(_ => true);
+            }
+
+            else
+            {
+                var dateFilter = Builders<T>.Filter.Gte("timestamp", BsonDateTime.Create(selectedDate.Value)) &
                     Builders<T>.Filter.Lt("timestamp", BsonDateTime.Create(selectedDate.Value.AddDays(1)));
 
-            return await _collection.CountAsync(dateFilter);
+                return await _collection.CountAsync(dateFilter);
+            }
+
         }
     }
 }
