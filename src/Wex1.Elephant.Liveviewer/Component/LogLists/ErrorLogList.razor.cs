@@ -44,7 +44,6 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
             if(selectedDate!= value || value == null)
             {
                 selectedDate = value;
-                ErrorLogs = null;
                 await FetchErrorLogs();
             }
         }
@@ -62,6 +61,8 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
                 IsError = false;
                 try
                 {
+                    ErrorLogs = null;
+                    await Task.Delay(500);
                     var pageDto = await _errorLogProvider.GetPage(currentPageNumber, pageSize, selectedDate, sortDirection);
                     totalPages = pageDto.TotalPages;
                     ErrorLogs = pageDto.Data.MapToLog().ToArray();

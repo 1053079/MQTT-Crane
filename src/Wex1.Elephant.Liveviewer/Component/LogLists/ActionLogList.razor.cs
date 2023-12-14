@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Wex1.Elephant.Liveviewer.Model;
+using Wex1.Elephant.Liveviewer.Pages;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
 using Wex1.Elephant.Liveviewer.Services.Mapper;
 
@@ -16,6 +17,9 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
         private int pageSize = 30;
         private int totalPages;
 
+        private DateOnly? selectedDate, minDate, maxDate;
+        private bool sortDirection;
+
         [Inject]
         private IApiActionLogProvider _actionLogProvider { get; set; }
 
@@ -29,6 +33,21 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
             await Task.Run(() => { currentPageNumber = newPageNumber; });
             await FetchActionLogs();
         }
+        private async Task HandleDateChangeAsync(DateOnly? value)
+        {
+            if (selectedDate != value || value == null)
+            {
+                selectedDate = value;
+                await FetchActionLogs();
+            }
+        }
+
+        public async Task HandleSortDirectionChange(ChangeEventArgs e)
+        {
+            sortDirection = bool.Parse(e.Value.ToString());
+            FetchActionLogs();
+        }
+
 
         private async Task FetchActionLogs()
         {
@@ -37,7 +56,9 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
                 IsError = false;
                 try
                 {
-                    var pageDto = await _actionLogProvider.GetPage(currentPageNumber, pageSize);
+                    ActionLogs = null;
+                    await Task.Delay(500);
+                    var pageDto = await _actionLogProvider.GetPage(currentPageNumber, pageSize, selectedDate, sortDirection);
                     ActionLogs = pageDto.Data.MapToLog().ToArray();
                     totalPages = pageDto.TotalPages;
                     await InvokeAsync(StateHasChanged);

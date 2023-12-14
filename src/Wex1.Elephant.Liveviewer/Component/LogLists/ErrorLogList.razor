@@ -2,8 +2,6 @@
 @using Wex1.Elephant.Liveviewer.Services
 @using Wex1.Elephant.Liveviewer.Services.Interfaces
 
-
-
 <h3>Error Logs</h3>
 <DateInput TValue="DateOnly?"
            Value="selectedDate"
@@ -13,6 +11,7 @@
            Min="@minDate"
            Max="@maxDate"
            Placeholder="Enter Date" />
+
 <select @onchange="HandleSortDirectionChange">
     <option value="false">Oldest</option>
     <option value="true" selected>Newest</option>
