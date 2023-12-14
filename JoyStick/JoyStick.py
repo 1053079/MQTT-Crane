@@ -93,11 +93,12 @@ try:
                     lock = not lock
                     movement = 'none'
                     break
-                if keyboard.KEY_UP == key_event.event_type:
-                    print('Key is released')
-                    movement = 'none'
-                    time.sleep(0.1) # Een delay zodat de 'none' key verstuurd wordt ongeacht de snelheid van andere key inputs.
-                    break
+                if key_event.event_type == keyboard.KEY_UP:
+                    if key_event.name != 'enter':
+                        print('Key is released')
+                        movement = 'none'
+                        time.sleep(0.1)
+                        break
             except:
                 break
 
