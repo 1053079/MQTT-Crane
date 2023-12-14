@@ -6,7 +6,7 @@ namespace Wex1.Elephant.Liveviewer.Services.Interfaces
 {
     public interface IApiLogProvider<T, TDto> where T : Baselog where TDto : class
     {
-        Task<PageDto<TDto>> GetPage(int pageNumber, int pageSize);
+        Task<PageDto<TDto>> GetPage(int pageNumber, int pageSize, DateOnly? selectedDate, bool sortDirection);
         Task<T> Get(string id);
 
     }
