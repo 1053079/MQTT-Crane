@@ -67,6 +67,7 @@ unlocked_rect = unlocked.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGH
 siren_rect = siren.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height))
 emergency_rect = emergency.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 4))
 
+
 forwardLeft_rect = forwardLeft.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2))
 forwardRight_rect = forwardRight.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height))
 backwardLeft_rect = backwardLeft.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5))
@@ -94,7 +95,9 @@ def on_connect(client, userdata, flags, rc, properties=None):
         print(f"Connection failed with code {rc}")
 
 def on_message(client, userdata, message):
+
     global movement, speed, lock  
+
     print(message.topic)
     payload = json.loads(message.payload.decode("utf-8"))
     print(payload)
