@@ -13,6 +13,6 @@ namespace Wex1.Elephant.Logger.Core.Interfaces.Repositories
         Task AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(T entity);
-        Task<long> CountRecords();
+        Task<long> CountRecords(DateTime? selectedDate);
     }
 }

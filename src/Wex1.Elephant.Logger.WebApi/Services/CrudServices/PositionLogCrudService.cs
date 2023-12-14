@@ -29,7 +29,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             var validPageFilter = new PaginationFilter(paginationFilter.PageNumber, paginationFilter.PageSize);
             var validDateFilter = new DateFilter(dateFilter.SelectedDate, dateFilter.NewestFirst);
             var pagedData = await _positionLogRepository.GetPagedData(validPageFilter.PageNumber, validPageFilter.PageSize, validDateFilter.SelectedDate, validDateFilter.NewestFirst);
-            var totalRecords = await _positionLogRepository.CountRecords();
+            var totalRecords = await _positionLogRepository.CountRecords(validDateFilter.SelectedDate);
 
             if (totalRecords < 0)
             {

@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using Wex1.Elephant.Logger.Core;
 using Wex1.Elephant.Logger.Core.Entities;
+using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
 
 
@@ -68,8 +69,9 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
             }
             else
             {
-                var dateFilter = Builders<T>.Filter
-                .Eq(T => T.EventTimeStamp, selectedDate.Value.Date);
+
+                var dateFilter = Builders<T>.Filter.Gte("timestamp", BsonDateTime.Create(selectedDate.Value)) &
+                     Builders<T>.Filter.Lt("timestamp", BsonDateTime.Create(selectedDate.Value.AddDays(1)));
 
                 return _collection
                .Find(dateFilter)
@@ -78,15 +80,15 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
                .Skip((pageNumber - 1) * pageSize)
                .ToList();
             }
-                
-
-
            
         }
 
-        public async Task<long> CountRecords()
+        public async Task<long> CountRecords(DateTime? selectedDate)
         {
-            return await _collection.CountAsync(_ => true);
+            var dateFilter = Builders<T>.Filter.Gte("timestamp", BsonDateTime.Create(selectedDate.Value)) &
+                    Builders<T>.Filter.Lt("timestamp", BsonDateTime.Create(selectedDate.Value.AddDays(1)));
+
+            return await _collection.CountAsync(dateFilter);
         }
     }
 }
