@@ -10,23 +10,23 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
     public class ErrorLogsController : ControllerBase
     {
 
-        private readonly IErrorLogCrudService _errorLogService;
+        private readonly IErrorLogCrudService _errorLogCrudService;
 
-        public ErrorLogsController(IErrorLogCrudService errorLogService)
+        public ErrorLogsController(IErrorLogCrudService errorLogCrudService)
         {
-            _errorLogService = errorLogService;
+            _errorLogCrudService = errorLogCrudService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] PaginationFilter filter)
         {
-            return await _errorLogService.GetAllPaged(filter, Request);
+            return await _errorLogCrudService.GetAllPaged(filter, Request);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            return await _errorLogService.GetById(ObjectId.Parse(id));
+            return await _errorLogCrudService.GetById(ObjectId.Parse(id));
         }
 
     }
