@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using Wex.Elephant.Logger.Infrastructure.Repositories;
 using Wex1.Elephant.Logger.Core.Dto.PositionLogs;
 using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
@@ -40,9 +41,14 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             return new OkObjectResult(pagedResponse);
         }
 
-        public Task<IActionResult> GetById(ObjectId id)
+        public async Task<IActionResult> GetById(ObjectId id)
         {
-            throw new NotImplementedException();
+            var positionLog = await _positionLogRepository.GetByIdAsync(id);
+
+            if (positionLog is null)
+                return new NotFoundObjectResult($"PositionLog with id: {id} couldn't be found!");
+
+            return new OkObjectResult(positionLog.MapToDto());
         }
 
         public Task<IActionResult> Add(PositionLogRequestDto dto)
