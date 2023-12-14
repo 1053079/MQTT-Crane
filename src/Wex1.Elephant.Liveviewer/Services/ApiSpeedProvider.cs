@@ -29,21 +29,12 @@ namespace Wex1.Elephant.Liveviewer.Services
             return speedLog;
         }
 
-        public async Task<IEnumerable<SpeedLog>> GetAll(int pageNumber, int pageSize)
+        public async Task<PageDto<SpeedDto>> GetPage(int pageNumber, int pageSize)
         {
 
-            var dtos = await _httpClient.GetFromJsonAsync<PageDto<SpeedDto>>($"SpeedLogs?PageNumber={pageNumber}&PageSize={pageSize}");
+           return await _httpClient.GetFromJsonAsync<PageDto<SpeedDto>>($"SpeedLogs?PageNumber={pageNumber}&PageSize={pageSize}");
 
-            var speedLogs = dtos.Data.Select(sl => new SpeedLog
-            {
-                Id = sl.Id,
-                Description = sl.Description,
-                Component = sl.Component,
-                Timestamp = sl.Timestamp,
-                Type = sl.Type
-            });
-
-            return speedLogs;
+            
         }
     }
 }
