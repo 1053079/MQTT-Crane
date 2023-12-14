@@ -8,7 +8,7 @@ namespace Wex1.Elephant.Logger.Core.Filters
 {
     public class DateFilter
     {
-        public DateOnly? SelectedDate { get; set;}
+        public DateTime? SelectedDate { get; set;}
         public bool NewestFirst { get; set;}
 
         public DateFilter()
@@ -17,21 +17,10 @@ namespace Wex1.Elephant.Logger.Core.Filters
             NewestFirst = true;
         }
 
-        public DateFilter(DateOnly selectedDate)
+        public DateFilter(DateTime? selectedDate, bool newestFirst)
         {
-            var dateNow = DateOnly.FromDateTime(DateTime.UtcNow);
-            SelectedDate = selectedDate > dateNow ? dateNow : selectedDate;
-        }
-
-        public DateFilter(bool newestFirst)
-        {
-            NewestFirst = newestFirst;
-        }
-
-        public DateFilter(DateOnly selectedDate, bool newestFirst)
-        {
-            var dateNow = DateOnly.FromDateTime(DateTime.UtcNow);
-            SelectedDate = selectedDate > dateNow ? dateNow : selectedDate;
+            var dateNow = DateTime.UtcNow.Date;
+            SelectedDate = selectedDate.Value.Date > dateNow ? dateNow : selectedDate.Value.Date;
             NewestFirst = newestFirst;
         }
 
