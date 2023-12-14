@@ -31,7 +31,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             var pagedData = await _positionLogRepository.GetPagedData(validPageFilter.PageNumber, validPageFilter.PageSize, validDateFilter.SelectedDate, validDateFilter.NewestFirst);
             var totalRecords = await _positionLogRepository.CountRecords(validDateFilter.SelectedDate);
 
-            if (totalRecords < 0)
+            if (totalRecords <= 0)
             {
                 return new NotFoundObjectResult("No position logs were found.");
             }

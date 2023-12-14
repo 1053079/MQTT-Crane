@@ -20,14 +20,7 @@
 <h3>Action Logs</h3>
 @if (IsError)
 {
-    <Pagination ActivePageNumber="@currentPageNumber"
-                TotalPages="@totalPages"
-                DisplayPages="8"
-                FirstLinkIcon="IconName.ChevronDoubleLeft"
-                PreviousLinkIcon="IconName.ChevronLeft"
-                NextLinkIcon="IconName.ChevronRight"
-                LastLinkIcon="IconName.ChevronDoubleRight"
-                PageChanged="HandlePageChangeAsync" />
+    
     <div class="alert alert-danger" role="alert">
         @ErrorMessage
     </div>
@@ -35,6 +28,14 @@
 else{
 @if (ActionLogs != null)
 {
+        <Pagination ActivePageNumber="@currentPageNumber"
+                    TotalPages="@totalPages"
+                    DisplayPages="8"
+                    FirstLinkIcon="IconName.ChevronDoubleLeft"
+                    PreviousLinkIcon="IconName.ChevronLeft"
+                    NextLinkIcon="IconName.ChevronRight"
+                    LastLinkIcon="IconName.ChevronDoubleRight"
+                    PageChanged="HandlePageChangeAsync" />
         <LogList TModel="ActionLog" Logs="ActionLogs" ShowDetailsBtn=true />
 }
 else

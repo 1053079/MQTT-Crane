@@ -29,7 +29,7 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
             selectedDate = null;
             minDate = DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-5));
             maxDate = DateOnly.FromDateTime(DateTime.UtcNow);
-            sortDirection = false;
+            sortDirection = true;
             await FetchErrorLogs();
         }
 

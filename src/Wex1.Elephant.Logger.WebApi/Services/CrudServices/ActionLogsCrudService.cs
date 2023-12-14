@@ -31,7 +31,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             var pagedData = await _actionLogRepository.GetPagedData(validPageFilter.PageNumber, validPageFilter.PageSize, validDateFilter.SelectedDate, validDateFilter.NewestFirst);
             var totalRecords = await _actionLogRepository.CountRecords(validDateFilter.SelectedDate);
 
-            if (totalRecords < 0)
+            if (totalRecords <= 0)
             {
                 return new NotFoundObjectResult("No speed logs were found!");
             }

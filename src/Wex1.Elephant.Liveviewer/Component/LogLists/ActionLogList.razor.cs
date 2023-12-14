@@ -25,6 +25,10 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
 
         protected override async Task OnInitializedAsync()
         {
+            selectedDate = null;
+            minDate = DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-5));
+            maxDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            sortDirection = true;
             await FetchActionLogs();
         }
 
