@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using Wex.Elephant.Logger.Infrastructure.Repositories;
 using Wex1.Elephant.Logger.Core.Dto.SpeedLogs;
 using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
@@ -42,9 +43,14 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
 
         }
 
-        public Task<IActionResult> GetById(ObjectId id)
+        public async Task<IActionResult> GetById(ObjectId id)
         {
-            throw new NotImplementedException();
+            var speedLog = await _speedLogRepository.GetByIdAsync(id);
+
+            if (speedLog is null)
+                return new NotFoundObjectResult($"SpeedLog with id: {id} couldn't be found!");
+
+            return new OkObjectResult(speedLog.MapToDto());
         }
         public Task<IActionResult> Add(SpeedLogsRequestDto dto)
         {
