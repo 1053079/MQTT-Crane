@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using Wex.Elephant.Logger.Infrastructure.Repositories;
 using Wex1.Elephant.Logger.Core.Dto.Actionlogs;
 using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Repositories;
@@ -16,7 +17,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
         private readonly IUriService _uriService;
 
         public ActionLogsCrudService(
-            IActionLogRepository actionLogRepository, 
+            IActionLogRepository actionLogRepository,
             IUriService uriService)
         {
             _actionLogRepository = actionLogRepository;
@@ -41,9 +42,14 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
         }
 
 
-        public Task<IActionResult> GetById(ObjectId id)
+        public async Task<IActionResult> GetById(ObjectId id)
         {
-            throw new NotImplementedException();
+            var actionLog = await _actionLogRepository.GetByIdAsync(id);
+
+            if (actionLog is null)
+                return new NotFoundObjectResult($"ActionLog with id: {id} couldn't be found!");
+
+            return new OkObjectResult(actionLog.MapToDto());
         }
 
         public Task<IActionResult> Add(ActionLogRequestDto dto)
@@ -61,6 +67,6 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
         }
 
 
-        
+
     }
 }

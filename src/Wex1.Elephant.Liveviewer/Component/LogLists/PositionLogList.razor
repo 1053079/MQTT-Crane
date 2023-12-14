@@ -1,0 +1,31 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
+<Pagination ActivePageNumber="@currentPageNumber"
+            TotalPages="@totalPages"
+            DisplayPages="8"
+            FirstLinkIcon="IconName.ChevronDoubleLeft"
+            PreviousLinkIcon="IconName.ChevronLeft"
+            NextLinkIcon="IconName.ChevronRight"
+            LastLinkIcon="IconName.ChevronDoubleRight"
+            PageChanged="HandlePageChangeAsync" />
+
+<h3>Position Logs</h3>
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else{
+@if (PositionLogs != null)
+{
+        <LogList TModel="PositionLog" Logs="PositionLogs" ShowDetailsBtn=true />
+}
+else
+{
+    <p>No position logs found.</p>
+}
+}
+

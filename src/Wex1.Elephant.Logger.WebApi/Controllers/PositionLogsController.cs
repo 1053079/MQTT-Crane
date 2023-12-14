@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
 
@@ -17,9 +17,14 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
         }
 
         [HttpGet]
-        public Task<IActionResult> Get([FromQuery]PaginationFilter filter)
+        public Task<IActionResult> Get([FromQuery] PaginationFilter filter)
         {
             return _positionLogCrudService.GetAllPaged(filter, Request);
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            return await _positionLogCrudService.GetById(ObjectId.Parse(id));
         }
     }
 }

@@ -1,0 +1,32 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+@using Wex1.Elephant.Liveviewer.Services
+
+<Pagination ActivePageNumber="@currentPageNumber"
+            TotalPages="@totalPages"
+            DisplayPages="8"
+            FirstLinkIcon="IconName.ChevronDoubleLeft"
+            PreviousLinkIcon="IconName.ChevronLeft"
+            NextLinkIcon="IconName.ChevronRight"
+            LastLinkIcon="IconName.ChevronDoubleRight"
+            PageChanged="HandlePageChangeAsync" />
+
+<h3>Speed Logs</h3>
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else
+{
+    @if (SpeedLogs != null)
+    {
+        <LogList TModel="SpeedLog" Logs="SpeedLogs" ShowDetailsBtn=true />
+    }
+    else
+    {
+        <p>No speed logs found.</p>
+    }
+}
+
