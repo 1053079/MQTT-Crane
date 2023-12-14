@@ -2,32 +2,49 @@
 @using Wex1.Elephant.Liveviewer.Services
 @using Wex1.Elephant.Liveviewer.Services.Interfaces
 
-<Pagination ActivePageNumber="@currentPageNumber"
-            TotalPages="@totalPages"
-            DisplayPages="8"
-            FirstLinkIcon="IconName.ChevronDoubleLeft"
-            PreviousLinkIcon="IconName.ChevronLeft"
-            NextLinkIcon="IconName.ChevronRight"
-            LastLinkIcon="IconName.ChevronDoubleRight"
-            PageChanged="HandlePageChangeAsync"/>
+
 
 <h3>Error Logs</h3>
+<DateInput TValue="DateOnly?"
+           Value="selectedDate"
+           ValueExpression="() => selectedDate"
+           ValueChanged="(value) => HandleDateChangeAsync(value)"
+           EnableMinMax="true"
+           Min="@minDate"
+           Max="@maxDate"
+           Placeholder="Enter Date" />
+<select @onchange="HandleSortDirectionChange">
+    <option value="false">Oldest</option>
+    <option value="true" selected>Newest</option>
+</select>
+
 @if (IsError)
 {
     <div class="alert alert-danger" role="alert">
         @ErrorMessage
     </div>
 }
-else{
-@if (ErrorLogs != null)
-{
-    <LogList TModel="ErrorLog" Logs="ErrorLogs" ShowDetailsBtn=true/>
-}
 else
 {
-    <p>No error logs found.</p>
+    @if (ErrorLogs != null)
+    {
+        <Pagination ActivePageNumber="@currentPageNumber"
+                    TotalPages="@totalPages"
+                    DisplayPages="8"
+                    FirstLinkIcon="IconName.ChevronDoubleLeft"
+                    PreviousLinkIcon="IconName.ChevronLeft"
+                    NextLinkIcon="IconName.ChevronRight"
+                    LastLinkIcon="IconName.ChevronDoubleRight"
+                    PageChanged="HandlePageChangeAsync" />
+
+        <LogList TModel="ErrorLog" Logs="ErrorLogs" ShowDetailsBtn=true />
+    }
+    else
+    {
+        <LoadingScreen />
+    }
 }
-}
+
 
 
 
