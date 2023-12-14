@@ -24,12 +24,12 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             _uriService = uriService;
         }
 
-        public async Task<IActionResult> GetAllPaged(PaginationFilter filter, HttpRequest request)
+        public async Task<IActionResult> GetAllPaged(PaginationFilter paginationFilter,DateFilter dateFilter, HttpRequest request)
         {
             var route = request.Path.Value;
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-
-            var pagedData = await _errorLogRepository.GetPagedData(validFilter.PageNumber, validFilter.PageSize);
+            var validPageFilter = new PaginationFilter(paginationFilter.PageNumber, paginationFilter.PageSize);
+            var validDateFilter = new DateFilter(dateFilter.SelectedDate, dateFilter.NewestFirst);
+            var pagedData = await _errorLogRepository.GetPagedData(validPageFilter.PageNumber, validPageFilter.PageSize, validDateFilter.SelectedDate, validDateFilter.NewestFirst);
             var totalRecords = await _errorLogRepository.CountRecords();
 
             if (totalRecords <= 0)
@@ -37,7 +37,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
                 return new NotFoundObjectResult("No error logs were found.");
             }
 
-            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validFilter, totalRecords, _uriService, route);
+            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validPageFilter, totalRecords, _uriService, route);
 
             return new OkObjectResult(pagedResponse);
         }
