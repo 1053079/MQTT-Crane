@@ -50,10 +50,27 @@ namespace Wex.Elephant.Logger.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<T>> GetPagedData(int pageNumber, int pageSize)
+        public async Task<IEnumerable<T>> GetPagedData(int pageNumber, int pageSize, DateTime? selectedDate, bool newestFirst)
         {
-            return _collection
+            var dateFilter = Builders<T>.Filter
+                .Eq(T => T.EventTimeStamp, selectedDate.Value.Date);
+
+            var sortFilter = newestFirst
+                ? Builders<T>.Sort.Descending("timestamp")
+                : Builders<T>.Sort.Ascending("timestamp");
+
+            if (selectedDate is null)
+                return _collection
                 .Find(_ => true)
+                .Sort(sortFilter)
+                .Limit(pageSize)
+                .Skip((pageNumber - 1) * pageSize)
+                .ToList();
+
+
+            return _collection
+                .Find(dateFilter)
+                .Sort(sortFilter)
                 .Limit(pageSize)
                 .Skip((pageNumber - 1) * pageSize)
                 .ToList();
