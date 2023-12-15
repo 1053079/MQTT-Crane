@@ -121,11 +121,11 @@ def on_message(client, userdata, message):
                 image = arrow_right
                 print(positionXY , image)
             elif movement == 'up':
-                positionXY = (1025,50)
+                positionXY = (847, 450)
                 image = arrow_upstairs
                 print(positionXY , image)
             elif movement == 'down':
-                positionXY = (1025,50)
+                positionXY = (847, 630)
                 image = arrow_downstairs
                 print(positionXY , image)
        

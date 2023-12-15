@@ -122,7 +122,8 @@ circle = pygame.image.load('UserInterface/buttons/xButton.png')
 circle2 = pygame.image.load('UserInterface/buttons/plusButton.png')
 # circle2 = pygame.Surface((60,60), pygame.SRCALPHA)
 # drawCircle2 = pygame.draw.circle(circle2, white, (30,30), 30)
-imagexz = pygame.image.load("images/unlocked.png")
+imagexz = pygame.image.load("images/arrow_upstairs.png")
+imagexzy = pygame.image.load("images/arrow_downstairs.png")
 # the while loop..
 while not exit: 
     client.loop()
@@ -133,6 +134,7 @@ while not exit:
     screen.blit(view, (75,50)) 
     screen.blit(view2, (625,50))
     screen.blit(view3, (75,400))
+
     
     # Blits WASD Keys
     screen.blit(WASD, (650, 500))
