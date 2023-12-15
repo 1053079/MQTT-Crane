@@ -12,7 +12,7 @@ namespace Wex1.Elephant.Spreader.Core.Entities
         public double PositionY { get; set; }  
         public double PositionZ { get; set ;}
 
-        public Sensor Sensor { get; set; }
+        public Sensor Sensor { get; set; } = new Sensor();
 
 
         public bool Lock { get; set; }

@@ -19,7 +19,7 @@ namespace Wex1.Elephant.Spreader.Core.Interfaces.Mqtt
         Task SubscribePositionSpreader();
 
         Task PublishSensorStatus(bool detectedContainer);
-        Task PublishLockStatus(bool locked);
+        Task PublishLockStatus(bool locked , bool hascontainer);
         public void _mqttClient_OnMessageReceived(object? sender, OnMessageReceivedEventArgs e);
         Task HandleMessageAsync(OnMessageReceivedEventArgs e);
     }

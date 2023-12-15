@@ -13,6 +13,8 @@ using System.Net.Sockets;
 using Amazon.Util.Internal;
 using MongoDB.Bson;
 using Wex1.Elephant.Spreader.Core.SpreaderPositionDto;
+using Wex1.Elephant.Logger.Core.Dto.MqttInputs;
+using Wex1.Elephant.Spreader.Core.Dto;
 
 namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 {
@@ -20,17 +22,24 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
     {
         public HiveMQClient _mqttClient { set; get; }
         private Spreaders _spreader = new Spreaders();
+
+        
         private Container _container = new Container();
+        
         // coordinaten sts-kraan gebied
         readonly double _minStsX = 200;
         readonly double _maxStsX = 315;
         readonly double _minStsY = 0;
         readonly double _maxStsY = 145;
+        readonly double _minStsZ = 325;
+        readonly double _maxStsZ = 575;
         // coordinaten boot gebied
         readonly double _minBoatX = 80;
         readonly double _maxBoatX = 180;
         readonly double _minBoatY = 0;
         readonly double _maxBoatY = 200;
+        readonly double _minBoatZ = 75;
+        readonly double _maxBoatZ = 325;
         public MqttService()
         {
             var options = new HiveMQClientOptions
@@ -70,7 +79,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         }
         public async Task HandleMessageAsync(OnMessageReceivedEventArgs e)
         {
-           
+
             if (e.PublishMessage.Topic == "outputs/positionSpreader")
             {
                 var payload = e.PublishMessage.PayloadAsString;
@@ -79,27 +88,31 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 
                 SpreaderPositionDto positionValues = JsonSerializer.Deserialize<SpreaderPositionDto>(payload);
 
+                _spreader.Sensor = new Sensor();
+                _container.PositionX = 110.0;
+                _container.PositionY = 185.0;
+                _container.PositionZ = 230.0;
+
+
                 _spreader.PositionX = positionValues.PositionX;
+
                 _spreader.PositionY = positionValues.PositionY;
+                _spreader.PositionZ = positionValues.PositionZ;
                 //_spreader.PositionZ = positionValues[2];
-                //container starting position : 110 - 150 X || 185-200 Y
+                //container starting position : 110 - 150 X || 185-200 Y || 230 - 270 Z
                 if (_spreader.PositionX >= _container.PositionX && _spreader.PositionX <= (_container.PositionX + 40)
-                    && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 15))
+                    && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 15) 
+                    && _spreader.PositionZ >= _container.PositionZ && _spreader.PositionZ <= (_container.PositionZ + 40))
                 {
                     _spreader.Sensor.DetectedContainer = true;
 
-                    if (_spreader.Sensor.DetectedContainer)
-                    {
+                    await PublishSensorStatus(true);
 
-                        await PublishSensorStatus(true);
-                    }
-                    else
-                    {
-                        await PublishSensorStatus(false);
-                    }
+
                 }
                 else
                 {
+                    await PublishSensorStatus(false);
                     _spreader.Sensor.DetectedContainer = false;
                 }
 
@@ -110,33 +123,43 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 Console.WriteLine(payload);
             }
             else if (e.PublishMessage.Topic == "inputs/joystick")
-                    {
-                
+            {
+
                 var payload = e.PublishMessage.PayloadAsString;
                 Console.WriteLine(payload);
-                var payloadData = JsonSerializer.Deserialize<Dictionary<string, object>>(payload);
+                var payloadData = JsonSerializer.Deserialize<JoyStickDto>(payload);
 
-                if (payloadData.TryGetValue("lock", out var lockValue) && (bool)lockValue)
+                if (payloadData.IsLocked == true)
                 {
-                    
-                    if (_spreader.Sensor.DetectedContainer && (bool)lockValue && 
+
+                    if (_spreader.Sensor.DetectedContainer && (bool)payloadData.IsLocked &&
                         _spreader.PositionX >= _minBoatX && _spreader.PositionX <= _maxBoatX &&
-                        _spreader.PositionY >= _minBoatY && _spreader.PositionY >= _maxBoatY )
+                        _spreader.PositionY >= _minBoatY && _spreader.PositionY <= _maxBoatY
+                        && _spreader.PositionZ >= _minBoatZ && _spreader.PositionZ <= _maxBoatZ)
                     {
                         _spreader.Lock = true;
-                        await PublishLockStatus(true);
+                        await PublishLockStatus(true,true);
                     }
-                    else if (_spreader.Sensor.DetectedContainer = false || _spreader.PositionX >= _minStsX 
-                        && _spreader.PositionX <= _maxStsX 
-                        && _spreader.PositionY >= _minStsY 
-                        && _spreader.PositionY >= _maxStsY)
+                   
+                }
+                else if (payloadData.IsLocked == false)
+                {
+                    
+                    if (_spreader.Sensor.DetectedContainer == false && _spreader.PositionX >= _minStsX
+                        && _spreader.PositionX <= _maxStsX
+                        && _spreader.PositionY >= _minStsY
+                        && _spreader.PositionY <= _maxStsY
+                        && _spreader.PositionZ >= _minStsZ
+                        && _spreader.PositionZ <= _maxStsZ)
                     {
                         _spreader.Lock = false;
-                        await PublishLockStatus(false);
+                        await PublishLockStatus(false,false);
                     }
+
+
                 }
             }
-             }
+        }
 
 
         public async Task SubscribeToTopic(string topic)
@@ -167,28 +190,36 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 
         public async Task PublishSensorStatus(bool detectedContainer)
         {
+            var sensorValueDto = new SensorValueDto();
+
             if (detectedContainer)
             {
-                await _mqttClient.PublishAsync("outputs/sensorSpreader", $"Sensor has detected a container");
+                sensorValueDto.SensorValue = true;
             }
             else
             {
-                await _mqttClient.PublishAsync("outputs/sensorSpreader", $"Sensor could not detect a container");
+                sensorValueDto.SensorValue = false;
             }
 
+            string json = JsonSerializer.Serialize(sensorValueDto);
+           
+                await _mqttClient.PublishAsync("outputs/sensorSpreader", json);
+           
+
         }
-        public async Task PublishLockStatus(bool locked)
+        public async Task PublishLockStatus(bool isLocked, bool hasContainer)
         {
-            if (locked)
+            LockStatusDto lockStatus = new LockStatusDto
             {
-                await _mqttClient.PublishAsync("outputs/actionSpreader", $"Lock is in use");
-            }
-            else
-            {
-                await _mqttClient.PublishAsync("outputs/actionSpreader", $"Lock is not in use");
-            }
-        }
-       
+                HasContainer = hasContainer,
+                IsLocked = isLocked
+            };
 
+            string jsonMessage = JsonSerializer.Serialize(lockStatus);
+
+            await _mqttClient.PublishAsync("outputs/actionSpreader", jsonMessage);
         }
+
+
+    }
 }
