@@ -1,0 +1,55 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
+
+<h3>Position Logs</h3>
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else{
+@if (PositionLogs != null)
+{
+        <LogList TModel="PositionLog" Logs="PositionLogs" ShowDetailsBtn=true />
+}
+else
+{
+    <p>No position logs found.</p>
+}
+}
+
+@code {
+    private PositionLog[] PositionLogs;
+    private string ErrorMessage;
+    private bool IsError;
+
+
+    private int pageNumber;
+    private int pageSize;
+
+    [Inject]
+    private IApiPositionLogProvider _positionLogProvider { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchPositionLogs();
+    }
+
+    private async Task FetchPositionLogs()
+    {
+        try{
+            IsError = false;
+        var positionLogs = await _positionLogProvider.GetAll(pageNumber, pageSize);
+        PositionLogs = positionLogs.ToArray();
+         }
+        catch (Exception ex)
+        {
+            IsError = true;
+            ErrorMessage = $"Positionlogs could not be shown due to an error: \n {ex.Message}";
+
+        }
+    }
+}
