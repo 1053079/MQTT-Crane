@@ -1,0 +1,49 @@
+﻿@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
+<h3>Position Logs</h3>
+
+<div class="d-flex">
+    <div>
+        <DateInput TValue="DateOnly?"
+                   Value="selectedDate"
+                   ValueExpression="() => selectedDate"
+                   ValueChanged="(value) => HandleDateChangeAsync(value)"
+                   EnableMinMax="true"
+                   Min="@minDate"
+                   Max="@maxDate"
+                   Placeholder="Enter Date" />
+    </div>
+    <select @onchange="HandleSortDirectionChange">
+        <option value="false">Oldest</option>
+        <option value="true" selected>Newest</option>
+    </select>
+</div>
+
+@if (IsError)
+{
+    
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else{
+@if (PositionLogs != null)
+    {
+        <Pagination ActivePageNumber="@currentPageNumber"
+                    TotalPages="@totalPages"
+                    DisplayPages="8"
+                    FirstLinkIcon="IconName.ChevronDoubleLeft"
+                    PreviousLinkIcon="IconName.ChevronLeft"
+                    NextLinkIcon="IconName.ChevronRight"
+                    LastLinkIcon="IconName.ChevronDoubleRight"
+                    PageChanged="HandlePageChangeAsync" />
+        <LogList TModel="PositionLog" Logs="PositionLogs" ShowDetailsBtn=true />
+}
+else
+{
+        <LoadingScreen />
+}
+}
+
