@@ -37,7 +37,7 @@ def on_message(client, userdata,message):
     try:
         if message.topic == topic_1 and emergency is True:
             print('dog') # replace print with code that stops all movement
-        elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
+        elif message.topic == topic_1 and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
             if speed == 'normal':  # normal speed
                 # Forward and backward are for the Cabin movements
                 if movement == "forward":
