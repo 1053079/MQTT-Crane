@@ -13,7 +13,6 @@ def on_connect(client, userdata, flags, rc, properties=None):
 
 # prints back the message received and the topic
 def on_message(client, userdata,message):
-    global movement
     if message.topic == topic_1: # checks for topic
         print("Message received: " + str((message.payload.decode("utf-8"))))
         print("Topic is " + str(message.topic))
