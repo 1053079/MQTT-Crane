@@ -63,8 +63,8 @@ Met het topic inputs/joystick kijken we of de gebruiker de container effectief w
 payload = {"movement": movement, "speed": speed, "lock": lock}
 De spreader kijkt ook waar hij zich bevind zodat deze niet zomaar kan unlocken boven de zee en dat dit enkel in het doelgerichte gebied (sts-kraan) is.
 
-De topics die de spreader verstuurt zijn twee verschillende --> een voor wanneer hij de sensor van de spreader de container detecteert,
-een zodat de spreader kan locken op de container en kan unlocken in het gerichte doelgebied. Hieronder zie je de volgende topics
-![Alt text](images/spreaderTopics.png)
+-outputs/actionSpreader : Geeft mee wanneer de container gelockt is en wanneer niet --> {"isLocked":false,"hasContainer":false}
+-outputs/sensorSpreader : Geeft mee wanneer de sensor die container detecteert --> {"sensorValue":true}
+-outputs/positionSpreader : Met de positie van de spreader kunnen we weten wanneer hij een container detecteert en wanneer hij los kan laten {"positionX": 115.0, "positionY": 185.0 , "PositionZ": 325.0}
 
  
