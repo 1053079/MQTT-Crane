@@ -34,6 +34,7 @@ client.username_pw_set("Admin", "hMu4P6L_LAMj8t3")
 movement = "none"
 speed = "normal"
 lock = False
+emergency = False
 
 # Main Loop
 try:
@@ -92,6 +93,11 @@ try:
                     lock = not lock
                     movement = 'none'
                     break
+                if keyboard.is_pressed('1'):
+                    print('Cabin Emergencykey is pressed')
+                    movement = 'cabinEmergency' 
+                    emergency = not emergency 
+                    break
             except:
                 break
 
@@ -107,7 +113,7 @@ try:
             speed = "normal"
 
         # Payload
-        payload = {"movement": movement, "speed": speed, "lock": lock}
+        payload = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency}
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
         print(payload)

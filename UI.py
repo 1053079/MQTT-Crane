@@ -36,6 +36,7 @@ def on_message(client, userdata,message):
     movement = payload_data.get("movement") # The movement of the joystick input
     speed = payload_data.get("speed")
     lock = payload_data.get("lock") # Checks whether spreader is locked or not
+    emergency = payload_data.get("emergency")
     positionList = payload_data.get("position") 
     position = tuple(positionList)
     image = payload_data.get("image")
@@ -97,18 +98,15 @@ view3 = pygame.Surface([500,300])
 # arrow_right = pygame.image.load('images/arrow_right.png').convert_alpha()
 # arrow_upstairs = pygame.image.load('images/arrow_upstairs.png').convert_alpha()
 # arrow_downstairs = pygame.image.load('images/arrow_downstairs.png').convert_alpha()
-# locked = pygame.image.load('images/locked.png').convert_alpha()
-# unlocked = pygame.image.load('images/unlocked.png').convert_alpha()
-# siren = pygame.image.load('images/siren.png').convert_alpha()
+locked = pygame.image.load('images/locked.png').convert_alpha()
+unlocked = pygame.image.load('images/unlocked.png').convert_alpha()
+siren = pygame.image.load('images/siren.png').convert_alpha()
 # emergency = pygame.image.load('images/emergency.png').convert_alpha()
 # forwardLeft = pygame.image.load('images/forwardLeft.png').convert_alpha()
 # forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
 # backwardLeft = pygame.image.load('images/backwardLeft.png').convert_alpha()
 # backwardRight = pygame.image.load('images/backwardRight.png').convert_alpha()
-forwardLeft = pygame.image.load('images/forwardLeft.png').convert_alpha()
-forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
-backwardLeft = pygame.image.load('images/backwardLeft.png').convert_alpha()
-backwardRight = pygame.image.load('images/backwardRight.png').convert_alpha()
+emergencyButton = pygame.image.load('images/emergency.png').convert_alpha()
 # WASD arrows
 WASD = pygame.image.load('UserInterface/buttons/wasdKeys.png')
 
@@ -136,6 +134,7 @@ while not exit:
     screen.blit(view, (75,50)) 
     screen.blit(view2, (625,50))
     screen.blit(view3, (75,400))
+   
     
     
     # Blits WASD Keys
@@ -149,42 +148,80 @@ while not exit:
     screen.blit(circle2, (1025,585))
 
     try:
-        if lock is False:
-            screen.blit(pygame.image.load(image), position)
+        if emergency is False:
+            emergencybuttonscreen = screen.blit(emergencyButton, (825, 360))
+            unlockButton = screen.blit(unlocked, (1025,360))
             print( imageName + " blitted to position " , position)
-            if movement == 'forward':
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            elif movement == 'backward':
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            elif movement == 'left':
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            elif movement == 'right':
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            elif movement == 'up':
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            elif movement == 'down':
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            if movement == 'forwardLeft' :
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            elif movement == 'forwardRight' :
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            elif movement == 'backwardLeft' :
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
-            elif movement == 'backwardRight' :
-                screen.blit(pygame.image.load(image), position)
-                print( imageName + " blitted to position " , position)
+            if lock is False:
+                unlockButton = screen.blit(unlocked, (1025,360))  
+                if movement == 'forward':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'backward':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'left':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'right':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'up':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'down':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                if movement == 'forwardLeft' :
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'forwardRight' :
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'backwardLeft' :
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'backwardRight' :
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)  
+            else:
+                unlockButton = screen.blit(locked, (1025,360))  
+                if movement == 'forward':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'backward':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'left':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'right':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'up':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'down':
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                if movement == 'forwardLeft' :
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'forwardRight' :
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'backwardLeft' :
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)
+                elif movement == 'backwardRight' :
+                    screen.blit(pygame.image.load(image), position)
+                    print( imageName + " blitted to position " , position)           
+        elif emergency is True:
+            unlockButton = screen.blit(locked, (1025,360))
+            emergencybuttonscreen = screen.blit(siren, (825 , 360))
+            print( imageName + " blitted to position " , position)
         else:
-            screen.blit(pygame.image.load(image), position)
-            print( imageName + " blitted to position " , position)
+            print("hey")    
     except Exception as e:
        print("error", e)   
 
@@ -196,3 +233,4 @@ while not exit:
 
     # updates the display
     pygame.display.flip() 
+pygame.quit()

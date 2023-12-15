@@ -19,7 +19,7 @@ arrow_downstairs = 'images/arrow_downstairs.png'
 locked ='images/locked.png'
 unlocked ='images/unlocked.png'
 siren = 'images/siren.png'
-emergency = 'images/emergency.png'
+emergencyButton = 'images/emergency.png'
 forwardLeft = 'images/forwardLeft.png'
 forwardRight = 'images/forwardRight.png'
 backwardLeft = 'images/backwardLeft.png'
@@ -77,6 +77,7 @@ mqtt_password = "hMu4P6L_LAMj8t3"
 mqtt_broker_address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
 mqtt_port = 8883
 mqtt_topic = "inputs/joystick"
+mqtt_topic2 = "inputs/cabinEmergencyButton"
 
 # topic we send output to
 topic_1 = "outputs/joyStickVisuals"
@@ -94,16 +95,25 @@ def on_message(client, userdata, message):
     print(message.topic)
     payload = json.loads(message.payload.decode("utf-8"))
     print(payload)
-
-    movement = payload.get("movement")
-    speed = payload.get("speed")
-    lock = payload.get("lock")
+    if message.topic == mqtt_topic2: # checks for topic
+        print("Message received: " + str((message.payload.decode("utf-8"))))
+        print("Topic is " + str(message.topic))
+    else: 
+        print("Message received is " + str((message.payload.decode("utf-8"))))
+        print("Topic is " + str(message.topic)) 
+    # decodes the JSON and allows us to get the values of the movement, speed and lock.
+    payload_data = json.loads(message.payload.decode('utf-8'))
+    movement = payload_data.get("movement") # The movement of the joystick input
+    speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
+    lock = payload_data.get("lock") # Checks whether spreader is locked or not
+    emergency = payload_data.get("emergency") # Checks for emergency from the inputs/cabinEmergencyButton
 
     try:
-        if lock is False:
+        if emergency is False:
             positionXY = (1025,350)
             image = unlocked
             print("lock is false") 
+            
             if movement == 'forward':
                 positionXY = (690,515)
                 image = arrow_up
@@ -147,14 +157,14 @@ def on_message(client, userdata, message):
             else:
                 print("Invalid key has been detected " + movement)
         else:
-            positionXY = (1025,350)
+            positionXY = (1025,360)
             image = locked
             print("lock is true")
     except Exception as e:
         print(e)
     # Payload that we send to outputs/joyStickVisuals, which is output/motorCabin
     position = list(positionXY)
-    payload = {"movement": movement, "position": position, "image": image, "lock": lock}
+    payload = {"movement": movement, "position": position, "image": image, "lock": lock, "emergency": emergency}
     payload_string = json.dumps(payload)
     client.publish(topic_1, payload_string, qos=0)
 
@@ -167,6 +177,6 @@ client.username_pw_set(mqtt_username, mqtt_password)
 
 # Dit verbind met de MQTT-server en abonneert op het juiste onderwerp:
 client.connect(mqtt_broker_address, mqtt_port)
-client.subscribe(mqtt_topic)
+client.subscribe([(mqtt_topic, 0) , (mqtt_topic2, 0)])
 client.loop_forever()
 
