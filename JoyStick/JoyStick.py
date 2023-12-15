@@ -25,6 +25,8 @@ client.on_connect = on_connect
 # Pull Request comment 1: TLS (required for connection) - Dit was ook blijkbaar nodig voor de connectie, ook uren aan verspild. TLS zorgt voor een beveiligde connectie.
 # client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS) # Deze versie werkt niet voor Xander, dus we gebruiken de onderstaande versie.
 client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
+# client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS) # Deze versie werkt niet voor Xander, dus we gebruiken de onderstaande versie.
+client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
 
 # Username and password (required for connection)
 client.username_pw_set("Admin", "hMu4P6L_LAMj8t3")
@@ -34,6 +36,7 @@ client.username_pw_set("Admin", "hMu4P6L_LAMj8t3")
 movement = "none"
 speed = "normal"
 lock = False
+emergency = False
 
 # Main Loop
 try:
@@ -44,6 +47,25 @@ try:
 
         while True:
             try:
+                # Combo keys
+                if keyboard.is_pressed('w') and keyboard.is_pressed('a'):
+                    print('W and A key is pressed')
+                    movement = 'forwardLeft'
+                    break
+                if keyboard.is_pressed('w') and keyboard.is_pressed('d'):
+                    print('W and D key is pressed')
+                    movement = 'forwardRight'
+                    break
+                if keyboard.is_pressed('s') and keyboard.is_pressed('a'):
+                    print('S and A key is pressed')
+                    movement = 'backwardLeft'
+                    break
+                if keyboard.is_pressed('s') and keyboard.is_pressed('d'):
+                    print('S and D key is pressed')
+                    movement = 'backwardRight'
+                    break
+                
+                # Individual keys
                 # Combo keys
                 if keyboard.is_pressed('w') and keyboard.is_pressed('a'):
                     print('W and A key is pressed')
@@ -92,6 +114,11 @@ try:
                     lock = not lock
                     movement = 'none'
                     break
+                if keyboard.is_pressed('1'):
+                    print('Cabin Emergencykey is pressed')
+                    movement = 'cabinEmergency' 
+                    emergency = not emergency 
+                    break
             except:
                 break
 
@@ -107,6 +134,7 @@ try:
             speed = "normal"
 
         # Payload
+        payload = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency} 
         payload = {"movement": movement, "speed": speed, "lock": lock}
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
