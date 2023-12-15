@@ -101,23 +101,23 @@ def on_message(client, userdata, message):
 
     try:
         if lock is False:
-            positionXY = (1025,50)
-            image = locked
+            positionXY = (1025,350)
+            image = unlocked
             print("lock is false") 
             if movement == 'forward':
-                positionXY = (1025,50)
+                positionXY = (690,515)
                 image = arrow_up
                 print(positionXY , image)
             elif movement == 'backward':
-                positionXY = (1025,50)
+                positionXY = (690,590)
                 image = arrow_down
                 print(positionXY , image)
             elif movement == 'left':
-                positionXY = (1025,50)
+                positionXY = (653,555)
                 image = arrow_left
                 print(positionXY , image)
             elif movement == 'right':
-                positionXY = (1025,50)
+                positionXY = (730,555)
                 image = arrow_right
                 print(positionXY , image)
             elif movement == 'up':
@@ -148,8 +148,8 @@ def on_message(client, userdata, message):
             else:
                 print("Invalid key has been detected " + movement)
         else:
-            positionXY = (1025,50)
-            image = unlocked
+            positionXY = (1025,350)
+            image = locked
             print("lock is true")
     except Exception as e:
         print(e)
