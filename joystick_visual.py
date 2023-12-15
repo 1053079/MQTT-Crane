@@ -128,21 +128,20 @@ def on_message(client, userdata, message):
                 positionXY = (847, 630)
                 image = arrow_downstairs
                 print(positionXY , image)
-       
             elif movement == 'forwardLeft' :
-                positionXY = (1025,50)
+                positionXY = (640 , 500)
                 image = forwardLeft
                 print(positionXY , image)
             elif movement == 'forwardRight' :
-                positionXY = (1025,50)
+                positionXY = (740 , 500)
                 image = forwardRight
                 print(positionXY , image)
             elif movement == 'backwardLeft' :
-                positionXY = (1025,50)
+                positionXY = (640, 600)
                 image = backwardLeft
                 print(positionXY , image)
             elif movement == 'backwardRight' :
-                positionXY = (1025,50)
+                positionXY = (740, 600)
                 image = backwardRight
                 print(positionXY , image)
             else:

@@ -105,7 +105,10 @@ view3 = pygame.Surface([500,300])
 # forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
 # backwardLeft = pygame.image.load('images/backwardLeft.png').convert_alpha()
 # backwardRight = pygame.image.load('images/backwardRight.png').convert_alpha()
-
+forwardLeft = pygame.image.load('images/forwardLeft.png').convert_alpha()
+forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
+backwardLeft = pygame.image.load('images/backwardLeft.png').convert_alpha()
+backwardRight = pygame.image.load('images/backwardRight.png').convert_alpha()
 # WASD arrows
 WASD = pygame.image.load('UserInterface/buttons/wasdKeys.png')
 
@@ -122,8 +125,7 @@ circle = pygame.image.load('UserInterface/buttons/xButton.png')
 circle2 = pygame.image.load('UserInterface/buttons/plusButton.png')
 # circle2 = pygame.Surface((60,60), pygame.SRCALPHA)
 # drawCircle2 = pygame.draw.circle(circle2, white, (30,30), 30)
-imagexz = pygame.image.load("images/arrow_upstairs.png")
-imagexzy = pygame.image.load("images/arrow_downstairs.png")
+
 # the while loop..
 while not exit: 
     client.loop()
@@ -134,7 +136,7 @@ while not exit:
     screen.blit(view, (75,50)) 
     screen.blit(view2, (625,50))
     screen.blit(view3, (75,400))
-
+    
     
     # Blits WASD Keys
     screen.blit(WASD, (650, 500))
