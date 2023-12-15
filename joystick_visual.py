@@ -80,9 +80,13 @@ mqtt_broker_address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
 mqtt_port = 8883
 mqtt_topic = "inputs/joystick"
 
+# topic we send output to
+topic_1 = "outputs/joyStickVisuals"
+
 movement = "none"
 speed = "normal"
 lock = False
+position = 0
 
 # Dit voegt de MQTT-client en -callbacks toe:
 client = mqtt.Client()
@@ -96,7 +100,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
 
 def on_message(client, userdata, message):
 
-    global movement, speed, lock  
+    global movement, speed, lock , position 
 
     print(message.topic)
     payload = json.loads(message.payload.decode("utf-8"))
@@ -106,6 +110,7 @@ def on_message(client, userdata, message):
     movement = payload.get("movement", "none")
     speed = payload.get("speed", "normal")
     lock = payload.get("lock", False)
+    position = 0
 
     
 client.on_connect = on_connect
@@ -120,9 +125,8 @@ client.subscribe(mqtt_topic)
 
 run = True
 while run:
-    # Dit luister naar MQTT-berichten
     client.loop()
-
+    # Dit luister naar MQTT-berichten
     keys = pygame.key.get_pressed()
 
     # dit zorgt voor een grijze achtergrond
@@ -145,37 +149,47 @@ while run:
     # Dit zorgt ervoor dat de images verschijnen als de toetsen worden ingedrukt
     if movement == 'forward':
         screen.blit(arrow_up, arrow_up_rect)
-
-    if movement == 'backward':
+        positionXY = (1025,50)
+    elif movement == 'backward':
         screen.blit(arrow_down, arrow_down_rect)
-
-    if movement == 'left':
+        position = (1025,50)
+    elif movement == 'left':
         screen.blit(arrow_left, arrow_left_rect)
-
-    if movement == 'right':
+        positionXY = (1025,50)
+    elif movement == 'right':
         screen.blit(arrow_right, arrow_right_rect)
-
-    if movement == 'up':
+        positionXY = (1025,50)
+    elif movement == 'up':
         screen.blit(arrow_upstairs, arrow_upstairs_rect)
-            
-    if movement == 'down':
+        positionXY = (1025,50)
+    elif movement == 'down':
         screen.blit(arrow_downstairs, arrow_downstairs_rect)
-
+        positionXY = (1025,50)
     if lock:
         screen.blit(locked, locked_rect)
+        positionXY = (1025,50)
     else:
         screen.blit(unlocked, unlocked_rect)
+        positionXY = (1025,50)
 
     if movement == 'forwardLeft' :
         screen.blit(forwardLeft, forwardLeft_rect)
-    if movement == 'forwardRight' :
+        positionXY = (1025,50)
+    elif movement == 'forwardRight' :
         screen.blit(forwardRight, forwardRight_rect)
-    if movement == 'backwardLeft' :
+        positionXY = (1025,50)
+    elif movement == 'backwardLeft' :
         screen.blit(backwardLeft, backwardLeft_rect)
-    if movement == 'backwardRight' :
+        positionXY = (1025,50)
+    elif movement == 'backwardRight' :
         screen.blit(backwardRight, backwardRight_rect)
-
-  
+        positionXY = (1025,50)
+else:
+    # Payload that we send to outputs/joyStickVisuals, which is output/motorCabin
+    position = list(positionXY)
+    payload = {"movement": movement, "position": position, "lock": lock}
+    payload_string = json.dumps(payload)
+    client.publish(topic_1, payload_string, qos=0)
     pygame.display.flip()
 
 pygame.quit()
