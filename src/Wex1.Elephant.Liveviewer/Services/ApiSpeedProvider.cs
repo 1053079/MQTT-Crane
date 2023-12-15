@@ -29,10 +29,17 @@ namespace Wex1.Elephant.Liveviewer.Services
             return speedLog;
         }
 
-        public async Task<PageDto<SpeedDto>> GetPage(int pageNumber, int pageSize)
+        public async Task<PageDto<SpeedDto>> GetPage(int pageNumber, int pageSize, DateOnly? selectedDate, bool sortDirection)
         {
 
-           return await _httpClient.GetFromJsonAsync<PageDto<SpeedDto>>($"SpeedLogs?PageNumber={pageNumber}&PageSize={pageSize}");
+            DateTime? selectedDateTime =
+                selectedDate?.ToString() != null
+                ? DateTime.Parse(selectedDate.ToString())
+                : null;
+
+            var url = $"SpeedLogs?PageNumber={pageNumber}&PageSize={pageSize}&SelectedDate={selectedDateTime}&NewestFirst={sortDirection}";
+
+            return await _httpClient.GetFromJsonAsync<PageDto<SpeedDto>>(url);
 
             
         }

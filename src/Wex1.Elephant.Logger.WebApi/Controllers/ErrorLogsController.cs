@@ -17,9 +17,9 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationFilter filter)
+        public async Task<IActionResult> Get([FromQuery] PaginationFilter paginationFilter, [FromQuery] DateFilter dateFilter)
         {
-            return await _errorLogService.GetAllPaged(filter, Request);
+            return await _errorLogService.GetAllPaged(paginationFilter, dateFilter, Request);
         }
 
     }
