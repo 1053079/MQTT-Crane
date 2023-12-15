@@ -3,75 +3,73 @@ import paho.mqtt.client as mqtt
 import json
 
 
-
-pygame.init()
-
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 1000
 
+pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Dit zijn de variabelen voor de images
-arrow_up = pygame.image.load('images/arrow_up.png').convert_alpha()
-arrow_down = pygame.image.load('images/arrow_down.png').convert_alpha()
-arrow_left = pygame.image.load('images/arrow_left.png').convert_alpha()
-arrow_right = pygame.image.load('images/arrow_right.png').convert_alpha()
-arrow_upstairs = pygame.image.load('images/arrow_upstairs.png').convert_alpha()
-arrow_downstairs = pygame.image.load('images/arrow_downstairs.png').convert_alpha()
-locked = pygame.image.load('images/locked.png').convert_alpha()
-unlocked = pygame.image.load('images/unlocked.png').convert_alpha()
-siren = pygame.image.load('images/siren.png').convert_alpha()
-emergency = pygame.image.load('images/emergency.png').convert_alpha()
-forwardLeft = pygame.image.load('images/forwardLeft.png').convert_alpha()
-forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
-backwardLeft = pygame.image.load('images/backwardLeft.png').convert_alpha()
-backwardRight = pygame.image.load('images/backwardRight.png').convert_alpha()
+arrow_up = 'images/arrow_up.png'
+arrow_down ='images/arrow_down.png'
+arrow_left = 'images/arrow_left.png'
+arrow_right = 'images/arrow_right.png'
+arrow_upstairs = 'images/arrow_upstairs.png'
+arrow_downstairs = 'images/arrow_downstairs.png'
+locked ='images/locked.png'
+unlocked ='images/unlocked.png'
+siren = 'images/siren.png'
+emergency = 'images/emergency.png'
+forwardLeft = 'images/forwardLeft.png'
+forwardRight = 'images/forwardRight.png'
+backwardLeft = 'images/backwardLeft.png'
+backwardRight = 'images/backwardRight.png'
 
-# dit definieert de  breedte en hoogte van de PNG
-new_arrow_width = 100
-new_arrow_height = 100
+# # dit definieert de  breedte en hoogte van de PNG
+# new_arrow_width = 100
+# new_arrow_height = 100
 
-# Dit wijzigt de grootte van de PNG's
-arrow_up = pygame.transform.scale(arrow_up, (new_arrow_width, new_arrow_height))
-arrow_down = pygame.transform.scale(arrow_down, (new_arrow_width, new_arrow_height))
-arrow_left = pygame.transform.scale(arrow_left, (new_arrow_width, new_arrow_height))
-arrow_right = pygame.transform.scale(arrow_right, (new_arrow_width, new_arrow_height))
-arrow_upstairs = pygame.transform.scale(arrow_upstairs, (new_arrow_width, new_arrow_height))
-arrow_downstairs = pygame.transform.scale(arrow_downstairs, (new_arrow_width, new_arrow_height))
-locked = pygame.transform.scale(locked, (new_arrow_width, new_arrow_height))
-unlocked = pygame.transform.scale(unlocked, (new_arrow_width, new_arrow_height))
-siren = pygame.transform.scale(siren, (new_arrow_width, new_arrow_height))
-emergency = pygame.transform.scale(emergency, (new_arrow_width, new_arrow_height))
-forwardLeft = pygame.transform.scale(forwardLeft, (new_arrow_width, new_arrow_height))
-forwardRight = pygame.transform.scale(forwardRight, (new_arrow_width, new_arrow_height))
-backwardLeft = pygame.transform.scale(backwardLeft, (new_arrow_width, new_arrow_height))
-backwardRight = pygame.transform.scale(backwardRight, (new_arrow_width, new_arrow_height))
+# # Dit wijzigt de grootte van de PNG's
+# arrow_up = pygame.transform.scale(arrow_up, (new_arrow_width, new_arrow_height))
+# arrow_down = pygame.transform.scale(arrow_down, (new_arrow_width, new_arrow_height))
+# arrow_left = pygame.transform.scale(arrow_left, (new_arrow_width, new_arrow_height))
+# arrow_right = pygame.transform.scale(arrow_right, (new_arrow_width, new_arrow_height))
+# arrow_upstairs = pygame.transform.scale(arrow_upstairs, (new_arrow_width, new_arrow_height))
+# arrow_downstairs = pygame.transform.scale(arrow_downstairs, (new_arrow_width, new_arrow_height))
+# locked = pygame.transform.scale(locked, (new_arrow_width, new_arrow_height))
+# unlocked = pygame.transform.scale(unlocked, (new_arrow_width, new_arrow_height))
+# siren = pygame.transform.scale(siren, (new_arrow_width, new_arrow_height))
+# emergency = pygame.transform.scale(emergency, (new_arrow_width, new_arrow_height))
+# forwardLeft = pygame.transform.scale(forwardLeft, (new_arrow_width, new_arrow_height))
+# forwardRight = pygame.transform.scale(forwardRight, (new_arrow_width, new_arrow_height))
+# backwardLeft = pygame.transform.scale(backwardLeft, (new_arrow_width, new_arrow_height))
+# backwardRight = pygame.transform.scale(backwardRight, (new_arrow_width, new_arrow_height))
 
-# Werkt de breedte en hoogte variabelen bij
-arrow_width = new_arrow_width
-arrow_height = new_arrow_height
+# # Werkt de breedte en hoogte variabelen bij
+# arrow_width = new_arrow_width
+# arrow_height = new_arrow_height
 
-# Positie van de images
-arrow_up_rect = arrow_up.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2))
-arrow_down_rect = arrow_down.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height))
-arrow_left_rect = arrow_left.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5))
-arrow_right_rect = arrow_right.get_rect(topleft=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - arrow_height * 1.5))
-
-
-arrow_upstairs_rect = arrow_upstairs.get_rect(topleft=(SCREEN_WIDTH // 2 + 20, SCREEN_HEIGHT - arrow_height * 3))
-arrow_downstairs_rect = arrow_downstairs.get_rect(topleft=(SCREEN_WIDTH // 2 + 20, SCREEN_HEIGHT - arrow_height))
-
-locked_rect = locked.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 3))
-unlocked_rect = unlocked.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 2))
-
-siren_rect = siren.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height))
-emergency_rect = emergency.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 4))
+# # Positie van de images
+# arrow_up_rect = arrow_up.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2))
+# arrow_down_rect = arrow_down.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height))
+# arrow_left_rect = arrow_left.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5))
+# arrow_right_rect = arrow_right.get_rect(topleft=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - arrow_height * 1.5))
 
 
-forwardLeft_rect = forwardLeft.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2))
-forwardRight_rect = forwardRight.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height))
-backwardLeft_rect = backwardLeft.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5))
-backwardRight_rect = backwardRight.get_rect(topleft=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - arrow_height * 1.5))
+# arrow_upstairs_rect = arrow_upstairs.get_rect(topleft=(SCREEN_WIDTH // 2 + 20, SCREEN_HEIGHT - arrow_height * 3))
+# arrow_downstairs_rect = arrow_downstairs.get_rect(topleft=(SCREEN_WIDTH // 2 + 20, SCREEN_HEIGHT - arrow_height))
+
+# locked_rect = locked.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 3))
+# unlocked_rect = unlocked.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 2))
+
+# siren_rect = siren.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height))
+# emergency_rect = emergency.get_rect(topleft=(SCREEN_WIDTH // 2 + 470, SCREEN_HEIGHT - arrow_height * 4))
+
+
+# forwardLeft_rect = forwardLeft.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2))
+# forwardRight_rect = forwardRight.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width // 2, SCREEN_HEIGHT - arrow_height))
+# backwardLeft_rect = backwardLeft.get_rect(topleft=(SCREEN_WIDTH // 2 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5))
+# backwardRight_rect = backwardRight.get_rect(topleft=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - arrow_height * 1.5))
 
 # Dit voegt de MQTT-gegevens toe:
 mqtt_username = "Admin"
@@ -83,14 +81,8 @@ mqtt_topic = "inputs/joystick"
 # topic we send output to
 topic_1 = "outputs/joyStickVisuals"
 
-movement = "none"
-speed = "normal"
-lock = False
-position = 0
-
 # Dit voegt de MQTT-client en -callbacks toe:
 client = mqtt.Client()
-
 
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
@@ -99,18 +91,73 @@ def on_connect(client, userdata, flags, rc, properties=None):
         print(f"Connection failed with code {rc}")
 
 def on_message(client, userdata, message):
-
-    global movement, speed, lock , position 
-
     print(message.topic)
     payload = json.loads(message.payload.decode("utf-8"))
     print(payload)
 
-    
-    movement = payload.get("movement", "none")
-    speed = payload.get("speed", "normal")
-    lock = payload.get("lock", False)
-    position = 0
+    movement = payload.get("movement")
+    speed = payload.get("speed")
+    lock = payload.get("lock")
+
+    try:
+        if lock is False:
+            positionXY = (1025,50)
+            image = locked
+            print("lock is false") 
+            if movement == 'forward':
+                positionXY = (1025,50)
+                image = arrow_up
+                print(positionXY , image)
+            elif movement == 'backward':
+                positionXY = (1025,50)
+                image = arrow_down
+                print(positionXY , image)
+            elif movement == 'left':
+                positionXY = (1025,50)
+                image = arrow_left
+                print(positionXY , image)
+            elif movement == 'right':
+                positionXY = (1025,50)
+                image = arrow_right
+                print(positionXY , image)
+            elif movement == 'up':
+                positionXY = (1025,50)
+                image = arrow_upstairs
+                print(positionXY , image)
+            elif movement == 'down':
+                positionXY = (1025,50)
+                image = arrow_downstairs
+                print(positionXY , image)
+       
+            elif movement == 'forwardLeft' :
+                positionXY = (1025,50)
+                image = forwardLeft
+                print(positionXY , image)
+            elif movement == 'forwardRight' :
+                positionXY = (1025,50)
+                image = forwardRight
+                print(positionXY , image)
+            elif movement == 'backwardLeft' :
+                positionXY = (1025,50)
+                image = backwardLeft
+                print(positionXY , image)
+            elif movement == 'backwardRight' :
+                positionXY = (1025,50)
+                image = backwardRight
+                print(positionXY , image)
+            else:
+                print("Invalid key has been detected " + movement)
+        else:
+            positionXY = (1025,50)
+            image = unlocked
+            print("lock is true")
+    except Exception as e:
+        print(e)
+    # Payload that we send to outputs/joyStickVisuals, which is output/motorCabin
+    position = list(positionXY)
+    payload = {"movement": movement, "position": position, "image": image, "lock": lock}
+    payload_string = json.dumps(payload)
+    client.publish(topic_1, payload_string, qos=0)
 
     
 client.on_connect = on_connect
@@ -122,74 +169,5 @@ client.username_pw_set(mqtt_username, mqtt_password)
 # Dit verbind met de MQTT-server en abonneert op het juiste onderwerp:
 client.connect(mqtt_broker_address, mqtt_port)
 client.subscribe(mqtt_topic)
+client.loop_forever()
 
-run = True
-while run:
-    client.loop()
-    # Dit luister naar MQTT-berichten
-    keys = pygame.key.get_pressed()
-
-    # dit zorgt voor een grijze achtergrond
-    screen.fill((128, 128, 128))
-
-    # Dit update de positie van de PNG's (pas deze aan naar wens)
-    arrow_up_rect.topleft = (SCREEN_WIDTH // 2 + 320 - arrow_width // 2, SCREEN_HEIGHT - arrow_height * 2)
-    arrow_down_rect.topleft = (SCREEN_WIDTH // 2 + 320 - arrow_width // 2, SCREEN_HEIGHT - arrow_height)
-    arrow_left_rect.topleft = (SCREEN_WIDTH // 2 + 430 - arrow_width * 2.1, SCREEN_HEIGHT - arrow_height * 1.5)
-    arrow_right_rect.topleft = (SCREEN_WIDTH // 2 + 320 , SCREEN_HEIGHT - arrow_height * 1.5)
-
-    arrow_upstairs_rect.topleft = (SCREEN_WIDTH // 2 + 450, SCREEN_HEIGHT - arrow_height * 3)
-    arrow_downstairs_rect.topleft = (SCREEN_WIDTH // 2 + 450, SCREEN_HEIGHT - arrow_height)
-
-    forwardLeft_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width + 300, SCREEN_HEIGHT - arrow_height * 2.5)
-    forwardRight_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width + 450, SCREEN_HEIGHT - arrow_height * 2.5)
-    backwardLeft_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width + 300, SCREEN_HEIGHT - arrow_height * 1.5)
-    backwardRight_rect.topleft = (SCREEN_WIDTH // 2 - arrow_width + 450, SCREEN_HEIGHT - arrow_height * 1.5)
-
-    # Dit zorgt ervoor dat de images verschijnen als de toetsen worden ingedrukt
-    if movement == 'forward':
-        screen.blit(arrow_up, arrow_up_rect)
-        positionXY = (1025,50)
-    elif movement == 'backward':
-        screen.blit(arrow_down, arrow_down_rect)
-        position = (1025,50)
-    elif movement == 'left':
-        screen.blit(arrow_left, arrow_left_rect)
-        positionXY = (1025,50)
-    elif movement == 'right':
-        screen.blit(arrow_right, arrow_right_rect)
-        positionXY = (1025,50)
-    elif movement == 'up':
-        screen.blit(arrow_upstairs, arrow_upstairs_rect)
-        positionXY = (1025,50)
-    elif movement == 'down':
-        screen.blit(arrow_downstairs, arrow_downstairs_rect)
-        positionXY = (1025,50)
-    if lock:
-        screen.blit(locked, locked_rect)
-        positionXY = (1025,50)
-    else:
-        screen.blit(unlocked, unlocked_rect)
-        positionXY = (1025,50)
-
-    if movement == 'forwardLeft' :
-        screen.blit(forwardLeft, forwardLeft_rect)
-        positionXY = (1025,50)
-    elif movement == 'forwardRight' :
-        screen.blit(forwardRight, forwardRight_rect)
-        positionXY = (1025,50)
-    elif movement == 'backwardLeft' :
-        screen.blit(backwardLeft, backwardLeft_rect)
-        positionXY = (1025,50)
-    elif movement == 'backwardRight' :
-        screen.blit(backwardRight, backwardRight_rect)
-        positionXY = (1025,50)
-else:
-    # Payload that we send to outputs/joyStickVisuals, which is output/motorCabin
-    position = list(positionXY)
-    payload = {"movement": movement, "position": position, "lock": lock}
-    payload_string = json.dumps(payload)
-    client.publish(topic_1, payload_string, qos=0)
-    pygame.display.flip()
-
-pygame.quit()
