@@ -99,8 +99,8 @@ view3 = pygame.Surface([500,300])
 # arrow_upstairs = pygame.image.load('images/arrow_upstairs.png').convert_alpha()
 # arrow_downstairs = pygame.image.load('images/arrow_downstairs.png').convert_alpha()
 locked = pygame.image.load('images/locked.png').convert_alpha()
-unlocked = pygame.image.load('images/unlocked.png').convert_alpha()
-siren = pygame.image.load('images/siren.png').convert_alpha()
+# unlocked = pygame.image.load('images/unlocked.png').convert_alpha()
+# siren = pygame.image.load('images/siren.png').convert_alpha()
 # emergency = pygame.image.load('images/emergency.png').convert_alpha()
 # forwardLeft = pygame.image.load('images/forwardLeft.png').convert_alpha()
 # forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
@@ -134,8 +134,7 @@ while not exit:
     screen.blit(view, (75,50)) 
     screen.blit(view2, (625,50))
     screen.blit(view3, (75,400))
-   
-    
+ 
     
     # Blits WASD Keys
     screen.blit(WASD, (650, 500))
@@ -148,12 +147,11 @@ while not exit:
     screen.blit(circle2, (1025,585))
 
     try:
-        if emergency is False:
-            emergencybuttonscreen = screen.blit(emergencyButton, (825, 360))
-            unlockButton = screen.blit(unlocked, (1025,360))
-            print( imageName + " blitted to position " , position)
-            if lock is False:
-                unlockButton = screen.blit(unlocked, (1025,360))  
+        if emergency is False: # if emergency is false we blit the normal emergency button
+            cabinEmergencyButton = screen.blit((emergencyButton), (825, 360))
+            if lock is False: # if lock is false we blit the unlocked lock
+                locking = screen.blit(pygame.image.load(image), position) 
+                print(position , " has unlocked")
                 if movement == 'forward':
                     screen.blit(pygame.image.load(image), position)
                     print( imageName + " blitted to position " , position)
@@ -184,8 +182,9 @@ while not exit:
                 elif movement == 'backwardRight' :
                     screen.blit(pygame.image.load(image), position)
                     print( imageName + " blitted to position " , position)  
-            else:
-                unlockButton = screen.blit(locked, (1025,360))  
+            else: # this code allows us to have input even if lock is true.. is it needed? depends..
+                screen.blit(pygame.image.load(image), position) 
+                print(position , "has locked")
                 if movement == 'forward':
                     screen.blit(pygame.image.load(image), position)
                     print( imageName + " blitted to position " , position)
@@ -215,10 +214,11 @@ while not exit:
                     print( imageName + " blitted to position " , position)
                 elif movement == 'backwardRight' :
                     screen.blit(pygame.image.load(image), position)
-                    print( imageName + " blitted to position " , position)           
-        elif emergency is True:
-            unlockButton = screen.blit(locked, (1025,360))
-            emergencybuttonscreen = screen.blit(siren, (825 , 360))
+                    print( imageName + " blitted to position " , position)         
+        # if emergency is true we screen blit locked lock and siren
+        elif emergency is True: 
+            screen.blit(pygame.image.load(image), position)
+            locking = screen.blit(pygame.image.load(locked), (1025, 360))
             print( imageName + " blitted to position " , position)
         else:
             print("hey")    

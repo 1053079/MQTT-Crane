@@ -109,57 +109,103 @@ def on_message(client, userdata, message):
     emergency = payload_data.get("emergency") # Checks for emergency from the inputs/cabinEmergencyButton
 
     try:
-        if emergency is False:
-            positionXY = (1025,350)
-            image = unlocked
-            print("lock is false") 
-            
-            if movement == 'forward':
-                positionXY = (690,515)
-                image = arrow_up
+        if emergency is False: # if emergency is true we send these coordinates and image of emergency
+            positionXY = (825,360)
+            image = emergencyButton
+            print("No Emergency going on here") 
+            if lock is False: # if lock is false we send these coordinates and image of unlocked lock
+                positionXY = (1025, 360) 
+                image = unlocked
+                if movement == 'forward':
+                    positionXY = (690,515)
+                    image = arrow_up
+                    print(positionXY , image)
+                elif movement == 'backward':
+                    positionXY = (690,590)
+                    image = arrow_down
+                    print(positionXY , image)
+                elif movement == 'left':
+                    positionXY = (653,555)      
+                    image = arrow_left  
+                    print(positionXY , image)
+                elif movement == 'right':
+                    positionXY = (730,555)
+                    image = arrow_right
+                    print(positionXY , image)
+                elif movement == 'up':
+                    positionXY = (847, 450)
+                    image = arrow_upstairs
+                    print(positionXY , image)
+                elif movement == 'down':
+                    positionXY = (847, 630)
+                    image = arrow_downstairs
+                    print(positionXY , image)
+                elif movement == 'forwardLeft' :
+                    positionXY = (640 , 500)
+                    image = forwardLeft
+                    print(positionXY , image)
+                elif movement == 'forwardRight' :
+                    positionXY = (740 , 500)
+                    image = forwardRight
+                    print(positionXY , image)
+                elif movement == 'backwardLeft' :
+                    positionXY = (640, 600)
+                    image = backwardLeft
+                    print(positionXY , image)
+                elif movement == 'backwardRight' :
+                    positionXY = (740, 600)
+                    image = backwardRight
+                    print(positionXY , image)
+                else:
+                    print("Invalid key has been detected " + movement)    
+            else: # if lock is true we send these coordinates and image, extra if statements allow for input even if locked
+                positionXY = (1025,360)
+                image = locked
                 print(positionXY , image)
-            elif movement == 'backward':
-                positionXY = (690,590)
-                image = arrow_down
-                print(positionXY , image)
-            elif movement == 'left':
-                positionXY = (653,555)
-                image = arrow_left
-                print(positionXY , image)
-            elif movement == 'right':
-                positionXY = (730,555)
-                image = arrow_right
-                print(positionXY , image)
-            elif movement == 'up':
-                positionXY = (847, 450)
-                image = arrow_upstairs
-                print(positionXY , image)
-            elif movement == 'down':
-                positionXY = (847, 630)
-                image = arrow_downstairs
-                print(positionXY , image)
-            elif movement == 'forwardLeft' :
-                positionXY = (640 , 500)
-                image = forwardLeft
-                print(positionXY , image)
-            elif movement == 'forwardRight' :
-                positionXY = (740 , 500)
-                image = forwardRight
-                print(positionXY , image)
-            elif movement == 'backwardLeft' :
-                positionXY = (640, 600)
-                image = backwardLeft
-                print(positionXY , image)
-            elif movement == 'backwardRight' :
-                positionXY = (740, 600)
-                image = backwardRight
-                print(positionXY , image)
-            else:
-                print("Invalid key has been detected " + movement)
-        else:
-            positionXY = (1025,360)
-            image = locked
-            print("lock is true")
+                if movement == 'forward':
+                    positionXY = (690,515)
+                    image = arrow_up
+                    print(positionXY , image)
+                elif movement == 'backward':
+                    positionXY = (690,590)
+                    image = arrow_down
+                    print(positionXY , image)
+                elif movement == 'left':
+                    positionXY = (653,555)      
+                    image = arrow_left  
+                    print(positionXY , image)
+                elif movement == 'right':
+                    positionXY = (730,555)
+                    image = arrow_right
+                    print(positionXY , image)
+                elif movement == 'up':
+                    positionXY = (847, 450)
+                    image = arrow_upstairs
+                    print(positionXY , image)
+                elif movement == 'down':
+                    positionXY = (847, 630)
+                    image = arrow_downstairs
+                    print(positionXY , image)
+                elif movement == 'forwardLeft' :
+                    positionXY = (640 , 500)
+                    image = forwardLeft
+                    print(positionXY , image)
+                elif movement == 'forwardRight' :
+                    positionXY = (740 , 500)
+                    image = forwardRight
+                    print(positionXY , image)
+                elif movement == 'backwardLeft' :
+                    positionXY = (640, 600)
+                    image = backwardLeft
+                    print(positionXY , image)
+                elif movement == 'backwardRight' :
+                    positionXY = (740, 600)
+                    image = backwardRight
+                    print(positionXY , image)
+        else: # if Emergency is true 
+            positionXY = (825,360)
+            image = siren
+            print("Emergency button has been pressed")
     except Exception as e:
         print(e)
     # Payload that we send to outputs/joyStickVisuals, which is output/motorCabin
