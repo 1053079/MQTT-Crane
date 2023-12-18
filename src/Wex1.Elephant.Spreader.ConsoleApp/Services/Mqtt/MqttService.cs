@@ -27,16 +27,16 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         private Container _container = new Container();
         
         // coordinaten sts-kraan gebied
-        readonly double _minStsX = 200;
-        readonly double _maxStsX = 315;
-        readonly double _minStsY = 0;
-        readonly double _maxStsY = 145;
+        readonly double _minStsX = 345;
+        readonly double _maxStsX = 425;
+        readonly double _minStsY = 190;
+        readonly double _maxStsY = 300;
        
         // coordinaten boot gebied
-        readonly double _minBoatX = 80;
-        readonly double _maxBoatX = 180;
-        readonly double _minBoatY = 0;
-        readonly double _maxBoatY = 200;
+        readonly double _minBoatX = 200;
+        readonly double _maxBoatX = 300;
+        readonly double _minBoatY = 150;
+        readonly double _maxBoatY = 300;
        
         public MqttService()
         {
@@ -87,8 +87,8 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 SpreaderPositionDto positionValues = JsonSerializer.Deserialize<SpreaderPositionDto>(payload);
 
                 _spreader.Sensor = new Sensor();
-                _container.PositionX = 110.0;
-                _container.PositionY = 185.0;
+                _container.PositionX = 230.0;
+                _container.PositionY = 245.0;
                 
 
 
@@ -97,7 +97,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 _spreader.PositionY = positionValues.PositionY;
                
                 //_spreader.PositionZ = positionValues[2];
-                //container starting position : 110 - 150 X || 185-200 Y || 230 - 270 Z
+                //container starting position : 110 - 150 X || 185-200 Y 
                 if (_spreader.PositionX >= _container.PositionX && _spreader.PositionX <= (_container.PositionX + 40)
                     && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 15) 
                    )
