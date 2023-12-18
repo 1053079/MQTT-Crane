@@ -1,3 +1,4 @@
+import ssl
 import paho.mqtt.client as mqtt
 import time
 import json
@@ -41,43 +42,43 @@ def on_message(client, userdata,message):
             if speed == 'normal': # normal speed
                 # Up and down are for the Hoist movements
                 if movement == "up":
-                    print("You have pressed " + movement + " at " + speed + " speed") 
+                    motorDirection = "ClockWise"
+                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
                 elif movement == "down":    
-                    print("You have pressed " + movement + " at " + speed + " speed") 
-                else:
-                    print("invalid key detected")      
-
+                    motorDirection = "AntiClockWise"
+                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                    
             # For fast speed
             elif speed == 'fast':
                 if movement == "up":
-                    print("You have pressed " + movement + " at " + speed + " speed") 
+                    motorDirection = "ClockWise"
+                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
                 elif movement == "down":    
-                    print("You have pressed " + movement + " at " + speed + " speed") 
-                else:
-                    print("invalid key detected")  
+                    motorDirection = "AntiClockWise"
+                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
 
             # For slow speed      
             elif speed == 'slow':   
             # Up and down are for the Hoist movements
                 if movement == "up":
-                    print("You have pressed " + movement + " at " + speed + " speed") 
+                    motorDirection = "ClockWise"
+                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
                 elif movement == "down":    
-                    print("You have pressed " + movement + " at " + speed + " speed")    
-                else:
-                    print("invalid key detected")
+                    motorDirection = "AntiClockWise"
+                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
                        
             else: # if Emergency is true this will happen
               print("Emergency button has activated ")
        
-        # Payload that we send to topic_2 which is output/motorHoist
-            payload_2 = {"movement": movement, "speed": speed, "lock": lock}
-            print("payload is " , payload_2) 
-            payload_string = json.dumps(payload_2)
-            client.publish(topic_2, payload_string, qos=0)
 
     except Exception as e:
         print("Error:", e)
+        
+def publish_payload(topic,payload):{
     
+    client.publish(topic, json.dumps(payload))
+
+} 
 
 connected= False
 messageReceived= False
@@ -89,7 +90,7 @@ username = "Admin"
 password = "hMu4P6L_LAMj8t3"
 
 # TLS (required for connection)
-client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
+client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
 
 # Username and password (required for connection)
 client.username_pw_set(username, password)
