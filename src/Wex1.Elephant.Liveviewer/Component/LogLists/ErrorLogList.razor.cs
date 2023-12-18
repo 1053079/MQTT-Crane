@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorBootstrap;
+using Microsoft.AspNetCore.Components;
 using Wex1.Elephant.Liveviewer.Model;
 using Wex1.Elephant.Liveviewer.Services.Interfaces;
 using Wex1.Elephant.Liveviewer.Services.Mapper;
@@ -16,18 +17,41 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
         private int pageSize = 30;
         private int totalPages;
 
+        private DateOnly? selectedDate, minDate, maxDate;
+        private bool sortDirection;
+
         [Inject]
         private IApiErrorLogProvider _errorLogProvider { get; set; }
-
+        [Inject] 
+        protected PreloadService PreloadService { get; set; }
         protected override async Task OnInitializedAsync()
         {
+            selectedDate = null;
+            minDate = DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-5));
+            maxDate = DateOnly.FromDateTime(DateTime.UtcNow);
+            sortDirection = true;
             await FetchErrorLogs();
         }
 
         private async Task HandlePageChangeAsync(int newPageNumber)
         {
-            await Task.Run(() => { currentPageNumber = newPageNumber; }) ;
+            await Task.Run(() => { currentPageNumber = newPageNumber; });
             await FetchErrorLogs();
+        }
+
+        private async Task HandleDateChangeAsync(DateOnly? value)
+        {
+            if(selectedDate!= value || value == null)
+            {
+                selectedDate = value;
+                await FetchErrorLogs();
+            }
+        }
+
+        public async Task HandleSortDirectionChange(ChangeEventArgs e)
+        {
+            sortDirection = bool.Parse(e.Value.ToString());
+            FetchErrorLogs();
         }
 
         private async Task FetchErrorLogs()
@@ -37,17 +61,20 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
                 IsError = false;
                 try
                 {
-                    var pageDto = await _errorLogProvider.GetPage(currentPageNumber, pageSize);
+                    ErrorLogs = null;
+                    await Task.Delay(500);
+                    var pageDto = await _errorLogProvider.GetPage(currentPageNumber, pageSize, selectedDate, sortDirection);
                     totalPages = pageDto.TotalPages;
                     ErrorLogs = pageDto.Data.MapToLog().ToArray();
                     await InvokeAsync(StateHasChanged);
-                } catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     IsError = true;
                     ErrorMessage = ex.Message;
                 }
+               
 
-                
             }
             catch (Exception ex)
             {

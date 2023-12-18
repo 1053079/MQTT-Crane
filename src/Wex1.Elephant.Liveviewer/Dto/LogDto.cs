@@ -1,6 +1,5 @@
 ﻿using System.Text.Json.Serialization;
 
-
 namespace Wex1.Elephant.Liveviewer.Dto
 {
     public class LogDto
