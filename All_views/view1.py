@@ -44,8 +44,41 @@ target_container_location = (Container_1.x, Container_1.y)
 last_spreader_x = 0
 last_spreader_y = 0
 
+# MQTT configurations
+mqtt_broker_address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
+mqtt_port = 8883
+mqtt_username = "Admin"
+mqtt_password = "hMu4P6L_LAMj8t3"
+mqtt_topic = "outputs/positionSpreader"
 
-def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader_width, spreader_distance, font, text_color):
+client = mqtt.Client()
+client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to MQTT broker")
+    else:
+        print(f"Failed to connect, return code: {rc}")
+
+def on_disconnect(client, userdata, rc):
+    if rc == 0:
+        print("Disconnected from MQTT broker")
+    else:
+        print(f"Unexpected disconnection, return code: {rc}")
+
+
+client.on_connect = on_connect
+client.on_disconnect = on_disconnect
+client.username_pw_set(mqtt_username, mqtt_password)
+
+try:
+    client.connect(mqtt_broker_address, mqtt_port, 60)
+except Exception as e:
+    print(f"Error connecting to MQTT broker: {e}")
+
+client.loop_start()
+
+def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader_width, spreader_distance, font, text_color, client, mqtt_topic):
     spreader_x = cabin_centerx - spreader_width // 2
     spreader_y = cabin_bottom + rope_height + spreader_distance
     pygame.draw.rect(screen, yellow, (spreader_x, spreader_y, spreader_width, spreader_height))
@@ -54,24 +87,6 @@ def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader
     spreader_location_text = font.render(f"Spreader Location: ({spreader_x}, {spreader_y})", True, text_color)
     screen.blit(spreader_location_text, (75, 65))
 
-    return spreader_x, spreader_y
-
-
-mqtt_broker_address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
-mqtt_port = 8883
-mqtt_username = "Admin"
-mqtt_password = "hMu4P6L_LAMj8t3"
-mqtt_topic = "outputs/positionSpreader"
-
-client = mqtt.Client()
-client.username_pw_set(mqtt_username, mqtt_password)
-client.connect(mqtt_broker_address, mqtt_port, 60)
-
-
-def sent_spreader_location(cabin_centerx, cabin_bottom, rope_height, spreader_width, spreader_distance):
-    spreader_x = cabin_centerx - spreader_width // 2
-    spreader_y = cabin_bottom + rope_height + spreader_distance
-
     spreader_location = {
         "positionX": float(spreader_x),
         "positionY": float(spreader_y)
@@ -79,6 +94,7 @@ def sent_spreader_location(cabin_centerx, cabin_bottom, rope_height, spreader_wi
 
     client.publish(mqtt_topic, json.dumps(spreader_location))
 
+    return spreader_x, spreader_y
 
 def draw_view1(screen, rope_height, font, text_color):
     global container_picked_up, target_container_location, spreader_x, spreader_y, last_spreader_x, last_spreader_y
@@ -122,8 +138,7 @@ def draw_view1(screen, rope_height, font, text_color):
     pygame.draw.rect(screen, dark_green, Container_1)
 
     # spreader_location
-    spreader_x, spreader_y = spreader_location(screen, Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance, font, text_color)
-    sent_spreader_location(Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance)
+    spreader_x, spreader_y = spreader_location(screen, Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance, font, text_color, client, mqtt_topic)
 
     # container_location
     container_location_text = font.render(f"Container Location: ({Container_1.x}, {Container_1.y})", True, text_color)
