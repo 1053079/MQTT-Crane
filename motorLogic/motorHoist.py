@@ -9,7 +9,7 @@ client = mqtt.Client()
 # topics that we are subscribed to
 topic = "inputs/joystick"
 topic_1 = "inputs/cabinEmergencyButton"
-
+emergency = False
 # topics that we publish our data to
 topic_2 = "outputs/motorHoist"
 
@@ -25,6 +25,7 @@ def on_message(client, userdata,message):
      print("Message received: " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
      payload_data = json.loads(message.payload.decode('utf-8'))
+     global emergency
      emergency = payload_data.get("state")
     else: 
      print("Message received is " + str((message.payload.decode("utf-8"))))

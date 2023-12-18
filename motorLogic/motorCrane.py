@@ -9,7 +9,7 @@ client = mqtt.Client()
 # topics that we are subscribed to
 topic = "inputs/joystick"
 topic_1 = "inputs/cabinEmergencyButton"
-
+emergency = False
 # topics that we publish our data to
 topic_2 = "outputs/motorCrane"
 
@@ -18,6 +18,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
         print("Connected to broker")
     else:
         print(f"Connection failed with code {rc}")
+    
 
 # prints back the message received and the topic
 def on_message(client, userdata,message):
@@ -25,6 +26,7 @@ def on_message(client, userdata,message):
      print("Message received: " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
      payload_data = json.loads(message.payload.decode('utf-8'))
+     global emergency
      emergency = payload_data.get("state")
     else: 
      print("Message received is " + str((message.payload.decode("utf-8"))))
@@ -35,7 +37,6 @@ def on_message(client, userdata,message):
 
     # decodes the JSON and allows us to get the values of the movement, speed and lock.
     motorDirection = ""
-    emergency = False
 
     try:  
         if message.topic == topic and emergency is True:
