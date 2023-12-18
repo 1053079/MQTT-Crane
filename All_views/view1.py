@@ -1,12 +1,9 @@
 # view1.py
-
-import pygame
-pygame.init()
-from pygame.font import Font
 import paho.mqtt.client as mqtt
 import json
+import pygame
 from pygame.locals import K_RETURN
-
+pygame.init()
 
 # Set up colors
 black = (0, 0, 0)
@@ -35,7 +32,7 @@ Container_1 = pygame.Rect(container_x, container_y, 40, 15)
 Waterline = pygame.Rect(75, 300, 250, 50)
 shore = pygame.Rect(325, 300, 250, 50)
 
-#set up spreader
+# set up spreader
 spreader_width = 10
 spreader_height = 10
 spreader_distance = 1
@@ -47,6 +44,7 @@ target_container_location = (Container_1.x, Container_1.y)
 last_spreader_x = 0
 last_spreader_y = 0
 
+
 def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader_width, spreader_distance, font, text_color):
     spreader_x = cabin_centerx - spreader_width // 2
     spreader_y = cabin_bottom + rope_height + spreader_distance
@@ -57,6 +55,7 @@ def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader
     screen.blit(spreader_location_text, (75, 65))
 
     return spreader_x, spreader_y
+
 
 mqtt_broker_address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
 mqtt_port = 8883
@@ -119,7 +118,7 @@ def draw_view1(screen, rope_height, font, text_color):
 
     pygame.draw.rect(screen, grey, shore)
 
-    pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height),5)  # Rope
+    pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height), 5)  # Rope
     pygame.draw.rect(screen, dark_green, Container_1)
 
     # spreader_location
@@ -133,7 +132,4 @@ def draw_view1(screen, rope_height, font, text_color):
     last_spreader_x = spreader_x
     last_spreader_y = spreader_y
 
-
     return rope_height
-
-
