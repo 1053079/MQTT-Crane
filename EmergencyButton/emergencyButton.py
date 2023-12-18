@@ -1,3 +1,4 @@
+import ssl
 import paho.mqtt.client as mqtt
 import keyboard
 import json
@@ -52,7 +53,7 @@ def on_message(client, userdata,message):
             else:
                 print ("error trying to get data from " + topic)
             # payload that we send to outputs/cabinEmergencyButton    
-            payload = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency}
+            payload = {"state": emergency}
             payload_string = json.dumps(payload)
             client.publish(topic_1, payload_string, qos=0)
             print("payload sent from emergencybutton", payload)
@@ -64,7 +65,7 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 # Pull Request comment 1: TLS (required for connection) - Dit was ook blijkbaar nodig voor de connectie, ook uren aan verspild. TLS zorgt voor een beveiligde connectie.
-client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
+client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
 
 # Username and password (required for connection)
 client.username_pw_set("Admin", "hMu4P6L_LAMj8t3")
