@@ -34,9 +34,9 @@ def draw_view2(screen,shore_x, shore_y,resized_boat):
     keys = pygame.key.get_pressed()
 
     # Move Shore_view2 left and right within limits
-    if keys[pygame.K_w] and shore_x > 710:
+    if keys[pygame.K_s] and shore_x > 710:
         shore_x -= movement_speed
-    if keys[pygame.K_s] and shore_x < 890:
+    if keys[pygame.K_w] and shore_x < 890:
         shore_x += movement_speed
 
     Shore_view2.x = shore_x
