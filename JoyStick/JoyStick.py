@@ -92,11 +92,6 @@ try:
                     lock = not lock
                     movement = 'none'
                     break
-                if keyboard.is_pressed('1'):
-                    print('Cabin Emergencykey is pressed')
-                    movement = 'cabinEmergency' 
-                    emergency = not emergency 
-                    break
             except:
                 break
 
