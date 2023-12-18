@@ -52,14 +52,19 @@ container_picked_up = False
 Container_1 = pygame.Rect(230, 245, 40, 15)
 shore_x = 805
 shore_y = 200
+
+
+# boat_view1
+boat_view1 = pygame.image.load('UserInterface/boat_view1.png')
+new_size_view1 = (100, 50)
+resized_boat_view1 = pygame.transform.scale(boat_view1, new_size_view1)
+
+
 # boat_view2
 boat_view2 = pygame.image.load('UserInterface/boat_view2.png')
 new_size_view2 = (175, 50)
 resized_boat_view2 = pygame.transform.scale(boat_view2, new_size_view2)
 
-boat_view1 = pygame.image.load('UserInterface/boat_view1.png')
-new_size_view1 = (100, 50)
-resized_boat_view1 = pygame.transform.scale(boat_view1, new_size_view1)
 
 cabin_x = 225
 cabin_y = 545

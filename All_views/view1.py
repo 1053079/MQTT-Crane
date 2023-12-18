@@ -5,6 +5,7 @@ pygame.init()
 from pygame.font import Font
 import paho.mqtt.client as mqtt
 import json
+from pygame.locals import K_RETURN
 
 
 # Set up colors
@@ -17,6 +18,9 @@ grey = (169, 169, 169)
 purple = (128, 0, 128)
 dark_green = (1, 50, 32)
 
+container_x = 230
+container_y = 245
+
 # Set up Rects
 Cabin = pygame.Rect(225, 100, 20, 20)
 movement_speed = 1
@@ -27,7 +31,7 @@ Shore_leg1 = pygame.Rect(345, 190, 10, 110)
 Shore_leg2 = pygame.Rect(425, 190, 10, 110)
 Crane_Leg = pygame.Rect(385, 80, 10, 120)
 Bridge = pygame.Rect(225, 90, 200, 10)
-Container_1 = pygame.Rect(230, 245, 40, 15)
+Container_1 = pygame.Rect(container_x, container_y, 40, 15)
 Waterline = pygame.Rect(75, 300, 250, 50)
 shore = pygame.Rect(325, 300, 250, 50)
 
@@ -38,6 +42,10 @@ spreader_distance = 1
 
 font = pygame.font.Font(None, 20)
 text_color = white = (255, 255, 255)
+
+target_container_location = (Container_1.x, Container_1.y)
+last_spreader_x = 0
+last_spreader_y = 0
 
 def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader_width, spreader_distance, font, text_color):
     spreader_x = cabin_centerx - spreader_width // 2
@@ -74,37 +82,58 @@ def sent_spreader_location(cabin_centerx, cabin_bottom, rope_height, spreader_wi
 
 
 def draw_view1(screen, rope_height, font, text_color):
-        keys = pygame.key.get_pressed()
+    global container_picked_up, target_container_location, spreader_x, spreader_y, last_spreader_x, last_spreader_y
+    keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_UP] and rope_height > 10:
-            rope_height -= 1
-        if keys[pygame.K_DOWN] and rope_height < 180:
-            rope_height += 1
+    if keys[pygame.K_UP] and rope_height > 10:
+        rope_height -= 1
+    if keys[pygame.K_DOWN] and rope_height < 180:
+        rope_height += 1
 
-        if keys[pygame.K_a] and Cabin.left > 225:
-            Cabin.x -= movement_speed
-        if keys[pygame.K_d] and Cabin.right < 425:
-            Cabin.x += movement_speed
+    if keys[pygame.K_a] and Cabin.left > 225:
+        Cabin.x -= movement_speed
+    if keys[pygame.K_d] and Cabin.right < 425:
+        Cabin.x += movement_speed
+
+    if keys[K_RETURN]:
+        if not container_picked_up:
+            if Container_1.colliderect((spreader_x, spreader_y, spreader_width, spreader_height)):
+                container_picked_up = True
+        elif container_picked_up:
+            container_picked_up = False
+            target_container_location = (spreader_x - Container_1.width // 2,
+                                         spreader_y + spreader_height + spreader_distance)
+            Container_1.topleft = target_container_location
+
+    if container_picked_up:
+        Container_1.topleft = (spreader_x - Container_1.width // 2 + 5, spreader_y + spreader_height + spreader_distance)
+
+    # Your drawings (x, y, width, height)
+    pygame.draw.rect(screen, yellow, leg_bridge)
+    pygame.draw.rect(screen, yellow, Shore_leg1)
+    pygame.draw.rect(screen, yellow, Shore_leg2)
+    pygame.draw.rect(screen, yellow, Crane_Leg)
+    pygame.draw.rect(screen, yellow, Bridge)
+    pygame.draw.rect(screen, purple, Cabin)
+    pygame.draw.rect(screen, blue, Waterline)
+
+    pygame.draw.rect(screen, grey, shore)
+
+    pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height),5)  # Rope
+    pygame.draw.rect(screen, dark_green, Container_1)
+
+    # spreader_location
+    spreader_x, spreader_y = spreader_location(screen, Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance, font, text_color)
+    sent_spreader_location(Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance)
+
+    # container_location
+    container_location_text = font.render(f"Container Location: ({Container_1.x}, {Container_1.y})", True, text_color)
+    screen.blit(container_location_text, (75, 85))
+
+    last_spreader_x = spreader_x
+    last_spreader_y = spreader_y
 
 
-        # Your drawings (x, y, width, height)
-        pygame.draw.rect(screen, yellow, leg_bridge)
-        pygame.draw.rect(screen, yellow, Shore_leg1)
-        pygame.draw.rect(screen, yellow, Shore_leg2)
-        pygame.draw.rect(screen, yellow, Crane_Leg)
-        pygame.draw.rect(screen, yellow, Bridge)
-        pygame.draw.rect(screen, purple, Cabin)
-        pygame.draw.rect(screen, blue, Waterline)
-
-        pygame.draw.rect(screen, grey, shore)
-
-        pygame.draw.line(screen, purple, (Cabin.centerx, Cabin.bottom), (Cabin.centerx, Cabin.bottom + rope_height),5)  # Rope
-        pygame.draw.rect(screen, dark_green, Container_1)
-
-        # spreader_location
-        spreader_x, spreader_y = spreader_location(screen, Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance, font, text_color)
-        sent_spreader_location(Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance)
-
-        return rope_height
+    return rope_height
 
 
