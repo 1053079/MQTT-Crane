@@ -20,14 +20,13 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] PaginationFilter paginationFilter, [FromQuery] DateFilter dateFilter)
         {
-            return await _errorLogCrudService.GetAllPaged(filter, Request);
+            return await _errorLogCrudService.GetAllPaged(paginationFilter, dateFilter, Request);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
             return await _errorLogCrudService.GetById(ObjectId.Parse(id));
-            return await _errorLogService.GetAllPaged(paginationFilter, dateFilter, Request);
         }
 
     }
