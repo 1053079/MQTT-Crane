@@ -84,8 +84,27 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
                 case "outputs/motorCabin":
                     await HandleNewMotorCabinOutput(e.PublishMessage.Payload);
                     break;
-
+                case "outputs/positionSpreader":
+                    await HandleNewSpreaderPositionOutput(e.PublishMessage.Payload);
+                    break;
             }
+        }
+
+        private async Task HandleNewSpreaderPositionOutput(byte[]? payload)
+        {
+            var positionSpreader = JsonSerializer.Deserialize<PositionDto>(payload);
+            var position = new List<double> { positionSpreader.X, positionSpreader.Y };
+            var positionLog = new PositionLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                Component = "Spreader",
+                EventType = "Position",
+                Position = position,
+                Description = $"The current position of the spreader",
+                EventTimeStamp = DateTime.UtcNow
+            };
+            
+            _mqttClient.PublishAsync("logger/positions", JsonSerializer.Serialize(positionLog));
         }
 
         private async Task HandleNewMotorCabinOutput(byte[]? payload)
