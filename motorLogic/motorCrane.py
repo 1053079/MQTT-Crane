@@ -1,3 +1,4 @@
+import ssl
 import paho.mqtt.client as mqtt
 import time
 import json
@@ -23,16 +24,18 @@ def on_message(client, userdata,message):
     if message.topic == topic_1: # checks for topic
      print("Message received: " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
+     payload_data = json.loads(message.payload.decode('utf-8'))
+     emergency = payload_data.get("state")
     else: 
      print("Message received is " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
-    
+     payload_data = json.loads(message.payload.decode('utf-8'))
+     movement = payload_data.get("movement") # The movement of the joystick input
+     speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
+
     # decodes the JSON and allows us to get the values of the movement, speed and lock.
-    payload_data = json.loads(message.payload.decode('utf-8'))
-    movement = payload_data.get("movement") # The movement of the joystick input
-    speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
-    lock = payload_data.get("lock") # Checks whether spreader is locked or not
-    emergency = payload_data.get("emergency") # Checks for emergency from the inputs/cabinEmergencyButton
+    motorDirection = ""
+    emergency = False
 
     try:  
         if message.topic == topic_1 and emergency is True:
@@ -40,45 +43,40 @@ def on_message(client, userdata,message):
         elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
             if speed == 'normal': # normal speed
                 # Left and right are for the Crane movements 
-               if movement == "left":
-                 print("You have pressed " + movement + " at " + speed + " speed")
-               elif movement == "right":
-                 print("You have pressed " + movement + " at " + speed + " speed")
-               else:
-                 print("Invalid key detected")      
+               if movement == "right":
+                 motorDirection = "ClockWise"
+                 publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+               elif movement == "left":
+                 motorDirection = "AntiClockWise"
+                 publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
 
             #  For fast speed
             elif speed == 'fast':
                 # Left and right are for the Crane movements 
-                if movement == "left":
-                    print("You have pressed " + movement + " at " + speed + " speed")
-                elif movement == "right":
-                    print("You have pressed " + movement + " at " + speed + " speed")
-                else:
-                    print("Invalid key detected")  
+                if movement == "right":
+                 motorDirection = "ClockWise"
+                 publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                elif movement == "left":
+                 motorDirection = "AntiClockWise"
+                 publish_payload(topic_2, {"direction": motorDirection, "speed": speed}) 
 
             # For slow speed      
             elif speed == 'slow':   
-                # Left and right are for the Crane movements 
-                if movement == "left":
-                    print("You have pressed " + movement + " at " + speed + " speed")
-                elif movement == "right":
-                    print("You have pressed " + movement + " at " + speed + " speed")    
-                else:
-                    print("Invalid key detected")     
-                  
-            else: # if Emergency is true this will happen
-                print("Emergency button has activated")
-       
-            # Payload that we send to topic_2 which is output/motorCrane
-            payload_2 = {"movement": movement, "speed": speed, "lock": lock}
-            print("payload is " , payload_2) 
-            payload_string = json.dumps(payload_2)
-            client.publish(topic_2, payload_string, qos=0)
+                if movement == "right":
+                 motorDirection = "ClockWise"
+                 publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                elif movement == "left":
+                 motorDirection = "AntiClockWise"
+                 publish_payload(topic_2, {"direction": motorDirection, "speed": speed})    
 
     except Exception as e:
         print("Error:", e)
+
+def publish_payload(topic,payload):{
     
+    client.publish(topic, json.dumps(payload))
+
+} 
 
 connected= False
 messageReceived= False
@@ -90,7 +88,7 @@ username = "Admin"
 password = "hMu4P6L_LAMj8t3"
 
 # TLS (required for connection)
-client.tls_set(tls_version=mqtt.ssl.PROTOCOL_TLS)
+client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
 
 # Username and password (required for connection)
 client.username_pw_set(username, password)
