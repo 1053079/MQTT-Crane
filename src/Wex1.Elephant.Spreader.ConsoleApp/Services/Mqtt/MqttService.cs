@@ -23,6 +23,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         public HiveMQClient _mqttClient { set; get; }
         private Spreaders _spreader = new Spreaders();
 
+
         
         private Container _container = new Container();
         
@@ -49,7 +50,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 UseTLS = true,
             };
             CreateMqttClient(options);
-
+            _spreader.Lock = false;
 
 
         }
@@ -88,7 +89,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 
                 _spreader.Sensor = new Sensor();
                 _container.PositionX = 225.0;
-                _container.PositionY = 240.0;
+                _container.PositionY = 235.0;
                 
 
 
@@ -108,7 +109,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 
 
                 }
-                else
+                else if (_spreader.Lock == false)
                 {
                     await PublishSensorStatus(false);
                     _spreader.Sensor.DetectedContainer = false;
