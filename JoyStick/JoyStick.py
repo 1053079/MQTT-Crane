@@ -35,6 +35,7 @@ client.username_pw_set("Admin", "hMu4P6L_LAMj8t3")
 movement = "none"
 speed = "normal"
 lock = False
+emergency = False
 
 # Main Loop
 try:
@@ -62,7 +63,6 @@ try:
                     print('S and D key is pressed')
                     movement = 'backwardRight'
                     break
-                
                 # Individual keys
                 if keyboard.is_pressed('w'):
                     print('W key is pressed')
@@ -114,7 +114,7 @@ try:
             speed = "normal"
 
         # Payload
-        payload = {"movement": movement, "speed": speed, "lock": lock}
+        payload = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency} 
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
         print(payload)
