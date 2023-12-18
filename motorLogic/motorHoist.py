@@ -24,19 +24,21 @@ def on_message(client, userdata,message):
     if message.topic == topic_1: # checks for topic
      print("Message received: " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
+     payload_data = json.loads(message.payload.decode('utf-8'))
+     emergency = payload_data.get("state")
     else: 
      print("Message received is " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
-    
+     payload_data = json.loads(message.payload.decode('utf-8'))
+     movement = payload_data.get("movement") # The movement of the joystick input
+     speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
+
     # decodes the JSON and allows us to get the values of the movement, speed and lock.
-    payload_data = json.loads(message.payload.decode('utf-8'))
-    movement = payload_data.get("movement") # The movement of the joystick input
-    speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
-    lock = payload_data.get("lock") # Checks whether spreader is locked or not
-    emergency = payload_data.get("emergency") # Checks for emergency from the inputs/cabinEmergencyButton
+    motorDirection = ""
+    emergency = False
 
     try:  
-        if message.topic == topic_1 and emergency is True:
+        if message.topic == topic and emergency is True:
             print('dog') # replace print with code that stops all movement
         elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
             if speed == 'normal': # normal speed
@@ -73,7 +75,7 @@ def on_message(client, userdata,message):
 
     except Exception as e:
         print("Error:", e)
-        
+
 def publish_payload(topic,payload):{
     
     client.publish(topic, json.dumps(payload))
