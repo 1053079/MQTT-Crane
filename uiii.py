@@ -141,9 +141,16 @@ while not exit:
 
     try:
         if mqtt_message == topic and emergency is True:
-            print('dog') # replace print with code that stops all movement
+                position = (825 , 360)
+                screen.blit(pygame.image.load('images/siren.png'), position)
+                locking = screen.blit(pygame.image.load(locked), (1025, 360))
+                print(  " blitted to position " , position)
         elif mqtt_message == topic or (mqtt_message == topic_1 and emergency is False):
             if lock is False:
+                positionEmergency = (825, 360)
+                position = (1025, 360)
+                screen.blit(pygame.image.load('images/emergency.png'), positionEmergency)
+                screen.blit(pygame.image.load('images/unlocked.png'), position)
                 print("lock status is" , lock)
         # only does actions if its from inputs/joystick and emergency is fals
                 if movement == 'forward':
@@ -187,6 +194,11 @@ while not exit:
                     screen.blit(pygame.image.load('images/backwardRight.png'), position)
                     print( " blitted to position " , position)  
             elif lock is True: # this code allows us to have input even if lock is true.. is it needed? depends..
+                positionEmergency = (825, 360)
+                position = (1025, 360)
+                screen.blit(pygame.image.load('images/emergency.png'), positionEmergency)
+                screen.blit(pygame.image.load('images/locked.png'), position)
+                print ('lock status is ' , lock)
                 if movement == 'forward':
                     position = (690,515)
                     screen.blit(pygame.image.load('images/arrow_up.png'), position)
@@ -230,7 +242,7 @@ while not exit:
         # if emergency is true we screen blit locked lock and siren
         else: 
                 position = (825 , 360)
-                screen.blit(pygame.image.load('images/siren.png'), position)
+                screen.blit(pygame.image.load('images/emergency.png'), position)
                 locking = screen.blit(pygame.image.load(locked), (1025, 360))
                 print(  " blitted to position " , position)
          
