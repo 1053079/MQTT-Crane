@@ -62,7 +62,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
             await _mqttClient.ConnectAsync().ConfigureAwait(false);
             await SubscribePositionSpreader();
             await SubscribeJoystick();
-            
+           
 
 
         }
@@ -87,8 +87,8 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 SpreaderPositionDto positionValues = JsonSerializer.Deserialize<SpreaderPositionDto>(payload);
 
                 _spreader.Sensor = new Sensor();
-                _container.PositionX = 230.0;
-                _container.PositionY = 245.0;
+                _container.PositionX = 225.0;
+                _container.PositionY = 240.0;
                 
 
 
@@ -98,8 +98,8 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                
                 //_spreader.PositionZ = positionValues[2];
                 //container starting position : 110 - 150 X || 185-200 Y 
-                if (_spreader.PositionX >= _container.PositionX && _spreader.PositionX <= (_container.PositionX + 40)
-                    && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 15) 
+                if (_spreader.PositionX >= _container.PositionX && _spreader.PositionX <= (_container.PositionX + 45)
+                    && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 20) 
                    )
                 {
                     _spreader.Sensor.DetectedContainer = true;
