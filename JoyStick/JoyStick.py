@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import keyboard
 import json
+import time
 
 address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud" # Pull Request comment 1: Address van broker. Dit is belangrijk, want anders kan je niet connecten.
 port = 8883 # Pull Request comment 1: Port van broker. Dit hoort bij de address. Ook belangrijk voor connectie.
@@ -34,6 +35,7 @@ client.username_pw_set("Admin", "hMu4P6L_LAMj8t3")
 movement = "none"
 speed = "normal"
 lock = False
+emergency = False
 
 # Main Loop
 try:
@@ -61,7 +63,6 @@ try:
                     print('S and D key is pressed')
                     movement = 'backwardRight'
                     break
-                
                 # Individual keys
                 if keyboard.is_pressed('w'):
                     print('W key is pressed')
@@ -92,6 +93,12 @@ try:
                     lock = not lock
                     movement = 'none'
                     break
+                if key_event.event_type == keyboard.KEY_UP:
+                    if key_event.name != 'enter':
+                        print('Key is released')
+                        movement = 'none'
+                        time.sleep(0.1)
+                        break
             except:
                 break
 
@@ -107,7 +114,7 @@ try:
             speed = "normal"
 
         # Payload
-        payload = {"movement": movement, "speed": speed, "lock": lock}
+        payload = {"movement": movement, "speed": speed, "lock": lock, "emergency": emergency} 
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
         print(payload)
