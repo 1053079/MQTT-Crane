@@ -2,7 +2,7 @@ import ssl
 import paho.mqtt.client as mqtt
 import time
 import json
-from datetime import date
+from datetime import datetime, timezone
 
 # connects us to the MQTT client
 client = mqtt.Client()
@@ -42,9 +42,10 @@ def on_message(client, userdata,message):
     motorDirection = ""
     try:
         if message.topic == topic and emergency is True:
-            payload = {"EventTimeStamp": date.ctime,"EventType":"Error","Component":"motorCabin","Description":"Cabin motor refuses to move cause emergency button is pressed!"}
-            client.publish("api/errors",payload)
-            print('dog') # replace print with code that stops all movement
+            current_datetime = datetime.utcnow()
+            formatted_datetime = current_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            payload = {"EventTimeStamp": formatted_datetime,"EventType":"Error","Component":"motorCabin","Description":"Cabin motor refuses to move cause emergency button is pressed!"}
+            publish_payload("logger/errors", payload)
         elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
             if speed == 'normal':  # normal speed
                 # Forward and backward are for the Cabin movements

@@ -41,9 +41,10 @@ def on_message(client, userdata,message):
 
     try:  
         if message.topic == topic and emergency is True:
-            payload = {"EventTimeStamp": date.ctime,"EventType":"Error","Component":"motorCrane","Description":"Cabin crane refuses to move cause emergency button is pressed!"}
-            client.publish("api/errors",payload)
-            print('dog') # Replace print with code that stops all movement
+            current_datetime = datetime.utcnow()
+            formatted_datetime = current_datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            payload = {"EventTimeStamp": formatted_datetime,"EventType":"Error","Component":"motorCabin","Description":"Cabin motor refuses to move cause emergency button is pressed!"}
+            publish_payload("logger/errors", payload)
         elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
             if speed == 'normal': # normal speed
                 # Left and right are for the Crane movements 
