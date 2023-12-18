@@ -71,9 +71,66 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
             throw new NotImplementedException();
         }
 
-        private Task HandleNewOutputPayload(OnMessageReceivedEventArgs e)
+        private async Task HandleNewOutputPayload(OnMessageReceivedEventArgs e)
         {
-            throw new NotImplementedException();
+            switch(e.PublishMessage.Topic)
+            {
+                case "outputs/motorCrane":
+                    await HandleNewMotorCraneOutput(e.PublishMessage.Payload);
+                    break;
+                case "outputs/motorHoist":
+                    await HandleNewMotorHoistOutput(e.PublishMessage.Payload);
+                    break;
+                case "outputs/motorCabin":
+                    await HandleNewMotorCabinOutput(e.PublishMessage.Payload);
+                    break;
+
+            }
+        }
+
+        private async Task HandleNewMotorCabinOutput(byte[]? payload)
+        {
+            var motorCrane = JsonSerializer.Deserialize<motorDto>(payload);
+            var actionLog = new ActionLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                Component = "MotorCabin",
+                EventType = "Action",
+                Description = $"The motor for the cabin is moving {motorCrane.Direction} at a {motorCrane.Speed} speed",
+                EventTimeStamp = DateTime.UtcNow
+            };
+
+            _mqttClient.PublishAsync("logger/actions", JsonSerializer.Serialize(actionLog));
+        }
+
+        private async Task HandleNewMotorHoistOutput(byte[]? payload)
+        {
+            var motorCrane = JsonSerializer.Deserialize<motorDto>(payload);
+            var actionLog = new ActionLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                Component = "MotorHoist",
+                EventType = "Action",
+                Description = $"The motor for the hoist is moving {motorCrane.Direction} at a {motorCrane.Speed} speed",
+                EventTimeStamp = DateTime.UtcNow
+            };
+
+            _mqttClient.PublishAsync("logger/actions", JsonSerializer.Serialize(actionLog));
+        }
+
+        private async Task HandleNewMotorCraneOutput(byte[]? payload)
+        {
+            var motorCrane = JsonSerializer.Deserialize<motorDto>(payload);
+            var actionLog = new ActionLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                Component = "MotorCrane",
+                EventType = "Action",
+                Description = $"The motor for the crane is moving {motorCrane.Direction} at a {motorCrane.Speed} speed",
+                EventTimeStamp = DateTime.UtcNow
+            };
+
+            _mqttClient.PublishAsync("logger/actions", JsonSerializer.Serialize(actionLog));
         }
 
         private async Task HandleNewInputPayload(OnMessageReceivedEventArgs e)
