@@ -31,15 +31,13 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         readonly double _maxStsX = 315;
         readonly double _minStsY = 0;
         readonly double _maxStsY = 145;
-        readonly double _minStsZ = 325;
-        readonly double _maxStsZ = 575;
+       
         // coordinaten boot gebied
         readonly double _minBoatX = 80;
         readonly double _maxBoatX = 180;
         readonly double _minBoatY = 0;
         readonly double _maxBoatY = 200;
-        readonly double _minBoatZ = 75;
-        readonly double _maxBoatZ = 325;
+       
         public MqttService()
         {
             var options = new HiveMQClientOptions
@@ -91,18 +89,18 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 _spreader.Sensor = new Sensor();
                 _container.PositionX = 110.0;
                 _container.PositionY = 185.0;
-                _container.PositionZ = 230.0;
+                
 
 
                 _spreader.PositionX = positionValues.PositionX;
 
                 _spreader.PositionY = positionValues.PositionY;
-                _spreader.PositionZ = positionValues.PositionZ;
+               
                 //_spreader.PositionZ = positionValues[2];
                 //container starting position : 110 - 150 X || 185-200 Y || 230 - 270 Z
                 if (_spreader.PositionX >= _container.PositionX && _spreader.PositionX <= (_container.PositionX + 40)
                     && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 15) 
-                    && _spreader.PositionZ >= _container.PositionZ && _spreader.PositionZ <= (_container.PositionZ + 40))
+                   )
                 {
                     _spreader.Sensor.DetectedContainer = true;
 
@@ -135,7 +133,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                     if (_spreader.Sensor.DetectedContainer && (bool)payloadData.IsLocked &&
                         _spreader.PositionX >= _minBoatX && _spreader.PositionX <= _maxBoatX &&
                         _spreader.PositionY >= _minBoatY && _spreader.PositionY <= _maxBoatY
-                        && _spreader.PositionZ >= _minBoatZ && _spreader.PositionZ <= _maxBoatZ)
+                        )
                     {
                         _spreader.Lock = true;
                         await PublishLockStatus(true,true);
@@ -149,8 +147,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                         && _spreader.PositionX <= _maxStsX
                         && _spreader.PositionY >= _minStsY
                         && _spreader.PositionY <= _maxStsY
-                        && _spreader.PositionZ >= _minStsZ
-                        && _spreader.PositionZ <= _maxStsZ)
+                      )
                     {
                         _spreader.Lock = false;
                         await PublishLockStatus(false,false);
