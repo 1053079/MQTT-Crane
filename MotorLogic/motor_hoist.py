@@ -9,7 +9,7 @@ client = mqtt.Client()
 
 # topics that we are subscribed to
 topic_input_joystick = "inputs/joystick"
-topic_input_cabinEmergencyButton = "inputs/cabinEmergencyButton"
+topic_input_cabinEmergencyButton = "inputs/cabinEmergencyButton"    
 # topics that we publish our data to
 topic_output_motorHoist = "outputs/motorHoist"
 topic_logger_error = "logger/errors"
@@ -49,32 +49,35 @@ def on_message(client, userdata,message):
             publish_payload(topic_logger_error, {"EventTimeStamp":formatted_datetime,"EventType":"Error","Component":"Hoist motor","Description":"Hoist motor cant move since emergency button is engaged!"})
             publish_payload(topic_output_motorHoist, {"direction": motorDirection, "speed": "none"})
         elif message.topic == topic_input_joystick and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
+            if movement == "none" :
+                motorDirection = "none"
+                publish_payload(topic_output_motorHoist, {"direction": motorDirection, "speed": "none"})
             if speed == 'normal': # normal speed
                 # Up and down are for the Hoist movements
                 if movement == "up":
-                    motorDirection = "ClockWise"
+                    motorDirection = "clockwise"
                     publish_payload(topic_output_motorHoist, {"direction": motorDirection, "speed": speed})
                 elif movement == "down":    
-                    motorDirection = "AntiClockWise"
+                    motorDirection = "antiClockwise"
                     publish_payload(topic_output_motorHoist, {"direction": motorDirection, "speed": speed})
                     
             # For fast speed
             elif speed == 'fast':
                 if movement == "up":
-                    motorDirection = "ClockWise"
+                    motorDirection = "clockwise"
                     publish_payload(topic_output_motorHoist, {"direction": motorDirection, "speed": speed})
                 elif movement == "down":    
-                    motorDirection = "AntiClockWise"
+                    motorDirection = "antiClockwise"
                     publish_payload(topic_output_motorHoist, {"direction": motorDirection, "speed": speed})
 
             # For slow speed      
             elif speed == 'slow':   
             # Up and down are for the Hoist movements
                 if movement == "up":
-                    motorDirection = "ClockWise"
+                    motorDirection = "clockwise"
                     publish_payload(topic_output_motorHoist, {"direction": motorDirection, "speed": speed})
                 elif movement == "down":    
-                    motorDirection = "AntiClockWise"
+                    motorDirection = "antiClockwise"
                     publish_payload(topic_output_motorHoist, {"direction": motorDirection, "speed": speed})
                        
             else: # if Emergency is true this will happen

@@ -49,6 +49,9 @@ def on_message(client, userdata,message):
             publish_payload(topic_logger_error, {"EventTimeStamp":formatted_datetime,"EventType":"Error","Component":"Crane motor","Description":"Crane motor cant move since emergency button is engaged!"})
             publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": "none"})
         elif message.topic == topic_input_joystick and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
+            if movement == "none" :
+                motorDirection = "none"
+                publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": "none"})
             if speed == 'normal': # normal speed
                 # Left and right are for the Crane movements 
                if movement == "right":
