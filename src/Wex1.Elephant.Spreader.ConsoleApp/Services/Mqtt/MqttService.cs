@@ -24,21 +24,21 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
         private Spreaders _spreader = new Spreaders();
 
 
-        
+
         private Container _container = new Container();
-        
+
         // coordinaten sts-kraan gebied
         readonly double _minStsX = 345;
         readonly double _maxStsX = 425;
-        readonly double _minStsY = 190;
-        readonly double _maxStsY = 300;
-       
+        readonly double _minStsY = 270;
+        readonly double _maxStsY = 275;
+
         // coordinaten boot gebied
         readonly double _minBoatX = 200;
         readonly double _maxBoatX = 300;
         readonly double _minBoatY = 150;
         readonly double _maxBoatY = 300;
-       
+
         public MqttService()
         {
             var options = new HiveMQClientOptions
@@ -63,7 +63,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
             await _mqttClient.ConnectAsync().ConfigureAwait(false);
             await SubscribePositionSpreader();
             await SubscribeJoystick();
-           
+
 
 
         }
@@ -90,17 +90,17 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                 _spreader.Sensor = new Sensor();
                 _container.PositionX = 225.0;
                 _container.PositionY = 235.0;
-                
+
 
 
                 _spreader.PositionX = positionValues.PositionX;
 
                 _spreader.PositionY = positionValues.PositionY;
-               
+
                 //_spreader.PositionZ = positionValues[2];
                 //container starting position : 110 - 150 X || 185-200 Y 
                 if (_spreader.PositionX >= _container.PositionX && _spreader.PositionX <= (_container.PositionX + 45)
-                    && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 20) 
+                    && _spreader.PositionY >= _container.PositionY && _spreader.PositionY <= (_container.PositionY + 20)
                    )
                 {
                     _spreader.Sensor.DetectedContainer = true;
@@ -133,14 +133,20 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 
                     if (_spreader.Sensor.DetectedContainer && (bool)payloadData.IsLocked &&
                         _spreader.PositionX >= _minBoatX && _spreader.PositionX <= _maxBoatX &&
-                        _spreader.PositionY >= _minBoatY && _spreader.PositionY <= _maxBoatY
+                        _spreader.PositionY >= _minBoatY && _spreader.PositionY <= _maxBoatY ||
+                        _spreader.HasContainer == true
                         )
                     {
                         _spreader.Lock = true;
-                        await PublishLockStatus(true,true);
+                        _spreader.HasContainer = true;
+                        await PublishLockStatus(true, true);
                     }
                     else
                     {
+                        if (_spreader.HasContainer == false)
+                        {
+
+                        }
                         await PublishLockStatus(false, false);
                         var errorLog = new ErrorLog()
                         {
@@ -153,33 +159,39 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                         };
                         await _mqttClient.PublishAsync("logger/errors", JsonSerializer.Serialize(errorLog));
                     }
-                   
+
                 }
                 else if (payloadData.IsLocked == false)
                 {
-                    
+
                     if (_spreader.Sensor.DetectedContainer == false && _spreader.PositionX >= _minStsX
                         && _spreader.PositionX <= _maxStsX
                         && _spreader.PositionY >= _minStsY
                         && _spreader.PositionY <= _maxStsY
+                        || _spreader.HasContainer == false
                       )
                     {
                         _spreader.Lock = false;
-                        await PublishLockStatus(false,false);
+                        _spreader.HasContainer = false;
+                        await PublishLockStatus(false, false);
                     }
                     else
                     {
-                        await PublishLockStatus(true, true);
-                        var errorLog = new ErrorLog()
+                        if (_spreader.HasContainer == true)
                         {
-                            Id = ObjectId.GenerateNewId(),
-                            Component = "Spreader",
-                            Description = "Cant unlock container when not in sts-crane area",
-                            EventType = "Error",
-                            EventTimeStamp = DateTime.UtcNow
+                            await PublishLockStatus(true, true);
+                            var errorLog = new ErrorLog()
+                            {
+                                Id = ObjectId.GenerateNewId(),
+                                Component = "Spreader",
+                                Description = "Cant unlock container when not in sts-crane area",
+                                EventType = "Error",
+                                EventTimeStamp = DateTime.UtcNow
 
-                        };
-                        await _mqttClient.PublishAsync("logger/errors", JsonSerializer.Serialize(errorLog));
+                            };
+                            await _mqttClient.PublishAsync("logger/errors", JsonSerializer.Serialize(errorLog));
+                        }
+                        
                     }
                 }
             }
@@ -226,9 +238,9 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
             }
 
             string json = JsonSerializer.Serialize(sensorValueDto);
-           
-                await _mqttClient.PublishAsync("outputs/sensorSpreader", json);
-           
+
+            await _mqttClient.PublishAsync("outputs/sensorSpreader", json);
+
 
         }
         public async Task PublishLockStatus(bool isLocked, bool hasContainer)
