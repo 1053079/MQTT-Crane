@@ -10,6 +10,7 @@ client = mqtt.Client()
 # topics that we are subscribed to
 topic_inputs_joystick = "inputs/joystick"
 topic_inputs_cabinEmergencyButton = "inputs/cabinEmergencyButton"
+topic_outputs_actionSpreader = "outputs/actionSpreader"
 
 movement = 'none'
 lock = False
@@ -35,13 +36,18 @@ def on_message(client, userdata,message):
      print(emergency)
      mqtt_message = topic_inputs_cabinEmergencyButton
      print('mqtt message',mqtt_message)
+    if message.topic == topic_outputs_actionSpreader:
+     print("message lock")
+     payload_data = json.loads(message.payload.decode('utf-8'))
+     print(payload_data)
+     global lock
+     lock = payload_data.get("isLocked")
     else: 
      print("Message received is " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
      payload_data = json.loads(message.payload.decode('utf-8'))
      movement = payload_data.get("movement") # The movement of the joystick input
      speed = payload_data.get("speed") # Speed from joystick input, we will adjust this in our payload
-     lock = payload_data.get("lock")
      mqtt_message = topic_inputs_joystick
      print('mqtt message' ,mqtt_message)
 
@@ -60,7 +66,7 @@ client.username_pw_set(mqtt_username, mqtt_password)
 
 # Dit verbind met de MQTT-server en abonneert op het juiste onderwerp:
 client.connect(mqtt_broker_address, mqtt_port)
-client.subscribe([(topic_inputs_joystick, 0) , (topic_inputs_cabinEmergencyButton, 0)])
+client.subscribe([(topic_inputs_joystick, 0) , (topic_inputs_cabinEmergencyButton, 0), (topic_outputs_actionSpreader, 0)])
 client.loop()
 # Initialize pygame
 pygame.init() 
