@@ -139,6 +139,10 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                         _spreader.Lock = true;
                         await PublishLockStatus(true,true);
                     }
+                    else
+                    {
+                        await PublishLockStatus(false, false);
+                    }
                    
                 }
                 else if (payloadData.IsLocked == false)
@@ -152,6 +156,10 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                     {
                         _spreader.Lock = false;
                         await PublishLockStatus(false,false);
+                    }
+                    else
+                    {
+                        await PublishLockStatus(true, true);
                     }
 
 
