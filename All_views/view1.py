@@ -70,14 +70,17 @@ def on_message(client, userdata, message):
         movement_hoist = payload_data.get("direction", "")
         speed = payload_data.get("speed", "")
 
-
         print(movement_hoist)
 
         if movement_hoist == "ClockWise":
             print("Performing Clockwise movement at speed:", speed)
 
         elif movement_hoist == "AntiClockWise":
+
             print("Performing AntiClockwise movement at speed:", speed)
+
+        elif movement_hoist == "none":
+            print("Performing stop", speed)
 
         else:
             print("Unknown direction:", movement_hoist)
@@ -107,7 +110,7 @@ def on_message(client, userdata, message):
             print("Performing AntiClockwise movement at speed:", speed)
 
         elif movement_cabin == "none":
-            print("Performing Movement none")
+            print("Performing stop")
         else:
             print("Unknown direction:", movement_cabin)
 
