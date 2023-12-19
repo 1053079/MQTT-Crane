@@ -69,9 +69,9 @@ namespace Wex1.Elephant.Logger.WebApi.Wrappers.Mapper
                 EventType = positionLog.EventType,
                 Component = positionLog.Component,
                 Description = positionLog.Description,
-                PositionX = positionLog.Position[0],
-                PositionY = positionLog.Position[1],
-                PositionZ = positionLog.Position[2]
+                PositionX = positionLog.Position.ElementAtOrDefault(0),
+                PositionY = positionLog.Position.ElementAtOrDefault(1),
+                PositionZ = positionLog.Position.ElementAtOrDefault(2)
             };
         }
 

@@ -60,7 +60,9 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
                 await Task.Delay(500);
                 IsError = false;
                 var pageDto = await _positionLogProvider.GetPage(currentPageNumber, pageSize, selectedDate, sortDirection);
+                totalPages = pageDto.TotalPages;
                 PositionLogs = pageDto.Data.MapToLog().ToArray();
+                await InvokeAsync(StateHasChanged);
             }
             catch (Exception ex)
             {
