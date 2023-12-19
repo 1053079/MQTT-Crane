@@ -13,9 +13,9 @@ These Python packages are required for running:
 
 ## Description
 
-The main purpose of this script is to capture Keyboard input and send them to the MQTT broker. Together with speed controls, spreader locks/unlocks, this is an important part of the project.
+The main purpose of this script is to capture Keyboard input (both diagonal and straight) and send them to the MQTT broker. Together with speed controls, spreader locks/unlocks, sending neutral position, this is an important part of the project.
 
-## Crane movements and spreader lock/unlock
+## Crane (diagonal) movements and spreader lock/unlock
 
 - **W + A** = forwardLeft
 - **W + D** = forwardRight
@@ -35,6 +35,10 @@ The speed of movement is determined by additional keys:
 
 - **Shift:** Fast speed
 - **Ctrl:** Slow speed
+
+## Sending neutral position
+
+Once the key has been lifted, the written code will detect it and therefore send a neutral position. This will be done with a delay of 0.1s because sometimes the neutral position would not send due to limitation of sending data at the same time. The delay would fix that.
 
 ## MQTT Publishing
 
