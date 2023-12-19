@@ -8,12 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
+builder.Services.AddBlazorBootstrap();
 
 builder.Services.AddTransient<HttpClient>();
 //builder.Services.AddScoped<ILogProvider<ErrorLog>, LogProvider<ErrorLog>>();
 //builder.Services.AddScoped<IErrorLogCrudService, ErrorLogsCrudService>();
-builder.Services.AddTransient<IApiErrorLogProvider,ApiErrorProvider>();
+builder.Services.AddTransient<IApiErrorLogProvider, ApiErrorProvider>();
 builder.Services.AddTransient<IApiActionLogProvider, ApiActionProvider>();
 builder.Services.AddTransient<IApiSpeedLogProvider, ApiSpeedProvider>();
 builder.Services.AddTransient<IApiPositionLogProvider, ApiPositionProvider>();

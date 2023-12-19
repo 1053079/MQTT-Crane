@@ -66,51 +66,17 @@ def on_message(client, userdata, message):
     global rope_height,movement_hoist,movement_cabin,container_picked_up
 
     if message.topic == mqtt_topic_outputs_motorHoist:
-        print("Message received: " + str(message.payload.decode("utf-8")))
-        print("Topic is " + str(message.topic))
         payload_data = json.loads(message.payload.decode('utf-8'))
         movement_hoist = payload_data.get("direction", "")
         speed = payload_data.get("speed", "")
 
-        print(movement_hoist)
-
-        if movement_hoist == "ClockWise":
-            print("Performing Clockwise movement at speed:", speed)
-
-        elif movement_hoist == "AntiClockWise":
-
-            print("Performing AntiClockwise movement at speed:", speed)
-
-        elif movement_hoist == "none":
-            print("Performing stop", speed)
-
-        else:
-            print("Unknown direction:", movement_hoist)
-
     elif message.topic == mqtt_topic_outputs_motorCabin:
-        print("Message received: " + str(message.payload.decode("utf-8")))
-        print("Topic is " + str(message.topic))
         payload_data = json.loads(message.payload.decode('utf-8'))
         movement_cabin = payload_data.get("direction", "")
         speed = payload_data.get("speed", "")
 
-
-        print(movement_cabin)
-
-        if movement_cabin == "clockWise":
-            print("Performing Clockwise movement at speed:", speed)
-
-        elif movement_cabin == "antiClockWise":
-            print("Performing AntiClockwise movement at speed:", speed)
-
-        elif movement_cabin == "none":
-            print("Performing stop")
-        else:
-            print("Unknown direction:", movement_cabin)
-
     elif message.topic == mqtt_topic_outputs_actionSpreader:
         payload_data = json.loads(message.payload.decode('utf-8'))
-        print("Topic is " + str(message.topic))
         container_picked_up = payload_data.get("isLocked")
 
 def on_connect(client, userdata, flags, rc):

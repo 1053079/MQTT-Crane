@@ -24,26 +24,31 @@ namespace Wex1.Elephant.Logger.WebApi.Services.CrudServices
             _uriService = uriService;
         }
 
-        public async Task<IActionResult> GetAllPaged(PaginationFilter filter, HttpRequest request)
+        public async Task<IActionResult> GetAllPaged(PaginationFilter paginationFilter, DateFilter dateFilter, HttpRequest request)
         {
             var route = request.Path.Value;
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-
-            var pagedData = await _errorLogRepository.GetPagedData(validFilter.PageNumber, validFilter.PageSize);
-            var totalRecords = await _errorLogRepository.CountRecords();
+            var validPageFilter = new PaginationFilter(paginationFilter.PageNumber, paginationFilter.PageSize);
+            var validDateFilter = new DateFilter(dateFilter.SelectedDate, dateFilter.NewestFirst);
+            var pagedData = await _errorLogRepository.GetPagedData(validPageFilter.PageNumber, validPageFilter.PageSize, validDateFilter.SelectedDate, validDateFilter.NewestFirst);
+            var totalRecords = await _errorLogRepository.CountRecords(validDateFilter.SelectedDate);
 
             if (totalRecords <= 0)
             {
                 return new NotFoundObjectResult("No error logs were found.");
             }
 
-            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validFilter, totalRecords, _uriService, route);
+            var pagedResponse = PaginationHelper.CreatePagedReponse(pagedData.MapToDto(), validPageFilter, totalRecords, _uriService, route);
 
             return new OkObjectResult(pagedResponse);
         }
-        public Task<IActionResult> GetById(ObjectId id)
+        public async Task<IActionResult> GetById(ObjectId id)
         {
-            throw new NotImplementedException();
+            var errorLog = await _errorLogRepository.GetByIdAsync(id);
+
+            if (errorLog is null)
+                return new NotFoundObjectResult($"ErrorLog with id: {id} couldn't be found!");
+
+            return new OkObjectResult(errorLog.MapToDto());
         }
 
         public Task<IActionResult> Add(ErrorLogRequestDto dto)
