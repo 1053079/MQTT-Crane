@@ -7,18 +7,15 @@ address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud" # Pull Request c
 port = 8883 # Pull Request comment 1: Port van broker. Dit hoort bij de address. Ook belangrijk voor connectie.
 
 # Pull Request comment 1: MQTT topic naam om naar te publishen, en subscribers kunnen subscriben op deze topic om de data te ontvangen
-topic_1 = "inputs/joystick"
-topic_2 = "outputs/actionSpreader"
+topic_input_joystick = "inputs/joystick"
+topic_action_spreader = "outputs/actionSpreader"
 
 # Pull Request comment 1: MQTT client aanmaken (in een variable gezet) om later mee te connecten
 client = mqtt.Client()
 
 def on_message(client, userdata,message):
-    print("message received")
-    payload_data = json.loads(message.payload.decode('utf-8'))
-    if message.topic == topic_2:
+    if message.topic == topic_action_spreader:
         payload_data = json.loads(message.payload.decode('utf-8'))
-        print(payload_data)
         global lock
         lock = payload_data.get("isLocked")
 
@@ -50,7 +47,7 @@ lock = False
 # Main Loop
 try:
     client.connect(address, port)
-    client.subscribe(topic_2)
+    client.subscribe(topic_action_spreader)
     client.loop_start()
     while True:
         key_event = keyboard.read_event()
@@ -127,7 +124,7 @@ try:
         # Payload
         payload = {"movement": movement, "speed": speed, "lock": lock} 
         payload_string = json.dumps(payload)
-        client.publish(topic_1, payload_string, qos=0)
+        client.publish(topic_input_joystick, payload_string, qos=0)
         print(payload)
 
 
