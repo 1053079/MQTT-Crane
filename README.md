@@ -84,10 +84,19 @@ De functionaliteit van de spreider omvat het luisteren naar specifieke MQTT-onde
     "sensorValue": true
   }
 - **outputs/positionSpreader**: Met de positie van de spreader kunnen we weten wanneer hij een container detecteert en wanneer hij los kan laten :
-```json
-{
- "positionX": 115.0,
- "positionY": 185.0,
-}
+  ```json
+  {
+    "positionX": 115.0,
+    "positionY": 185.0,
+  }
+- **logger/errors**: De spreader stuurt errorlogs naar de logger :
+  ```json
+  {
+    "Id" = ObjectId.GenerateNewId(),
+    "Component" = "Spreader",
+    "Description" = "Cant lock Spreader since there is no container",
+    "EventType" = "Error",
+    "EventTimeStamp" = DateTime.UtcNow
+  }
 
  
