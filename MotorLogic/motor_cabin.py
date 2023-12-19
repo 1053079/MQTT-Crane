@@ -2,15 +2,19 @@ import ssl
 import paho.mqtt.client as mqtt
 import time
 import json
+from datetime import datetime
 
 # connects us to the MQTT client
 client = mqtt.Client()
 
 # topics that we are subscribed to
-topic = "inputs/joystick"
-topic_1 = "inputs/cabinEmergencyButton"
+topic_input_joystick = "inputs/joystick"
+topic_input_cabinEmergencyButton = "inputs/cabinEmergencyButton"
 # topics that we publish our data to
-topic_2 = "outputs/motorCabin"
+topic_output_motorCabin = "outputs/motorCabin"
+topic_logger_error = "logger/errors"
+
+emergency = False
 
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
@@ -18,13 +22,12 @@ def on_connect(client, userdata, flags, rc, properties=None):
     else:
         print(f"Connection failed with code {rc}")
 
-emergency = False
 
 # prints back the message received and the topic
 def on_message(client, userdata,message):
     
 
-    if message.topic == topic_1: # checks for topic
+    if message.topic == topic_input_cabinEmergencyButton: # checks for topic
      print("Message received: " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
      payload_data = json.loads(message.payload.decode('utf-8'))
@@ -39,39 +42,47 @@ def on_message(client, userdata,message):
 
     # decodes the JSON and allows us to get the values of the movement, speed and lock.
     motorDirection = ""
+    
     try:
-        if message.topic == topic and emergency is True:
-            print('dog') # replace print with code that stops all movement
-        elif message.topic == topic and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
+        if message.topic == topic_input_joystick and emergency is True:
+            motorDirection = "none"
+            current_datetime_utc = datetime.utcnow()
+            formatted_datetime = current_datetime_utc.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            publish_payload(topic_logger_error, {"EventTimeStamp":formatted_datetime,"EventType":"Error","Component":"Cabin motor","Description":"Cabin motor cant move since emergency button is engaged!"})
+            publish_payload(topic_output_motorCabin, {"direction": motorDirection, "speed": "none"})
+        elif message.topic == topic_input_joystick and emergency is False :  # only does actions if its from inputs/joystick and emergency is false
+            if movement == "none" :
+                motorDirection = "none"
+                publish_payload(topic_output_motorCabin, {"direction": motorDirection, "speed": "none"})
             if speed == 'normal':  # normal speed
                 # Forward and backward are for the Cabin movements
                 if movement == "forward":
-                    motorDirection = "ClockWise"
-                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                    motorDirection = "clockwise"
+                    publish_payload(topic_output_motorCabin, {"direction": motorDirection, "speed": speed})
                 elif movement == "backward":
-                    motorDirection = "AntiClockWise"
-                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                    motorDirection = "antiClockwise"
+                    publish_payload(topic_output_motorCabin, {"direction": motorDirection, "speed": speed})
 
             # For fast speed
             elif speed == 'fast':
                 # Forward and backward are for the Cabin movements
                 if movement == "forward":
-                    motorDirection = "ClockWise"
-                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                    motorDirection = "clockwise"
+                    publish_payload(topic_output_motorCabin, {"direction": motorDirection, "speed": speed})
                 elif movement == "backward":
-                    motorDirection = "AntiClockWise"
-                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                    motorDirection = "antiClockwise"
+                    publish_payload(topic_output_motorCabin, {"direction": motorDirection, "speed": speed})
 
             # For slow speed
             elif speed == 'slow':
                     # Forward and backward are for the Cabin movements
                 if movement == "forward":
-                    motorDirection = "ClockWise"
-                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                    motorDirection = "clockwise"
+                    publish_payload(topic_output_motorCabin, {"direction": motorDirection, "speed": speed})
 
                 elif movement == "backward":
-                    motorDirection = "AntiClockWise"
-                    publish_payload(topic_2, {"direction": motorDirection, "speed": speed})
+                    motorDirection = "antiClockwise"
+                    publish_payload(topic_output_motorCabin, {"direction": motorDirection, "speed": speed})
 
             else: # If Emergency is true this will happen
                 print("Emergency button has activated")
@@ -106,7 +117,7 @@ client.on_message = on_message
 
 client.connect(broker, port)
 # Have to be subscribed first then client_loop start!
-client.subscribe([(topic, 0),(topic_1, 0)])
+client.subscribe([(topic_input_joystick, 0),(topic_input_cabinEmergencyButton, 0)])
 client.loop_start()
 
 while connected!= True:
