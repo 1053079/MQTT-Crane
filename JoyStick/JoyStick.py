@@ -93,12 +93,12 @@ try:
                     lock = not lock
                     movement = 'none'
                     break
-                # if key_event.event_type == keyboard.KEY_UP:
-                #     if key_event.name != 'enter':
-                #         print('Key is released')
-                #         movement = 'none'
-                #         time.sleep(0.1)
-                #         break
+                if key_event.event_type == keyboard.KEY_UP:
+                    if key_event.name != 'enter':
+                        print('Key is released')
+                        movement = 'none'
+                        time.sleep(0.1)
+                        break
             except:
                 break
 
@@ -115,6 +115,7 @@ try:
 
         # Payload
         payload = {"movement": movement, "speed": speed, "lock": lock} 
+
         payload_string = json.dumps(payload)
         client.publish(topic_1, payload_string, qos=0)
         print(payload)

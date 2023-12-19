@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using Wex1.Elephant.Logger.Core.Filters;
 using Wex1.Elephant.Logger.Core.Interfaces.Services.CrudService;
 
@@ -9,17 +10,23 @@ namespace Wex1.Elephant.Logger.WebApi.Controllers
     public class ErrorLogsController : ControllerBase
     {
 
-        private readonly IErrorLogCrudService _errorLogService;
+        private readonly IErrorLogCrudService _errorLogCrudService;
 
-        public ErrorLogsController(IErrorLogCrudService errorLogService)
+        public ErrorLogsController(IErrorLogCrudService errorLogCrudService)
         {
-            _errorLogService = errorLogService;
+            _errorLogCrudService = errorLogCrudService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get([FromQuery] PaginationFilter paginationFilter, [FromQuery] DateFilter dateFilter)
         {
-            return await _errorLogService.GetAllPaged(paginationFilter, dateFilter, Request);
+            return await _errorLogCrudService.GetAllPaged(paginationFilter, dateFilter, Request);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
+        {
+            return await _errorLogCrudService.GetById(ObjectId.Parse(id));
         }
 
     }
