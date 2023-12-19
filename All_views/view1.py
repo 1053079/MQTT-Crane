@@ -52,6 +52,7 @@ mqtt_password = "hMu4P6L_LAMj8t3"
 mqtt_topic_outputs_positionSpreader = "outputs/positionSpreader"
 mqtt_topic_outputs_motorHoist = "outputs/motorHoist"
 mqtt_topic_outputs_motorCabin = "outputs/motorCabin"
+mqtt_topic_outputs_actionSpreader = "outputs/actionSpreader"
 
 
 client = mqtt.Client()
@@ -62,7 +63,7 @@ movement_cabin = ""
 rope_height = 110
 
 def on_message(client, userdata, message):
-    global rope_height,movement_hoist,movement_cabin
+    global rope_height,movement_hoist,movement_cabin,container_picked_up
 
     if message.topic == mqtt_topic_outputs_motorHoist:
         print("Message received: " + str(message.payload.decode("utf-8")))
@@ -107,6 +108,11 @@ def on_message(client, userdata, message):
         else:
             print("Unknown direction:", movement_cabin)
 
+    elif message.topic == mqtt_topic_outputs_actionSpreader:
+        payload_data = json.loads(message.payload.decode('utf-8'))
+        print("Topic is " + str(message.topic))
+        container_picked_up = payload_data.get("isLocked")
+
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Connected to MQTT broker")
@@ -129,6 +135,7 @@ try:
     client.connect(mqtt_broker_address, mqtt_port, 60)
     client.subscribe(mqtt_topic_outputs_motorHoist)
     client.subscribe(mqtt_topic_outputs_motorCabin)
+    client.subscribe(mqtt_topic_outputs_actionSpreader)
 except Exception as e:
     print(f"Error connecting to MQTT broker: {e}")
 
@@ -174,15 +181,15 @@ def draw_view1(screen, rope_height, font, text_color):
         rope_height = rope_height
 
     # spreader lock
-    if keys[K_RETURN]:
-        if not container_picked_up:
-            if Container_1.colliderect((spreader_x, spreader_y, spreader_width, spreader_height)):
-                container_picked_up = True
-        elif container_picked_up:
-            container_picked_up = False
-            target_container_location = (spreader_x - Container_1.width // 2,
-                                         spreader_y + spreader_height + spreader_distance)
-            Container_1.topleft = target_container_location
+    # if keys[K_RETURN]:
+    #     if not container_picked_up:
+    #         if Container_1.colliderect((spreader_x, spreader_y, spreader_width, spreader_height)):
+    #             container_picked_up = True
+    #     elif container_picked_up:
+    #         container_picked_up = False
+    #         target_container_location = (spreader_x - Container_1.width // 2,
+    #                                      spreader_y + spreader_height + spreader_distance)
+    #         Container_1.topleft = target_container_location
 
     if container_picked_up:
         Container_1.topleft = (spreader_x - Container_1.width // 2 + 5, spreader_y + spreader_height + spreader_distance)
