@@ -50,9 +50,41 @@ mqtt_port = 8883
 mqtt_username = "Admin"
 mqtt_password = "hMu4P6L_LAMj8t3"
 mqtt_topic = "outputs/positionSpreader"
+mqtt_topic2 = "outputs/motorHoist"
 
 client = mqtt.Client()
 client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
+direction = ""
+
+rope_height = 110
+
+def on_message(client, userdata, message):
+    global rope_height,direction
+    if message.topic == mqtt_topic2:
+        print("Message received: " + str(message.payload.decode("utf-8")))
+        print("Topic is " + str(message.topic))
+        payload_data = json.loads(message.payload.decode('utf-8'))
+        direction = payload_data.get("direction", "")
+        speed = payload_data.get("speed", "")
+
+
+        print(direction)
+
+        if direction == "ClockWise":
+            print("Performing Clockwise movement at speed:", speed)
+
+        elif direction == "AntiClockWise":
+            print("Performing AntiClockwise movement at speed:", speed)
+
+        else:
+            print("Unknown direction:", direction)
+
+    else:
+        print("Message received is " + str(message.payload.decode("utf-8")))
+        print("Topic is " + str(message.topic))
+        payload_data = json.loads(message.payload.decode('utf-8'))
+        print("Additional Information:", payload_data.get("additional_field", ""))
+
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -70,11 +102,15 @@ def on_disconnect(client, userdata, rc):
 client.on_connect = on_connect
 client.on_disconnect = on_disconnect
 client.username_pw_set(mqtt_username, mqtt_password)
+client.on_message = on_message
 
 try:
     client.connect(mqtt_broker_address, mqtt_port, 60)
+    client.subscribe(mqtt_topic2)
 except Exception as e:
     print(f"Error connecting to MQTT broker: {e}")
+
+
 
 client.loop_start()
 
@@ -99,11 +135,12 @@ def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader
 def draw_view1(screen, rope_height, font, text_color):
     global container_picked_up, target_container_location, spreader_x, spreader_y, last_spreader_x, last_spreader_y
     keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_UP] and rope_height > 10:
+    if direction == "clockwise" and rope_height > 10:
         rope_height -= 1
-    if keys[pygame.K_DOWN] and rope_height < 180:
+    if direction == "antiClockwise" and rope_height < 180:
         rope_height += 1
+    if direction == "none":
+        rope_height = rope_height
 
     if keys[pygame.K_a] and Cabin.left > 225:
         Cabin.x -= movement_speed

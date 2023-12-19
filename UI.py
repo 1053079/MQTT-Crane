@@ -106,7 +106,6 @@ while not exit:
     screen.blit(circle2, (1025, 585))
 
     screen.blit(resized_boat_view1, (200, 255))
-
     rope_height = draw_view1(screen, rope_height, font, text_color)
     draw_view2(screen, shore_x, shore_y, resized_boat_view2, )
     shore_x, shore_y, resized_boat_view2, _, _, _, _, _ = draw_view2(screen, shore_x, shore_y, resized_boat_view2)
