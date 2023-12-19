@@ -142,6 +142,16 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                     else
                     {
                         await PublishLockStatus(false, false);
+                        var errorLog = new ErrorLog()
+                        {
+                            Id = ObjectId.GenerateNewId(),
+                            Component = "Spreader",
+                            Description = "Cant lock Spreader since there is no container",
+                            EventType = "Error",
+                            EventTimeStamp = DateTime.UtcNow
+
+                        };
+                        await _mqttClient.PublishAsync("logger/errors", JsonSerializer.Serialize(errorLog));
                     }
                    
                 }
@@ -160,9 +170,17 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                     else
                     {
                         await PublishLockStatus(true, true);
+                        var errorLog = new ErrorLog()
+                        {
+                            Id = ObjectId.GenerateNewId(),
+                            Component = "Spreader",
+                            Description = "Cant unlock container when not in sts-crane area",
+                            EventType = "Error",
+                            EventTimeStamp = DateTime.UtcNow
+
+                        };
+                        await _mqttClient.PublishAsync("logger/errors", JsonSerializer.Serialize(errorLog));
                     }
-
-
                 }
             }
         }
