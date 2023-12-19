@@ -141,6 +141,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                     }
                     else
                     {
+                        await PublishLockStatus(false, false);
                         var errorLog = new ErrorLog()
                         {
                             Id = ObjectId.GenerateNewId(),
@@ -168,6 +169,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
                     }
                     else
                     {
+                        await PublishLockStatus(true, true);
                         var errorLog = new ErrorLog()
                         {
                             Id = ObjectId.GenerateNewId(),
@@ -178,10 +180,7 @@ namespace Wex1.Elephant.Spreader.ConsoleApp.Services.Mqtt
 
                         };
                         await _mqttClient.PublishAsync("logger/errors", JsonSerializer.Serialize(errorLog));
-
                     }
-
-
                 }
             }
         }
