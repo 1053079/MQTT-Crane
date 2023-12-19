@@ -63,6 +63,7 @@ rope_height = 110
 
 def on_message(client, userdata, message):
     global rope_height,movement_hoist,movement_cabin
+
     if message.topic == mqtt_topic_outputs_motorHoist:
         print("Message received: " + str(message.payload.decode("utf-8")))
         print("Topic is " + str(message.topic))
@@ -85,15 +86,7 @@ def on_message(client, userdata, message):
         else:
             print("Unknown direction:", movement_hoist)
 
-    else:
-        print("Message received is " + str(message.payload.decode("utf-8")))
-        print("Topic is " + str(message.topic))
-        payload_data = json.loads(message.payload.decode('utf-8'))
-        print("Additional Information:", payload_data.get("additional_field", ""))
-
-
-
-    if message.topic == mqtt_topic_outputs_motorCabin:
+    elif message.topic == mqtt_topic_outputs_motorCabin:
         print("Message received: " + str(message.payload.decode("utf-8")))
         print("Topic is " + str(message.topic))
         payload_data = json.loads(message.payload.decode('utf-8'))
@@ -113,16 +106,6 @@ def on_message(client, userdata, message):
             print("Performing stop")
         else:
             print("Unknown direction:", movement_cabin)
-
-    else:
-        print("Message received is " + str(message.payload.decode("utf-8")))
-        print("Topic is " + str(message.topic))
-        payload_data = json.loads(message.payload.decode('utf-8'))
-        print("Additional Information:", payload_data.get("additional_field", ""))
-
-
-
-
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
