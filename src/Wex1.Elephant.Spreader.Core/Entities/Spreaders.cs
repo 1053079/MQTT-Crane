@@ -9,9 +9,9 @@ namespace Wex1.Elephant.Spreader.Core.Entities
     public class Spreaders
     {
         public double PositionX { get; set; }
-        public double PositionY { get; set; }  
-       
+        public double PositionY { get; set; }
 
+        public bool HasContainer { get; set; }
         public Sensor Sensor { get; set; } = new Sensor();
 
 
