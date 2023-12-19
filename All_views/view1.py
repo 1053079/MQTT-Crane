@@ -49,41 +49,76 @@ mqtt_broker_address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
 mqtt_port = 8883
 mqtt_username = "Admin"
 mqtt_password = "hMu4P6L_LAMj8t3"
-mqtt_topic = "outputs/positionSpreader"
-mqtt_topic2 = "outputs/motorHoist"
+mqtt_topic_outputs_positionSpreader = "outputs/positionSpreader"
+mqtt_topic_outputs_motorHoist = "outputs/motorHoist"
+mqtt_topic_outputs_motorCabin = "outputs/motorCabin"
+
 
 client = mqtt.Client()
 client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
-direction = ""
+movement_hoist = ""
+movement_cabin = "" 
 
 rope_height = 110
 
 def on_message(client, userdata, message):
-    global rope_height,direction
-    if message.topic == mqtt_topic2:
+    global rope_height,movement_hoist,movement_cabin
+    if message.topic == mqtt_topic_outputs_motorHoist:
         print("Message received: " + str(message.payload.decode("utf-8")))
         print("Topic is " + str(message.topic))
         payload_data = json.loads(message.payload.decode('utf-8'))
-        direction = payload_data.get("direction", "")
+        movement_hoist = payload_data.get("direction", "")
         speed = payload_data.get("speed", "")
 
 
-        print(direction)
+        print(movement_hoist)
 
-        if direction == "ClockWise":
+        if movement_hoist == "ClockWise":
             print("Performing Clockwise movement at speed:", speed)
 
-        elif direction == "AntiClockWise":
+        elif movement_hoist == "AntiClockWise":
             print("Performing AntiClockwise movement at speed:", speed)
 
         else:
-            print("Unknown direction:", direction)
+            print("Unknown direction:", movement_hoist)
 
     else:
         print("Message received is " + str(message.payload.decode("utf-8")))
         print("Topic is " + str(message.topic))
         payload_data = json.loads(message.payload.decode('utf-8'))
         print("Additional Information:", payload_data.get("additional_field", ""))
+
+
+
+    if message.topic == mqtt_topic_outputs_motorCabin:
+        print("Message received: " + str(message.payload.decode("utf-8")))
+        print("Topic is " + str(message.topic))
+        payload_data = json.loads(message.payload.decode('utf-8'))
+        movement_cabin = payload_data.get("direction", "")
+        speed = payload_data.get("speed", "")
+
+
+        print(movement_cabin)
+
+        if movement_cabin == "clockWise":
+            print("Performing Clockwise movement at speed:", speed)
+
+        elif movement_cabin == "antiClockWise":
+            print("Performing AntiClockwise movement at speed:", speed)
+
+        elif movement_cabin == "none":
+            print("Performing Movement none")
+        else:
+            print("Unknown direction:", movement_cabin)
+
+    else:
+        print("Message received is " + str(message.payload.decode("utf-8")))
+        print("Topic is " + str(message.topic))
+        payload_data = json.loads(message.payload.decode('utf-8'))
+        print("Additional Information:", payload_data.get("additional_field", ""))
+
+
+
 
 
 def on_connect(client, userdata, flags, rc):
@@ -106,7 +141,8 @@ client.on_message = on_message
 
 try:
     client.connect(mqtt_broker_address, mqtt_port, 60)
-    client.subscribe(mqtt_topic2)
+    client.subscribe(mqtt_topic_outputs_motorHoist)
+    client.subscribe(mqtt_topic_outputs_motorCabin)
 except Exception as e:
     print(f"Error connecting to MQTT broker: {e}")
 
@@ -135,18 +171,23 @@ def spreader_location(screen, cabin_centerx, cabin_bottom, rope_height, spreader
 def draw_view1(screen, rope_height, font, text_color):
     global container_picked_up, target_container_location, spreader_x, spreader_y, last_spreader_x, last_spreader_y
     keys = pygame.key.get_pressed()
-    if direction == "clockwise" and rope_height > 10:
-        rope_height -= 1
-    if direction == "antiClockwise" and rope_height < 180:
-        rope_height += 1
-    if direction == "none":
+    # movements hoist
+    if movement_hoist == "clockwise" and rope_height > 10:
+        rope_height -= movement_speed
+    if movement_hoist == "antiClockwise" and rope_height < 180:
+        rope_height += movement_speed
+    if movement_hoist == "none":
         rope_height = rope_height
 
-    if keys[pygame.K_a] and Cabin.left > 225:
+    # movments cabin
+    if movement_cabin == "clockwise" and Cabin.left > 225:
         Cabin.x -= movement_speed
-    if keys[pygame.K_d] and Cabin.right < 425:
+    if movement_cabin == "antiClockwise" and Cabin.right < 425:
         Cabin.x += movement_speed
+    if movement_cabin == "none":
+        rope_height = rope_height
 
+    # spreader lock
     if keys[K_RETURN]:
         if not container_picked_up:
             if Container_1.colliderect((spreader_x, spreader_y, spreader_width, spreader_height)):
@@ -175,7 +216,7 @@ def draw_view1(screen, rope_height, font, text_color):
     pygame.draw.rect(screen, dark_green, Container_1)
 
     # spreader_location
-    spreader_x, spreader_y = spreader_location(screen, Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance, font, text_color, client, mqtt_topic)
+    spreader_x, spreader_y = spreader_location(screen, Cabin.centerx, Cabin.bottom, rope_height, spreader_width, spreader_distance, font, text_color, client, mqtt_topic_outputs_positionSpreader)
 
     # container_location
     container_location_text = font.render(f"Container Location: ({Container_1.x}, {Container_1.y})", True, text_color)
