@@ -67,14 +67,14 @@ def on_message(client, userdata, message):
         direction = payload_data.get("direction", "")
         speed = payload_data.get("speed", "")
 
-
-        print(direction)
-
-        if direction == "ClockWise":
+        if direction == "clockwise":
             print("Performing Clockwise movement at speed:", speed)
 
-        elif direction == "AntiClockWise":
+        elif direction == "antiClockwise":
             print("Performing AntiClockwise movement at speed:", speed)
+
+        elif direction == "none":
+            print("Performing stop", speed)
 
         else:
             print("Unknown direction:", direction)
