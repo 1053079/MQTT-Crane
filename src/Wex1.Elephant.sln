@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Logger.WebApi", "Wex1.Elephant.Logger.WebApi\Wex1.Elephant.Logger.WebApi.csproj", "{E6E0702D-EB82-419E-B19C-D06A9B91B990}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex.Elephant.Logger.Infrastructure", "Wex.Elephant.Logger.Infrastructure\Wex.Elephant.Logger.Infrastructure.csproj", "{BA86B6FE-C0FB-451D-893D-57CD9CBFA923}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Liveviewer", "Wex1.Elephant.Liveviewer\Wex1.Elephant.Liveviewer.csproj", "{261C0ECB-21C5-417B-AAC9-FE06E885A586}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wex1.Elephant.Logger.Core", "Wex1.Elephant.Logger.Core\Wex1.Elephant.Logger.Core.csproj", "{520BF622-8962-463A-9272-F19E0139598D}"
+
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wex1.Elephant.Spreader.Core", "Wex1.Elephant.Spreader.Core\Wex1.Elephant.Spreader.Core.csproj", "{2FE7CBFB-B5FD-496F-BDC9-89552CBC66E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wex1.Elephant.Spreader.ConsoleApp", "Wex1.Elephant.Spreader.ConsoleApp\Wex1.Elephant.Spreader.ConsoleApp.csproj", "{85022976-94EE-4BED-9479-8C35A5E2303E}"
+
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E6E0702D-EB82-419E-B19C-D06A9B91B990}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6E0702D-EB82-419E-B19C-D06A9B91B990}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6E0702D-EB82-419E-B19C-D06A9B91B990}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6E0702D-EB82-419E-B19C-D06A9B91B990}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA86B6FE-C0FB-451D-893D-57CD9CBFA923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA86B6FE-C0FB-451D-893D-57CD9CBFA923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA86B6FE-C0FB-451D-893D-57CD9CBFA923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA86B6FE-C0FB-451D-893D-57CD9CBFA923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{261C0ECB-21C5-417B-AAC9-FE06E885A586}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{261C0ECB-21C5-417B-AAC9-FE06E885A586}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{261C0ECB-21C5-417B-AAC9-FE06E885A586}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{261C0ECB-21C5-417B-AAC9-FE06E885A586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{520BF622-8962-463A-9272-F19E0139598D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{520BF622-8962-463A-9272-F19E0139598D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{520BF622-8962-463A-9272-F19E0139598D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{520BF622-8962-463A-9272-F19E0139598D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FE7CBFB-B5FD-496F-BDC9-89552CBC66E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FE7CBFB-B5FD-496F-BDC9-89552CBC66E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FE7CBFB-B5FD-496F-BDC9-89552CBC66E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FE7CBFB-B5FD-496F-BDC9-89552CBC66E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85022976-94EE-4BED-9479-8C35A5E2303E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85022976-94EE-4BED-9479-8C35A5E2303E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85022976-94EE-4BED-9479-8C35A5E2303E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85022976-94EE-4BED-9479-8C35A5E2303E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A52176B8-8444-424D-B75F-1549B144B4B6}
+	EndGlobalSection
+EndGlobal

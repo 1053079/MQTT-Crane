@@ -1,0 +1,90 @@
+﻿@page "/speedLogInfo/{Id}"
+@using Wex1.Elephant.Liveviewer.Model
+@using Wex1.Elephant.Liveviewer.Services
+@using Wex1.Elephant.Liveviewer.Services.Interfaces
+
+@inject NavigationManager NavigationManager
+
+
+<div>
+    <a class="btn btn-secondary mb-3" @onclick="GoBack">Back</a>
+</div>
+<h3>Speed Log Information</h3>
+
+@if (IsError)
+{
+    <div class="alert alert-danger" role="alert">
+        @ErrorMessage
+    </div>
+}
+else
+{
+@if (SpeedLog != null)
+{
+    <div class="card">
+        <div class="card-body">
+
+            <dl class="row">
+                <dt class="col-sm-3"><strong>Id:</strong></dt>
+                <dd class="col-sm-9">@SpeedLog.Id</dd>
+
+                <dt class="col-sm-3"><strong>Timestamp:</strong></dt>
+                <dd class="col-sm-9">@SpeedLog.Timestamp.ToString()</dd>
+
+                <dt class="col-sm-3"><strong>Type:</strong></dt>
+                <dd class="col-sm-9">@SpeedLog.Type</dd>
+
+                <dt class="col-sm-3"><strong>Component:</strong></dt>
+                <dd class="col-sm-9">@SpeedLog.Component</dd>
+
+                <dt class="col-sm-3"><strong>Description:</strong></dt>
+                <dd class="col-sm-9">@SpeedLog.Description</dd>
+
+                <dt class="col-sm-3"><strong>Speed:</strong></dt>
+                <dd class="col-sm-9">@SpeedLog.Speed km/h </dd>
+
+
+            </dl>
+        </div>
+    </div>
+}
+else
+{
+    <p>Speed log not found.</p>
+}
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    private SpeedLog SpeedLog { get; set; }
+
+    [Inject]
+    private IApiSpeedLogProvider _speedLogProvider { get; set; }
+
+    private string ErrorMessage;
+    private bool IsError;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            IsError = false;
+            var speedLog = await _speedLogProvider.Get(Id);
+            SpeedLog = speedLog;
+        }
+        catch (Exception ex)
+        {
+            IsError = true;
+            ErrorMessage = $"Speedlog could not be shown due to an error: \n {ex.Message}";
+
+        }
+    }
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/speedlogs");
+    }
+   
+}

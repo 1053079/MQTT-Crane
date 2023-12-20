@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wex1.Elephant.Logger.Core\Wex1.Elephant.Logger.Core.csproj" />
+    <ProjectReference Include="..\Wex1.Elephant.Spreader.Core\Wex1.Elephant.Spreader.Core.csproj" />
+  </ItemGroup>
+
+</Project>
