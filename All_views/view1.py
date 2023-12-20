@@ -53,18 +53,19 @@ mqtt_topic_outputs_positionSpreader = "outputs/positionSpreader"
 mqtt_topic_outputs_motorHoist = "outputs/motorHoist"
 mqtt_topic_outputs_motorCabin = "outputs/motorCabin"
 mqtt_topic_outputs_actionSpreader = "outputs/actionSpreader"
+mqtt_topic_outputs_motorCrane = "outputs/motorCrane"
 
 
 client = mqtt.Client()
 client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
 movement_hoist = ""
-movement_cabin = "" 
+movement_cabin = ""
+movement_Crane = ""
 
 rope_height = 110
 
 def on_message(client, userdata, message):
-    global rope_height,movement_hoist,movement_cabin,container_picked_up
-
+    global rope_height,movement_hoist,movement_cabin,container_picked_up , movement_Crane
     if message.topic == mqtt_topic_outputs_motorHoist:
         payload_data = json.loads(message.payload.decode('utf-8'))
         movement_hoist = payload_data.get("direction", "")
@@ -78,6 +79,10 @@ def on_message(client, userdata, message):
     elif message.topic == mqtt_topic_outputs_actionSpreader:
         payload_data = json.loads(message.payload.decode('utf-8'))
         container_picked_up = payload_data.get("isLocked")
+
+    elif message.topic == mqtt_topic_outputs_motorCrane:
+        payload_data = json.loads(message.payload.decode('utf-8'))
+        movement_Crane = payload_data.get("direction", "")
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -102,6 +107,7 @@ try:
     client.subscribe(mqtt_topic_outputs_motorHoist)
     client.subscribe(mqtt_topic_outputs_motorCabin)
     client.subscribe(mqtt_topic_outputs_actionSpreader)
+    client.subscribe(mqtt_topic_outputs_motorCrane)
 except Exception as e:
     print(f"Error connecting to MQTT broker: {e}")
 

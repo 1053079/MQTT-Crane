@@ -30,7 +30,7 @@ def on_message(client, userdata,message):
      print("Topic is " + str(message.topic))
      payload_data = json.loads(message.payload.decode('utf-8'))
      global emergency
-     emergency = payload_data.get("state")
+     emergency = payload_data.get("status")
     else: 
      print("Message received is " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
@@ -55,29 +55,29 @@ def on_message(client, userdata,message):
             if speed == 'normal': # normal speed
                 # Left and right are for the Crane movements 
                if movement == "right":
-                 motorDirection = "ClockWise"
+                 motorDirection = "clockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})
                elif movement == "left":
-                 motorDirection = "AntiClockWise"
+                 motorDirection = "antiClockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})
 
             #  For fast speed
             elif speed == 'fast':
                 # Left and right are for the Crane movements 
                 if movement == "right":
-                 motorDirection = "ClockWise"
+                 motorDirection = "clockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})
                 elif movement == "left":
-                 motorDirection = "AntiClockWise"
+                 motorDirection = "antiClockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed}) 
 
             # For slow speed      
             elif speed == 'slow':   
                 if movement == "right":
-                 motorDirection = "ClockWise"
+                 motorDirection = "clockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})
                 elif movement == "left":
-                 motorDirection = "AntiClockWise"
+                 motorDirection = "antiClockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})    
 
     except Exception as e:
@@ -109,6 +109,7 @@ client.on_message = on_message
 
 client.connect(broker, port)
 client.subscribe(topic_input_joystick) ## have to be subscribed first then client_loop start!
+client.subscribe(topic_input_cabinEmergencyButton)
 client.loop_start()
 
 while connected!= True:

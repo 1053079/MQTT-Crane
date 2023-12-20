@@ -29,6 +29,7 @@ image = 'images/locked.png'
 emergency = False
 mqtt_message = None
 position = (1025,360)
+
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
         print("Connected to broker")
