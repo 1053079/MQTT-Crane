@@ -41,6 +41,7 @@ namespace Wex1.Elephant.Liveviewer.Component.LogLists
             if (selectedDate != value || value == null)
             {
                 selectedDate = value;
+                currentPageNumber = 1;
                 await FetchSpeedLogs();
             }
         }
