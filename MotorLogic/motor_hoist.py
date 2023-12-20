@@ -9,7 +9,7 @@ client = mqtt.Client()
 
 # topics that we are subscribed to
 topic_input_joystick = "inputs/joystick"
-topic_input_cabinEmergencyButton = "inputs/cabinEmergencyButton"    
+topic_input_cabinEmergencyButton = "inputs/cabinEmergencyButton"   
 # topics that we publish our data to
 topic_output_motorHoist = "outputs/motorHoist"
 topic_logger_error = "logger/errors"
@@ -113,6 +113,7 @@ client.on_message = on_message
 
 client.connect(broker, port)
 client.subscribe(topic_input_joystick) ## have to be subscribed first then client_loop start!
+client.subscribe(topic_input_cabinEmergencyButton)
 client.loop_start()
 
 while connected!= True:
