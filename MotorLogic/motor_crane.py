@@ -109,6 +109,7 @@ client.on_message = on_message
 
 client.connect(broker, port)
 client.subscribe(topic_input_joystick) ## have to be subscribed first then client_loop start!
+client.subscribe(topic_input_cabinEmergencyButton)
 client.loop_start()
 
 while connected!= True:

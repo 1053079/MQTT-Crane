@@ -1,5 +1,5 @@
 # view3.py
-
+from All_views.view2 import *
 import pygame
 
 movement_speed = 1
@@ -23,46 +23,101 @@ crain_y = 550
 legs_bridge1_y = 505
 legs_bridge2_y = 595
 
+# MQTT configurations
+mqtt_broker_address = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud"
+mqtt_port = 8883
+mqtt_username = "Admin"
+mqtt_password = "hMu4P6L_LAMj8t3"
+mqtt_topic_outputs_motorCrane = "outputs/motorCrane"
+
+client = mqtt.Client()
+client.tls_set(cert_reqs=mqtt.ssl.CERT_NONE)
+movement_Crane = ""
+movement_cabin = ""
+
+def on_message(client, userdata, message):
+    global movement_Crane,movement_cabin
+    if message.topic == mqtt_topic_outputs_motorCrane:
+        payload_data = json.loads(message.payload.decode('utf-8'))
+        movement_Crane = payload_data.get("direction", "")
+        print(f"Movement direction: {movement_Crane}")
+    elif message.topic == mqtt_topic_outputs_motorCabin:
+        payload_data = json.loads(message.payload.decode('utf-8'))
+        movement_cabin = payload_data.get("direction", "")
+        speed = payload_data.get("speed", "")
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to MQTT broker")
+    else:
+        print(f"Failed to connect, return code: {rc}")
+
+def on_disconnect(client, userdata, rc):
+    if rc == 0:
+        print("Disconnected from MQTT broker")
+    else:
+        print(f"Unexpected disconnection, return code: {rc}")
+
+
+client.on_connect = on_connect
+client.on_disconnect = on_disconnect
+client.username_pw_set(mqtt_username, mqtt_password)
+client.on_message = on_message
+
+try:
+    client.connect(mqtt_broker_address, mqtt_port, 60)
+    client.subscribe(mqtt_topic_outputs_motorCrane)
+    client.subscribe(mqtt_topic_outputs_motorCabin)
+except Exception as e:
+    print(f"Error connecting to MQTT broker: {e}")
+
+client.loop_start()
+
+
+
 def draw_view3(screen, cabin_x, cabin_y, legs_y, crain_y, legs_bridge1_y, legs_bridge2_y):
     # Movement view 3
     keys = pygame.key.get_pressed()
+
     # Handle movement for the cabin
-    if keys[pygame.K_a]:
-        cabin_x -= movement_speed
-    if keys[pygame.K_d]:
-        cabin_x += movement_speed
-    if keys[pygame.K_w]:
+    if movement_Crane == "clockwise":
         cabin_y -= movement_speed
-    if keys[pygame.K_s]:
+    if movement_Crane == "antiClockwise":
         cabin_y += movement_speed
+    if movement_cabin == "clockwise":
+        cabin_x -= movement_speed
+    if movement_cabin == "anitClockwise":
+        cabin_x += movement_speed
+    if movement_cabin == "none":
+        cabin_y = cabin_y
     cabin_x = max(225, min(cabin_x, 405))
     cabin_y = max(445, min(cabin_y, 635))
 
     # Handle movement for the legs
-    if keys[pygame.K_w]:
+    if movement_Crane == "clockwise":
         legs_y -= movement_speed
-    if keys[pygame.K_s]:
+    if movement_Crane == "antiClockwise":
         legs_y += movement_speed
     legs_y = max(400, min(legs_y, 590))
 
     # Handle movement for the crane
-    if keys[pygame.K_w]:
+    if movement_Crane == "clockwise":
         crain_y -= movement_speed
-    if keys[pygame.K_s]:
+    if movement_Crane == "antiClockwise":
         crain_y += movement_speed
     crain_y = max(450, min(crain_y, 640))
 
     # Handle movement for the crane
-    if keys[pygame.K_w]:
+    if movement_Crane == "clockwise":
         legs_bridge1_y -= movement_speed
-    if keys[pygame.K_s]:
+    if movement_Crane == "antiClockwise":
         legs_bridge1_y += movement_speed
     legs_bridge1_y = max(405, min(legs_bridge1_y, 595))
 
     # Handle movement for the crane
-    if keys[pygame.K_w]:
+    if movement_Crane == "clockwise":
         legs_bridge2_y -= movement_speed
-    if keys[pygame.K_s]:
+    if movement_Crane == "antiClockwise":
         legs_bridge2_y += movement_speed
     legs_bridge2_y = max(495, min(legs_bridge2_y, 685))
 

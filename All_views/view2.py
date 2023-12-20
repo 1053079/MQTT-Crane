@@ -78,9 +78,9 @@ def draw_view2(screen,shore_x, shore_y,resized_boat):
     pygame.draw.rect(screen, yellow, Crane_Leg_view2)
 
     # Move Shore_view2 left and right within limits
-    if movement_Crane == "clockwise" and shore_x > 710:
+    if movement_Crane == "antiClockwise" and shore_x > 710:
         shore_x -= movement_speed
-    if movement_Crane == "antiClockwise" and shore_x < 890:
+    if movement_Crane == "clockwise" and shore_x < 890:
         shore_x += movement_speed
 
     Shore_view2.x = shore_x
