@@ -56,3 +56,47 @@ The MqttService has to subscribe to all the Logger/{LogType} Mqtt endpoints. one
 ```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Position","Component":"Spreader","Description":"Spreader moved downwards","Position":[15,10,8]}```
 - ActionLog ->
 ```{"EventTimeStamp":"2023-12-05T10:56:22.9110133Z","EventType":"Action","Component":"joystick","Description":"Joystick send a forward movement"}```
+ 
+# Spreader
+
+De functionaliteit van de spreider omvat het luisteren naar specifieke MQTT-onderwerpen voor controle- en statusupdates:
+
+## MQTT-onderwerpen
+
+### Inputs
+- **inputs/joystick**: Volgt de intentie van de gebruiker om de container te vergrendelen met behulp van het volgende payload-formaat:
+  ```json
+  {
+    "movement": "bewegingstype",
+    "speed": "snelheidstype",
+    "lock": true/false
+  }
+ ### Outputs (Vervolg)
+- **outputs/actionSpreader**: Geeft aan wanneer de container vergrendeld is en wanneer niet:
+  ```json
+  {
+    "isLocked": false,
+    "hasContainer": false
+  }
+- **outputs/sensorSpreader**: Geeft aan wanneer de sensor die container detecteert:
+  ```json
+  {
+    "sensorValue": true
+  }
+- **outputs/positionSpreader**: Met de positie van de spreader kunnen we weten wanneer hij een container detecteert en wanneer hij los kan laten :
+  ```json
+  {
+    "positionX": 115.0,
+    "positionY": 185.0,
+  }
+- **logger/errors**: De spreader stuurt errorlogs naar de logger :
+  ```json
+  {
+    "Id" = ObjectId.GenerateNewId(),
+    "Component" = "Spreader",
+    "Description" = "Cant lock Spreader since there is no container",
+    "EventType" = "Error",
+    "EventTimeStamp" = DateTime.UtcNow
+  }
+
+ 
