@@ -87,7 +87,43 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
                 case "outputs/positionSpreader":
                     await HandleNewSpreaderPositionOutput(e.PublishMessage.Payload);
                     break;
+                case "outputs/actionSpreader":
+                    await HandleNewActionSpreaderOutput(e.PublishMessage.Payload);
+                    break;
+                case "outputs/sensorSpreader":
+                    await HandleNewSensorSpreaderOutput(e.PublishMessage.Payload);
+                    break;
+                
+
             }
+        }
+
+        private async Task HandleNewSensorSpreaderOutput(byte[]? payload)
+        {
+            var sensorSpreader = JsonSerializer.Deserialize<SensorSpreaderDto>(payload);
+            var actionLog = new ActionLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                Component = "Spreader",
+                EventType = "Action",
+                Description = $"{(sensorSpreader.sensorValue ? "The sensor has detected a container" : "The sensor has not detected a conatiner")}",
+                EventTimeStamp = DateTime.UtcNow
+            };
+            _mqttClient.PublishAsync("logger/actions", JsonSerializer.Serialize(actionLog));
+        }
+
+        private async Task HandleNewActionSpreaderOutput(byte[]? payload)
+        {
+            var spreaderAction = JsonSerializer.Deserialize<ActionSpeaderDto>(payload);
+            var actionLog = new ActionLog
+            {
+                Id = ObjectId.GenerateNewId(),
+                Component = "Spreader",
+                EventType = "Action",
+                Description = $"The spreader is {(spreaderAction.IsLocked ? "Locked" : "UnLocked")} and {(spreaderAction.HasContainer ? "has a container" : "has no container")}",
+                EventTimeStamp = DateTime.UtcNow
+            };
+            _mqttClient.PublishAsync("logger/actions", JsonSerializer.Serialize(actionLog));
         }
 
         private async Task HandleNewSpreaderPositionOutput(byte[]? payload)
@@ -100,7 +136,7 @@ namespace Wex1.Elephant.Logger.WebApi.Services.Mqtt
                 Component = "Spreader",
                 EventType = "Position",
                 Position = position,
-                Description = $"The current position of the spreader",
+                Description = $"The current position of the spreader is X:{positionSpreader.X}Y:{positionSpreader.Y}",
                 EventTimeStamp = DateTime.UtcNow
             };
             
