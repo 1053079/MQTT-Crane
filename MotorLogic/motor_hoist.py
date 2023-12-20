@@ -30,7 +30,7 @@ def on_message(client, userdata,message):
      print("Topic is " + str(message.topic))
      payload_data = json.loads(message.payload.decode('utf-8'))
      global emergency
-     emergency = payload_data.get("state")
+     emergency = payload_data.get("status")
     else: 
      print("Message received is " + str((message.payload.decode("utf-8"))))
      print("Topic is " + str(message.topic))
