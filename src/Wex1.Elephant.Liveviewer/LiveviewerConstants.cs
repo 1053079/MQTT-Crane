@@ -7,6 +7,6 @@
         public const string MqttClusterUrl = "2939d3617acc492aa3b3653ac474fdc0.s2.eu.hivemq.cloud";
         public const int MqttPort = 8883;
         public const int MqttWebSocketPort = 8884;
-        public const string BaseUrl = "https://fkqpzj02-7038.euw.devtunnels.ms/api/";
+        public const string BaseUrl = "https://hlt5sjl0-7038.euw.devtunnels.ms/api/";
     }
 }
