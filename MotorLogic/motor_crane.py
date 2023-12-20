@@ -55,29 +55,29 @@ def on_message(client, userdata,message):
             if speed == 'normal': # normal speed
                 # Left and right are for the Crane movements 
                if movement == "right":
-                 motorDirection = "ClockWise"
+                 motorDirection = "clockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})
                elif movement == "left":
-                 motorDirection = "AntiClockWise"
+                 motorDirection = "antiClockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})
 
             #  For fast speed
             elif speed == 'fast':
                 # Left and right are for the Crane movements 
                 if movement == "right":
-                 motorDirection = "ClockWise"
+                 motorDirection = "clockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})
                 elif movement == "left":
-                 motorDirection = "AntiClockWise"
+                 motorDirection = "antiClockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed}) 
 
             # For slow speed      
             elif speed == 'slow':   
                 if movement == "right":
-                 motorDirection = "ClockWise"
+                 motorDirection = "clockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})
                 elif movement == "left":
-                 motorDirection = "AntiClockWise"
+                 motorDirection = "antiClockwise"
                  publish_payload(topic_output_motorCrane, {"direction": motorDirection, "speed": speed})    
 
     except Exception as e:
