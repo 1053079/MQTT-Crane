@@ -258,7 +258,6 @@ while not exit:
                 position = (825 , 360)
                 screen.blit(pygame.image.load('VisualizationImages/siren.png'), position)
                 locking = screen.blit(pygame.image.load(locked), (1025, 360))
-
     except Exception as e:
         print("error", e)
 
