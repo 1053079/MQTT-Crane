@@ -128,9 +128,9 @@ def draw_view3(screen, cabin_x, cabin_y, legs_y, crain_y, legs_bridge1_y, legs_b
     pygame.draw.rect(screen, red, (200, 500, 100, 150))  # boat
     pygame.draw.circle(screen, red, [250, 500], 50, 0)  # boat
 
-    pygame.draw.rect(screen, dark_green, (230, 525, 40, 75))  # container
+    #pygame.draw.rect(screen, dark_green, (230, 525, 40, 75))  # container
 
-    pygame.draw.rect(screen, purple, (cabin_x, cabin_y, 20, 20))  # cabin
+    #pygame.draw.rect(screen, purple, (cabin_x, cabin_y, 20, 20))  # cabin
     pygame.draw.rect(screen, yellow, (225, crain_y, 200, 10))  # crain
 
     pygame.draw.rect(screen, yellow, (345, legs_y, 10, 110))  # legs
