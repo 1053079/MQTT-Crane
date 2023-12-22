@@ -86,23 +86,25 @@ view = pygame.Surface([500, 300])
 view2 = pygame.Surface([500, 300])
 view3 = pygame.Surface([500, 300])
 
-# Controls
+
 # Dit zijn de variabelen voor de images
-# arrow_up = pygame.image.load('images/arrow_up.png').convert_alpha()
-# arrow_down = pygame.image.load('images/arrow_down.png').convert_alpha()
-# arrow_left = pygame.image.load('images/arrow_left.png').convert_alpha()
-# arrow_right = pygame.image.load('images/arrow_right.png').convert_alpha()
-# arrow_upstairs = pygame.image.load('images/arrow_upstairs.png').convert_alpha()
-# arrow_downstairs = pygame.image.load('images/arrow_downstairs.png').convert_alpha()
+arrow_up = pygame.image.load('VisualizationImages/arrow_up.png').convert_alpha()
+arrow_down = pygame.image.load('VisualizationImages/arrow_down.png').convert_alpha()
+arrow_left = pygame.image.load('VisualizationImages/arrow_left.png').convert_alpha()
+arrow_right = pygame.image.load('VisualizationImages/arrow_right.png').convert_alpha()
+arrow_upstairs = pygame.image.load('VisualizationImages/arrow_upstairs.png').convert_alpha()
+arrow_downstairs = pygame.image.load('VisualizationImages/arrow_downstairs.png').convert_alpha()
 locked = pygame.image.load('VisualizationImages/locked.png').convert_alpha()
-# unlocked = pygame.image.load('images/unlocked.png').convert_alpha()
-# siren = pygame.image.load('images/siren.png').convert_alpha()
-# emergency = pygame.image.load('images/emergency.png').convert_alpha()
-# forwardLeft = pygame.image.load('images/forwardLeft.png').convert_alpha()
-# forwardRight = pygame.image.load('images/forwardRight.png').convert_alpha()
-# backwardLeft = pygame.image.load('images/backwardLeft.png').convert_alpha()
-# backwardRight = pygame.image.load('images/backwardRight.png').convert_alpha()
+unlocked = pygame.image.load('VisualizationImages/unlocked.png').convert_alpha()
+siren = pygame.image.load('VisualizationImages/siren.png').convert_alpha()
 emergencyButton = pygame.image.load('VisualizationImages/emergency.png').convert_alpha()
+forwardLeft = pygame.image.load('VisualizationImages/forwardLeft.png').convert_alpha()
+forwardRight = pygame.image.load('VisualizationImages/forwardRight.png').convert_alpha()
+backwardLeft = pygame.image.load('VisualizationImages/backwardLeft.png').convert_alpha()
+backwardRight = pygame.image.load('VisualizationImages/backwardRight.png').convert_alpha()
+emergencyButton = pygame.image.load('VisualizationImages/emergency.png').convert_alpha()
+
+# Controls
 # WASD arrows
 WASD = pygame.image.load('UserInterface/buttons/wasdKeys.png')
 
@@ -111,8 +113,6 @@ arrow = pygame.image.load('UserInterface/buttons/arrowKey.png')
 
 # circle buttons
 circle = pygame.image.load('UserInterface/buttons/xButton.png')
-
-
 circle2 = pygame.image.load('UserInterface/buttons/plusButton.png')
 
 
@@ -180,90 +180,90 @@ while not exit:
     try:
         if mqtt_message == topic_inputs_joystick and emergency is True:
                 position = (825 , 360)
-                screen.blit(pygame.image.load('VisualizationImages/siren.png'), position)
+                screen.blit(siren, position)
                 locking = screen.blit(pygame.image.load(locked), (1025, 360))
         elif mqtt_message == topic_inputs_joystick or (mqtt_message == topic_inputs_cabinEmergencyButton and emergency is False):
             if lock is False:
                 positionEmergency = (825, 360)
                 position = (1025, 360)
-                screen.blit(pygame.image.load('VisualizationImages/emergency.png'), positionEmergency)
-                screen.blit(pygame.image.load('VisualizationImages/unlocked.png'), position)
+                screen.blit(emergencyButton, positionEmergency)
+                screen.blit(unlocked, position)
         # only does actions if its from inputs/joystick and emergency is fals
                 if movement == 'forward':
                     position = (690,515)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_up.png'), position)
+                    screen.blit(arrow_up, position)
                 elif movement == 'backward':
                     position = (690,590)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_down.png'), position)
+                    screen.blit(arrow_down, position)
                 elif movement == 'left':
                     position = (653,555) 
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_left.png'), position)
+                    screen.blit(arrow_left, position)
                 elif movement == 'right':
                     position = (730,555)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_right.png'), position)
+                    screen.blit(arrow_right, position)
                 elif movement == 'up':
                     position = (847, 450)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_upstairs.png'), position)
+                    screen.blit(arrow_upstairs, position)
                 elif movement == 'down':
                     position = (847, 630)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_downstairs.png'), position)
+                    screen.blit(arrow_downstairs, position)
                 if movement == 'forwardLeft' :
                     position = (640 , 500)
-                    screen.blit(pygame.image.load('VisualizationImages/forwardLeft.png'), position)
+                    screen.blit(forwardLeft, position)
                 elif movement == 'forwardRight' :
                     position = (740 , 500)
-                    screen.blit(pygame.image.load('VisualizationImages/forwardRight.png'), position)
+                    screen.blit(forwardRight, position)
                 elif movement == 'backwardLeft' :
                     position = (640, 600)
-                    screen.blit(pygame.image.load('VisualizationImages/backwardLeft.png'), position)
+                    screen.blit(backwardLeft, position)
                 elif movement == 'backwardRight' :
                     position = (740, 600)
-                    screen.blit(pygame.image.load('VisualizationImages/backwardRight.png'), position)
+                    screen.blit(backwardRight, position)
             elif lock is True: # this code allows us to have input even if lock is true.. is it needed? depends..
                 positionEmergency = (825, 360)
                 position = (1025, 360)
-                screen.blit(pygame.image.load('VisualizationImages/emergency.png'), positionEmergency)
-                screen.blit(pygame.image.load('VisualizationImages/locked.png'), position)
+                screen.blit(emergencyButton, positionEmergency)
+                screen.blit(locked, position)
                 if movement == 'forward':
                     position = (690,515)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_up.png'), position)
+                    screen.blit(arrow_up, position)
                 elif movement == 'backward':
                     position = (690,590)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_down.png'), position)
+                    screen.blit(arrow_down, position)
                 elif movement == 'left':
                     position = (653,555) 
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_left.png'), position)
+                    screen.blit(arrow_left, position)
                 elif movement == 'right':
                     position = (730,555)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_right.png'), position)
+                    screen.blit(arrow_right, position)
                 elif movement == 'up':
                     position = (847, 450)
-                    screen.blit(pygame.image.load('VisualizationImages/arrow_upstairs.png'), position)
+                    screen.blit(arrow_upstairs, position)
                 elif movement == 'down':
                     position = (847, 630)
-                    screen.blit(pygame.image.load('images/arrow_downstairs.png'), position)
+                    screen.blit(arrow_downstairs, position)
                 if movement == 'forwardLeft' :
                     position = (640 , 500)
-                    screen.blit(pygame.image.load('VisualizationImages/forwardLeft.png'), position)
+                    screen.blit(forwardLeft, position)
                 elif movement == 'forwardRight' :
                     position = (740 , 500)
-                    screen.blit(pygame.image.load('VisualizationImages/forwardRight.png'), position)
+                    screen.blit(forwardRight, position)
                 elif movement == 'backwardLeft' :
                     position = (640, 600)
-                    screen.blit(pygame.image.load('VisualizationImages/backwardLeft.png'), position)
+                    screen.blit(backwardLeft, position)
                 elif movement == 'backwardRight' :
                     position = (740, 600)
-                    screen.blit(pygame.image.load('VisualizationImages/backwardRight.png'), position)
+                    screen.blit(backwardRight, position)
         # if emergency is true we screen blit locked lock and siren
         else: 
-                position = (825 , 360)
-                screen.blit(pygame.image.load('VisualizationImages/siren.png'), position)
-                locking = screen.blit(pygame.image.load(locked), (1025, 360))
+                position = (825, 360)
+                lockPosition = (1025, 360)
+                screen.blit(siren, position)
+                locking = screen.blit(locked, lockPosition)
     except Exception as e:
         print("error", e)
 
-    screen.blit(circle, (1025, 505))
-    screen.blit(circle2, (1025, 585))
+   
     screen.blit(resized_boat_view1, (200, 255))
     rope_height = draw_view1(screen, rope_height, font, text_color)
     draw_view2(screen, shore_x, shore_y, resized_boat_view2, )
@@ -279,7 +279,6 @@ while not exit:
             message = mqtt_message   
 
     # updates the display
-    pygame.display.flip()
     clock.tick(30)
     pygame.display.flip() 
 pygame.quit()
